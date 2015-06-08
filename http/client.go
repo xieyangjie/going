@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"fmt"
 )
 
 const (
@@ -30,7 +31,7 @@ type Client struct {
 	URLString	string
 
 	//参数
-	params	map[string]string
+	params	url.Values
 	//请求头
 	headers	map[string]string
 }
@@ -44,15 +45,15 @@ func (this *Client) SetHeader(key string, value string) {
 
 func (this *Client) SetParam(key string, value string) {
 	if this.params == nil {
-		this.params = make(map[string]string)
+		this.params = make(url.Values)
 	}
-	this.params[key] = value
+	this.params.Set(key, value)
 }
 
 func (this *Client) createGetURL() string {
 	var paramStr = "?"
-	for key, value := range this.params {
-		paramStr = paramStr + url.QueryEscape(key) + "=" + url.QueryEscape(value) + "&"
+	if this.params != nil {
+		paramStr = paramStr + this.params.Encode()
 	}
 	return this.URLString+paramStr
 }
@@ -62,15 +63,10 @@ func (this *Client) createGetRequest() (*http.Request, error) {
 }
 
 func (this *Client) createPostRequest() (*http.Request, error) {
-	var param = make(url.Values)
-	for key, value := range this.params {
-		param[key] = []string{value}
-	}
-
 	if _, ok := this.headers["Content-Type"]; !ok {
 		this.headers["Content-Type"] = "application/x-www-form-urlencoded"
 	}
-	return http.NewRequest(this.Method, this.URLString, strings.NewReader(param.Encode()))
+	return http.NewRequest(this.Method, this.URLString, strings.NewReader(this.params.Encode()))
 }
 
 func (this *Client) doRequest() (*http.Response, error) {
