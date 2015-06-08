@@ -76,13 +76,13 @@ func (this *Client) doRequest() (*http.Response, error) {
 
 	var method = strings.ToUpper(this.Method)
 
-	var requst *http.Request
+	var request *http.Request
 	var err error
 
 	if method == K_HTTP_REQ_METHOD_GET || method == K_HTTP_REQ_METHOD_HEAD{
-		requst, err = this.createGetRequest()
+		request, err = this.createGetRequest()
 	} else {
-		requst, err = this.createPostRequest()
+		request, err = this.createPostRequest()
 	}
 
 	if err != nil {
@@ -90,11 +90,10 @@ func (this *Client) doRequest() (*http.Response, error) {
 	}
 
 	for key, value := range this.headers {
-		requst.Header.Set(key, value)
+		request.Header.Set(key, value)
 	}
 
-	var client = &http.Client{}
-	return client.Do(requst)
+	return http.DefaultClient.Do(request)
 }
 
 func (this *Client) DoRequest() ([]byte, error) {
