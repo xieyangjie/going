@@ -39,7 +39,7 @@ func main() {
 //	fmt.Println(v, e)
 
 	var fb = open_platform.Facebook{}
-	var s, err = fb.CheckAccessToken("CAAU7ErrNaQcBAGJOO0Vp6EJ1VuQ6cwM7ZCWwsAZBnwTmlUxij7nRMVZBq0WKWzVbtZAmmr2wWCG7MU2yVJuOZBD0kLlOUSiuEUZBZB5hfAXOJBcyuJZBZClWUlefov5of7JKOOjHJTsahrFD46kiRc1mYwdgIyRt4krpgQH6VRzm0S3UfYRVN3kc1LivTPwdZC502SLR6ZCgy0CgTnZCwQZCdZCJOP")
+	var s, err = fb.CheckAccessToken("CAAU7ErrNaQcBABVqJL7lmj68j1306dd4RSmYyYowZASQfw1mLCih9uSQupZBIMgZBzFZBsYj0XLFOxPO6F8GZASIulZAr6ZBRuREZA6hEoky6A4r1MSZAUqQYRYUUUSFTC30uFVos7vLZCH4RhllohMZBk1nMxaMJRaCZBaIzuEzx0XZBUizcfbPPqwV4AZCpdoXLYksSCFKihM6C27ZBCGZBubCJW8R")
 	fmt.Println(s, err)
 
 //	var wb = open_platform.Weibo{}
