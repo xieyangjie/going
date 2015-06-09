@@ -14,13 +14,12 @@ const (
 type Weibo struct {
 }
 
-func (this *Weibo) CheckError(result map[string]interface{}) (error) {
+func (this *Weibo) checkError(result map[string]interface{}) (error) {
 	var err error
 	if value, ok := result["error"]; ok {
 		if str, ok := value.(string); ok {
 			err = errors.New(str)
 		}
-		return err
 	}
 	return err
 }
@@ -36,7 +35,7 @@ func (this *Weibo) CheckAccessToken(accessToken string) (*AccessToken, error) {
 		return nil, err
 	}
 
-	if err := this.CheckError(result); err != nil {
+	if err := this.checkError(result); err != nil {
 		return nil, err
 	}
 
@@ -63,7 +62,7 @@ func (this *Weibo) GetUserInfo(userId string, accessToken string) (map[string]in
 		return nil, err
 	}
 
-	if err := this.CheckError(result); err != nil {
+	if err := this.checkError(result); err != nil {
 		return nil, err
 	}
 
