@@ -1,24 +1,24 @@
 package main
 import (
-//	"github.com/smartwalle/going/open_platform"
+	"github.com/smartwalle/going/open_platform"
 //	"fmt"
-	"github.com/smartwalle/going/http"
+//	"github.com/smartwalle/going/http"
 	"fmt"
 )
 
 func main() {
 
-	var r map[string]interface{}
-	var e error
-
-	fb := http.NewClient()
-	fb.SetMethod(http.K_HTTP_REQ_METHOD_GET)
-	fb.SetURLString("https://graph.facebook.com/v2.3/me")
+//	var r map[string]interface{}
+//	var e error
+//
+//	fb := http.NewClient()
+//	fb.SetMethod(http.K_HTTP_REQ_METHOD_GET)
+//	fb.SetURLString("https://graph.facebook.com/v2.3/me")
 //	fb.SetParam("access_token", "CAAU7ErrNaQcBAM7QArqQijX5Ts6PyE93iikKebMmosZCuOfZAGkiH3rZCU9pDaiW4BZCGoJIB4PUCs6fbcw3Xc3KWoxJZBUpVZAv3ZBlAgPbSqipA7Gx8lHpaTPkEU97uxeHpptfZBwv9GkZCYZCdUD6gPGVADcr1VHYRrVH1BMVZA5GBPwxZBdWOiPFBRP4u1gKZBJbkCGqGe4tkg17tQ61IsZBvv")
 //	fb.SetParam("input_token", "CAAU7ErrNaQcBAM7QArqQijX5Ts6PyE93iikKebMmosZCuOfZAGkiH3rZCU9pDaiW4BZCGoJIB4PUCs6fbcw3Xc3KWoxJZBUpVZAv3ZBlAgPbSqipA7Gx8lHpaTPkEU97uxeHpptfZBwv9GkZCYZCdUD6gPGVADcr1VHYRrVH1BMVZA5GBPwxZBdWOiPFBRP4u1gKZBJbkCGqGe4tkg17tQ61IsZBvv")
-
-	r, e = fb.DoJsonRequest()
-	fmt.Println(r, e)
+//
+//	r, e = fb.DoJsonRequest()
+//	fmt.Println(r, e)
 
 //	c := http.NewClient()
 //	c.Method = "GET"
@@ -38,9 +38,9 @@ func main() {
 //	v, e := http.DoPost("https://api.weibo.com/oauth2/get_token_info", map[string]string{"access_token": "2.00kLXhIG9Cf3tD0015e73a690SCzU5"})
 //	fmt.Println(v, e)
 
-//	var fb = open_platform.Facebook{}
-//	var s, err = fb.CheckAccessToken("CAAU7ErrNaQcBAGJOO0Vp6EJ1VuQ6cwM7ZCWwsAZBnwTmlUxij7nRMVZBq0WKWzVbtZAmmr2wWCG7MU2yVJuOZBD0kLlOUSiuEUZBZB5hfAXOJBcyuJZBZClWUlefov5of7JKOOjHJTsahrFD46kiRc1mYwdgIyRt4krpgQH6VRzm0S3UfYRVN3kc1LivTPwdZC502SLR6ZCgy0CgTnZCwQZCdZCJOP")
-//	fmt.Println(s, err)
+	var fb = open_platform.Facebook{}
+	var s, err = fb.CheckAccessToken("CAAU7ErrNaQcBAGJOO0Vp6EJ1VuQ6cwM7ZCWwsAZBnwTmlUxij7nRMVZBq0WKWzVbtZAmmr2wWCG7MU2yVJuOZBD0kLlOUSiuEUZBZB5hfAXOJBcyuJZBZClWUlefov5of7JKOOjHJTsahrFD46kiRc1mYwdgIyRt4krpgQH6VRzm0S3UfYRVN3kc1LivTPwdZC502SLR6ZCgy0CgTnZCwQZCdZCJOP")
+	fmt.Println(s, err)
 
 //	var wb = open_platform.Weibo{}
 //	var s, err = wb.CheckAccessToken("2.00kLXhIG9Cf3tD0015e73a690SCzU5")

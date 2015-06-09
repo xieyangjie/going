@@ -41,13 +41,12 @@ func (this *Weibo) CheckAccessToken(accessToken string) (*AccessToken, error) {
 	}
 
 	var userId = tools.GetString(result["uid"])
-
-	var expireIn float64 = tools.GetFloat64(result["create_at"])
-	var createdAt float64 = tools.GetFloat64(result["expire_in"])
+	var expireIn int64 = tools.GetInt64(result["create_at"])
+	var createdAt int64 = tools.GetInt64(result["expire_in"])
 
 	token := &AccessToken{}
 	token.UserId = userId
-	token.ExpireIn = int64(expireIn + createdAt)
+	token.ExpireIn = expireIn + createdAt
 
 	return token, nil
 }

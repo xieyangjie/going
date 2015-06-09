@@ -3,7 +3,7 @@ package open_platform
 import (
 	"github.com/smartwalle/going/http"
 	"errors"
-	"fmt"
+	"github.com/smartwalle/going/tools"
 )
 
 const (
@@ -46,23 +46,12 @@ func (this *Facebook) CheckAccessToken(accessToken string) (*AccessToken, error)
 		}
 	}
 
-	fmt.Println(result)
-
-	var userId = ""
-	if v, ok := data["user_id"]; ok {
-		if str, ok := v.(string); ok {
-			userId = str
-		}
-	}
-
-	var expireIn float64
-	if str, ok := data["expires_at"].(float64); ok {
-		expireIn = str
-	}
+	var userId = tools.GetString(data["user_id"])
+	var expireIn = tools.GetInt64(data["expires_at"])
 
 	token := &AccessToken{}
 	token.UserId = userId
-	token.ExpireIn = int64(expireIn)
+	token.ExpireIn = expireIn
 
 	return token, nil
 }

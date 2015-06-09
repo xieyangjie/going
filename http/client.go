@@ -9,16 +9,16 @@ import (
 )
 
 const (
-	K_HTTP_REQ_METHOD_GET  		= "GET"
-	K_HTTP_REQ_METHOD_POST 		= "POST"
-	K_HTTP_REQ_METHOD_HEAD 		= "HEAD"
-	K_HTTP_REQ_METHOD_PUT		= "PUT"
-	K_HTTP_REQ_METHOD_DELETE	= "DELETE"
+	K_HTTP_METHOD_GET 		= "GET"
+	K_HTTP_METHOD_POST 		= "POST"
+	K_HTTP_METHOD_HEAD 		= "HEAD"
+	K_HTTP_METHOD_PUT 		= "PUT"
+	K_HTTP_METHOD_DELETE	= "DELETE"
 )
 
 func NewClient() *Client {
 	var client = &Client{}
-	client.method = K_HTTP_REQ_METHOD_GET
+	client.method = K_HTTP_METHOD_GET
 	return client
 }
 
@@ -85,7 +85,7 @@ func (this *Client) doRequest() (*http.Response, error) {
 	var request *http.Request
 	var err error
 
-	if method == K_HTTP_REQ_METHOD_GET || method == K_HTTP_REQ_METHOD_HEAD{
+	if method == K_HTTP_METHOD_GET || method == K_HTTP_METHOD_HEAD {
 		request, err = this.createGetRequest()
 	} else {
 		request, err = this.createPostRequest()
@@ -149,9 +149,9 @@ func DoJsonRequest(method string, urlString string, param map[string]string) (ma
 }
 
 func DoGet(urlString string, param map[string]string) (map[string]interface{}, error) {
-	return DoJsonRequest(K_HTTP_REQ_METHOD_GET, urlString, param)
+	return DoJsonRequest(K_HTTP_METHOD_GET, urlString, param)
 }
 
 func DoPost(urlString string, param map[string]string) (map[string]interface{}, error) {
-	return DoJsonRequest(K_HTTP_REQ_METHOD_POST, urlString, param)
+	return DoJsonRequest(K_HTTP_METHOD_POST, urlString, param)
 }
