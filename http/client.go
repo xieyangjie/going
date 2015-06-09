@@ -1,7 +1,6 @@
 package http
 
 import (
-	"bytes"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
@@ -19,20 +18,28 @@ const (
 
 func NewClient() *Client {
 	var client = &Client{}
-	client.Method = K_HTTP_REQ_METHOD_GET
+	client.method = K_HTTP_REQ_METHOD_GET
 	return client
 }
 
 type Client struct {
 	//请求方法
-	Method 		string
+	method 		string
 	//url
-	URLString	string
+	urlString 	string
 
 	//参数
 	params	url.Values
 	//请求头
 	headers	map[string]string
+}
+
+func (this *Client) SetMethod(method string) {
+	this.method = strings.ToUpper(method)
+}
+
+func (this *Client) SetURLString(urlString string) {
+	this.urlString = urlString
 }
 
 func (this *Client) SetHeader(key string, value string) {
@@ -54,18 +61,18 @@ func (this *Client) createGetURL() string {
 	if this.params != nil {
 		paramStr = paramStr + this.params.Encode()
 	}
-	return this.URLString+paramStr
+	return this.urlString+paramStr
 }
 
 func (this *Client) createGetRequest() (*http.Request, error) {
-	return http.NewRequest(this.Method, this.createGetURL(), nil)
+	return http.NewRequest(this.method, this.createGetURL(), nil)
 }
 
 func (this *Client) createPostRequest() (*http.Request, error) {
 	if _, ok := this.headers["Content-Type"]; !ok {
 		this.headers["Content-Type"] = "application/x-www-form-urlencoded"
 	}
-	return http.NewRequest(this.Method, this.URLString, strings.NewReader(this.params.Encode()))
+	return http.NewRequest(this.method, this.urlString, strings.NewReader(this.params.Encode()))
 }
 
 func (this *Client) doRequest() (*http.Response, error) {
@@ -73,7 +80,7 @@ func (this *Client) doRequest() (*http.Response, error) {
 		this.headers = make(map[string]string)
 	}
 
-	var method = strings.ToUpper(this.Method)
+	var method = strings.ToUpper(this.method)
 
 	var request *http.Request
 	var err error
@@ -121,49 +128,30 @@ func (this *Client) DoJsonRequest() (map[string]interface{}, error) {
 }
 
 
-func DoGet(reqUrl string, params map[string]string) (map[string]interface{}, error) {
-	var paramStr = "?"
-	for key, value := range params {
-		paramStr = paramStr + url.QueryEscape(key) + "=" + url.QueryEscape(value) + "&"
+func DoRequest(method string, urlString string, param map[string]string) ([]byte, error) {
+	var client = NewClient()
+	client.SetMethod(method)
+	client.SetURLString(urlString)
+	for key, value := range param {
+		client.SetParam(key, value)
 	}
-	responseHandler, err := http.Get(reqUrl + paramStr)
-	if err != nil {
-		return nil, err
-	}
-	defer responseHandler.Body.Close()
-
-	bodyByte, err := ioutil.ReadAll(responseHandler.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var result map[string]interface{}
-
-	err = json.Unmarshal(bodyByte, &result)
-	return result, err
+	return client.DoRequest()
 }
 
-func DoPost(reqUrl string, params map[string]string) (map[string]interface{}, error) {
-	var param = make(url.Values)
-	for key, value := range params {
-		param[key] = []string{value}
+func DoJsonRequest(method string, urlString string, param map[string]string) (map[string]interface{}, error) {
+	var client = NewClient()
+	client.SetMethod(method)
+	client.SetURLString(urlString)
+	for key, value := range param {
+		client.SetParam(key, value)
 	}
+	return client.DoJsonRequest()
+}
 
-	reqBody := bytes.NewBufferString(param.Encode())
+func DoGet(urlString string, param map[string]string) (map[string]interface{}, error) {
+	return DoJsonRequest(K_HTTP_REQ_METHOD_GET, urlString, param)
+}
 
-	responseHandler, err := http.Post(reqUrl, "application/x-www-form-urlencoded", reqBody)
-	if err != nil {
-		return nil, err
-	}
-	defer responseHandler.Body.Close()
-
-	bodyByte, err := ioutil.ReadAll(responseHandler.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var result map[string]interface{}
-
-	err = json.Unmarshal(bodyByte, &result)
-	return result, err
+func DoPost(urlString string, param map[string]string) (map[string]interface{}, error) {
+	return DoJsonRequest(K_HTTP_REQ_METHOD_POST, urlString, param)
 }
