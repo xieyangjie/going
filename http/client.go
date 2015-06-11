@@ -16,12 +16,6 @@ const (
 	K_HTTP_METHOD_DELETE	= "DELETE"
 )
 
-func NewClient() *Client {
-	var client = &Client{}
-	client.method = K_HTTP_METHOD_GET
-	return client
-}
-
 type Client struct {
 	//请求方法
 	method 		string
@@ -32,6 +26,12 @@ type Client struct {
 	params	url.Values
 	//请求头
 	headers	map[string]string
+}
+
+func NewClient() *Client {
+	var client = &Client{}
+	client.method = K_HTTP_METHOD_GET
+	return client
 }
 
 func (this *Client) SetMethod(method string) {

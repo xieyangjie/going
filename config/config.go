@@ -8,11 +8,18 @@ import (
 	"errors"
 )
 
+var sharedConfig *Config
+
+type Config struct {
+	configDir 		string
+	configList		[]string
+	currentConfig	string
+	data 			map[string]map[string]interface{}
+}
+
 func init() {
 	SharedConfig()
 }
-
-var sharedConfig *Config
 
 // NewConfig 创建新的 Config 实例
 func NewConfig() (*Config) {
@@ -26,62 +33,6 @@ func SharedConfig() (*Config) {
 		sharedConfig = &Config{}
 	}
 	return sharedConfig
-}
-
-func SetDefaultConfig(configName string) bool {
-	return sharedConfig.SetDefaultConfig(configName)
-}
-
-func GetValue(key string) (interface{}, error) {
-	return sharedConfig.GetValue(key)
-}
-
-func Get(key string, defaultValue interface{}) interface{} {
-	return sharedConfig.Get(key, defaultValue)
-}
-
-func GetList(key string, defaultValue []interface{}) []interface{} {
-	return sharedConfig.GetList(key, defaultValue)
-}
-
-func GetMap(key string, defaultValue map[string]interface{}) map[string]interface{} {
-	return sharedConfig.GetMap(key, defaultValue)
-}
-
-func GetString(key string, defaultValue string) string {
-	return sharedConfig.GetString(key, defaultValue)
-}
-
-func GetInt(key string, defaultValue int) int {
-	return sharedConfig.GetInt(key, defaultValue)
-}
-
-func GetInt32(key string, defaultValue int32) int32 {
-	return sharedConfig.GetInt32(key, defaultValue)
-}
-
-func GetInt64(key string, defaultValue int64) int64 {
-	return sharedConfig.GetInt64(key, defaultValue)
-}
-
-func GetFloat(key string, defaultValue float32) float32 {
-	return sharedConfig.GetFloat(key, defaultValue)
-}
-
-func GetFloat64(key string, defaultValue float64) float64 {
-	return sharedConfig.GetFloat64(key, defaultValue)
-}
-
-func GetBool(key string, defaultValue bool) bool {
-	return sharedConfig.GetBool(key, defaultValue)
-}
-
-
-type Config struct {
-	configDir 		string
-	configList		[]string
-	currentConfig	string
-	data 			map[string]map[string]interface{}
 }
 
 // LoadConfig 从目录加载数据
@@ -289,4 +240,53 @@ func (this *Config) GetBool(key string, defaultValue bool) bool {
 		return v
 	}
 	return defaultValue
+}
+
+
+func SetDefaultConfig(configName string) bool {
+	return sharedConfig.SetDefaultConfig(configName)
+}
+
+func GetValue(key string) (interface{}, error) {
+	return sharedConfig.GetValue(key)
+}
+
+func Get(key string, defaultValue interface{}) interface{} {
+	return sharedConfig.Get(key, defaultValue)
+}
+
+func GetList(key string, defaultValue []interface{}) []interface{} {
+	return sharedConfig.GetList(key, defaultValue)
+}
+
+func GetMap(key string, defaultValue map[string]interface{}) map[string]interface{} {
+	return sharedConfig.GetMap(key, defaultValue)
+}
+
+func GetString(key string, defaultValue string) string {
+	return sharedConfig.GetString(key, defaultValue)
+}
+
+func GetInt(key string, defaultValue int) int {
+	return sharedConfig.GetInt(key, defaultValue)
+}
+
+func GetInt32(key string, defaultValue int32) int32 {
+	return sharedConfig.GetInt32(key, defaultValue)
+}
+
+func GetInt64(key string, defaultValue int64) int64 {
+	return sharedConfig.GetInt64(key, defaultValue)
+}
+
+func GetFloat(key string, defaultValue float32) float32 {
+	return sharedConfig.GetFloat(key, defaultValue)
+}
+
+func GetFloat64(key string, defaultValue float64) float64 {
+	return sharedConfig.GetFloat64(key, defaultValue)
+}
+
+func GetBool(key string, defaultValue bool) bool {
+	return sharedConfig.GetBool(key, defaultValue)
 }
