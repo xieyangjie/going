@@ -1,6 +1,9 @@
 package tools
 
-import "testing"
+import (
+	"testing"
+	"fmt"
+)
 
 func Test_ContainsKeyInMap(t *testing.T) {
 	var m1 map[interface{}]interface{} = make(map[interface{}]interface{})
@@ -19,4 +22,14 @@ func Test_ContainsKeyInMap(t *testing.T) {
 	if !ContainsKeyInMap(m1, 1) {
 		t.Error("m1 有 1")
 	}
+}
+
+func Test_GetValue(t *testing.T) {
+	var m1 map[interface{}]interface{} = make(map[interface{}]interface{})
+
+	m1["k1"] = "v1"
+	m1[1] = 22
+
+	fmt.Println(GetValueWithMap(m1, "k1", "d1"))
+	fmt.Println(GetValueWithMap(m1, "k2", "d2"))
 }
