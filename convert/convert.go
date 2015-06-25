@@ -1,10 +1,10 @@
-package tools
+package convert
 
 import (
 	"strconv"
 )
 
-func GetString(value interface{}) string {
+func ConvertToString(value interface{}) string {
 	if v, ok := value.(string); ok {
 		return v
 	} else if v, ok := value.(uint64); ok {
@@ -19,60 +19,60 @@ func GetString(value interface{}) string {
 	return ""
 }
 
-func GetBool(value interface{}) bool {
+func ConvertToBool(value interface{}) bool {
 	if v, ok := value.(bool); ok {
 		return v
 	}
-	v := GetInt(value)
+	v := ConvertToInt(value)
 	if v > 0 {
 		return true
 	}
 	return false
 }
 
-func GetInt(value interface{}) int {
+func ConvertToInt(value interface{}) int {
 	if v, ok := value.(int); ok {
 		return v
 	}
-	return int(GetFloat64(value))
+	return int(ConvertToFloat64(value))
 }
 
-func GetInt8(value interface{}) int8 {
+func ConvertToInt8(value interface{}) int8 {
 	if v, ok := value.(int8); ok {
 		return v
 	}
-	return int8(GetFloat64(value))
+	return int8(ConvertToFloat64(value))
 }
 
-func GetInt16(value interface{}) int16 {
+func ConvertToInt16(value interface{}) int16 {
 	if v, ok := value.(int16); ok {
 		return v
 	}
-	return int16(GetFloat64(value))
+	return int16(ConvertToFloat64(value))
 }
 
-func GetInt32(value interface{}) int32 {
+func ConvertToInt32(value interface{}) int32 {
 	if v, ok := value.(int32); ok {
 		return v
 	}
-	return int32(GetFloat64(value))
+	return int32(ConvertToFloat64(value))
 }
 
-func GetInt64(value interface{}) int64 {
+func ConvertToInt64(value interface{}) int64 {
 	if v, ok := value.(int64); ok {
 		return v
 	}
-	return int64(GetFloat64(value))
+	return int64(ConvertToFloat64(value))
 }
 
-func GetFloat32(value interface{}) float32 {
+func ConvertToFloat32(value interface{}) float32 {
 	if v, ok := value.(float32); ok {
 		return v
 	}
-	return float32(GetFloat64(value))
+	return float32(ConvertToFloat64(value))
 }
 
-func GetFloat64(value interface{}) float64 {
+func ConvertToFloat64(value interface{}) float64 {
 	if v, ok := value.(float64); ok {
 		return v
 	} else if v, ok := value.(string); ok {
