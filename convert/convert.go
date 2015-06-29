@@ -65,6 +65,18 @@ func ConvertToInt64(value interface{}) int64 {
 	return int64(ConvertToFloat64(value))
 }
 
+func ConvertToUint(value interface{}) uint64 {
+	if v, ok := value.(uint64); ok {
+		return v
+	} else if v, ok := value.(string); ok {
+		vi, err := strconv.ParseUint(v, 0, 64)
+		if err == nil {
+			return vi
+		}
+	}
+	return 0
+}
+
 func ConvertToFloat32(value interface{}) float32 {
 	if v, ok := value.(float32); ok {
 		return v
