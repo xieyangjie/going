@@ -111,7 +111,7 @@ func (this *Validator) validateStruct(current interface{}, s interface{}) {
 	var structType = reflect.TypeOf(s)
 	var numFields = structValue.NumField()
 
-	for i := 0; i<numFields; i++ {
+	for i:=0; i<numFields; i++ {
 		var fieldValue = structValue.Field(i)
 		var fieldType = structType.Field(i)
 

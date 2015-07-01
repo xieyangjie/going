@@ -20,7 +20,7 @@ func Test_Human(t *testing.T) {
 	var v = NewValidator()
 
 	var h1 = Student{}
-	h1.Name = "dee1ed"
+	h1.Name = "name1"
 	h1.Age = 17
 
 	v.AddValidator("Age", "gte", "18", "1002", "age必须大于等于18")
