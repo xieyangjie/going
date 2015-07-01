@@ -131,6 +131,9 @@ func (this *Validator) validateStruct(current interface{}, s interface{}) {
 
 		switch fieldValue.Kind() {
 		case reflect.Struct, reflect.Interface:
+			if !fieldType.Anonymous {
+				continue
+			}
 			if fieldValue.Type() == reflect.TypeOf(time.Time{}) {
 				this.validateField(current, fieldValue.Interface(), fieldType.Name, tag)
 			} else {
