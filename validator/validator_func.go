@@ -541,7 +541,13 @@ func matchesRegex(regex *regexp.Regexp, field interface{}) bool {
 }
 
 func regex(current interface{}, field interface{}, param string) bool {
-	if  regex, ok := customerRegexList[param]; ok {
+	var regex *regexp.Regexp
+	var ok = false
+	if regex, ok = customerRegexList[param]; !ok {
+		regex = regexp.MustCompile(param)
+	}
+
+	if regex != nil {
 		return matchesRegex(regex, field)
 	}
 	return false
