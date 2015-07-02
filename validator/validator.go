@@ -25,12 +25,12 @@ const (
 type validatorTag struct {
 	Field string
 	Name string
-	Value string
+	Value interface{}
 	Code int
 	Message string
 }
 
-func newValidatorTag(field string, name string, value string, code string, message string) *validatorTag {
+func newValidatorTag(field string, name string, value interface{}, code string, message string) *validatorTag {
 	var vt = validatorTag{}
 	vt.Field = field
 	vt.Name = name
@@ -46,7 +46,7 @@ func newValidatorTag(field string, name string, value string, code string, messa
 //	validatorParamRegex = regexp.MustCompile(K_VALIDATOR_PARAM_PATTERN)
 //)
 
-type ValidatorFunc func(current interface{}, field interface{}, param string) bool
+type ValidatorFunc func(current interface{}, field interface{}, param interface{}) bool
 
 type Validator struct {
 	fieldList 			map[string]string
@@ -82,7 +82,7 @@ func (this *Validator) ErrorsWithField(name string) []*ValidatorError {
 	return this.errorList[name]
 }
 
-func (this *Validator) AddValidator(fieldName string, validatorName string, value string, code string, message string) {
+func (this *Validator) AddValidator(fieldName string, validatorName string, value interface{}, code string, message string) {
 	var vt = newValidatorTag(fieldName, validatorName, value, code, message)
 	var vtm = this.validatorTagList[fieldName]
 	if vtm == nil {
@@ -147,8 +147,6 @@ func (this *Validator) validateStruct(current interface{}, s interface{}) {
 	}
 }
 
-
-
 func (this *Validator) validateField(current interface{}, field interface{}, name string, tagValue string) {
 	tagValue = strings.Replace(tagValue, "'", "\"", -1)
 	var tagObjList []interface{}
@@ -160,13 +158,13 @@ func (this *Validator) validateField(current interface{}, field interface{}, nam
 			for _, tagObj := range tagObjList {
 				if item, ok := tagObj.([]interface{}); ok {
 					if len(item) == 4 {
-						this.AddValidator(name, item[0].(string), item[1].(string), item[2].(string), item[3].(string))
+						this.AddValidator(name, item[0].(string), item[1], item[2].(string), item[3].(string))
 					}
 				}
 			}
 		} else {
 			if len(tagObjList) == 4 {
-				this.AddValidator(name, tagObjList[0].(string), tagObjList[1].(string), tagObjList[2].(string), tagObjList[3].(string))
+				this.AddValidator(name, tagObjList[0].(string), tagObjList[1], tagObjList[2].(string), tagObjList[3].(string))
 			}
 		}
 	}

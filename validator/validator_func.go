@@ -13,6 +13,8 @@ var validatorFuncList = map[string]ValidatorFunc {
 	"len": 		length,
 	"eq": 		equal,
 	"ne": 		unequal,
+	"in":		inList,
+	"nin":		notInList,
 	"lt": 		lessThan,
 	"lte": 		lessThanOrEqual,
 	"gt": 		greaterThan,
@@ -63,7 +65,7 @@ func RevmoeRegex(key string) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-func required(current interface{}, field interface{}, param string) bool {
+func required(current interface{}, field interface{}, param interface{}) bool {
 	var fieldValue = reflect.ValueOf(field)
 
 	switch fieldValue.Kind() {
@@ -74,7 +76,7 @@ func required(current interface{}, field interface{}, param string) bool {
 	}
 }
 
-func length(current interface{}, field interface{}, param string) bool {
+func length(current interface{}, field interface{}, param interface{}) bool {
 	var fieldValue = reflect.ValueOf(field)
 
 	switch fieldValue.Kind() {
@@ -98,12 +100,12 @@ func length(current interface{}, field interface{}, param string) bool {
 	}
 }
 
-func equal(current interface{}, field interface{}, param string) bool {
+func equal(current interface{}, field interface{}, param interface{}) bool {
 	var fieldValue = reflect.ValueOf(field)
 
 	switch fieldValue.Kind() {
 	case reflect.String:
-		return strings.EqualFold(fieldValue.String(), param)
+		return strings.EqualFold(fieldValue.String(), param.(string))
 	case reflect.Slice, reflect.Array, reflect.Map:
 		p :=convert.ConvertToInt(param)
 		return fieldValue.Len() == p
@@ -128,16 +130,16 @@ func equal(current interface{}, field interface{}, param string) bool {
 	}
 }
 
-func unequal(current interface{}, field interface{}, param string) bool {
+func unequal(current interface{}, field interface{}, param interface{}) bool {
 	return !equal(current, field, param)
 }
 
-func lessThan(current interface{}, field interface{}, param string) bool {
+func lessThan(current interface{}, field interface{}, param interface{}) bool {
 	var fieldValue = reflect.ValueOf(field)
 
 	switch fieldValue.Kind() {
 	case reflect.String:
-		return fieldValue.String() < param
+		return fieldValue.String() < param.(string)
 	case reflect.Slice, reflect.Array, reflect.Map:
 		p := convert.ConvertToInt(param)
 		return fieldValue.Len() < p
@@ -162,12 +164,52 @@ func lessThan(current interface{}, field interface{}, param string) bool {
 	}
 }
 
-func lessThanOrEqual(current interface{}, field interface{}, param string) bool {
+func inList(current interface{}, field interface{}, param interface{}) bool {
+	var fieldValue = reflect.ValueOf(field)
+
+	switch fieldValue.Kind() {
+	case reflect.Struct:
+	case reflect.Slice, reflect.Array, reflect.Map:
+		return false
+	default:
+		if list, ok := param.([]interface{}); ok {
+			for _, item := range list {
+
+				switch fieldValue.Kind() {
+				case reflect.String:
+					if item.(string) == fieldValue.String() {
+						return true
+					}
+				case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+					if convert.ConvertToInt64(item) == fieldValue.Int() {
+						return true
+					}
+				case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
+					if convert.ConvertToUint(item) == fieldValue.Uint() {
+						return true
+					}
+				case reflect.Float32, reflect.Float64:
+					if convert.ConvertToFloat64(item) == fieldValue.Float() {
+						return true
+					}
+				}
+			}
+		}
+		return false
+	}
+	return false
+}
+
+func notInList(current interface{}, field interface{}, param interface{}) bool {
+	return !inList(current, field, param)
+}
+
+func lessThanOrEqual(current interface{}, field interface{}, param interface{}) bool {
 	var fieldValue = reflect.ValueOf(field)
 
 	switch fieldValue.Kind() {
 	case reflect.String:
-		return fieldValue.String() <= param
+		return fieldValue.String() <= param.(string)
 	case reflect.Slice, reflect.Array, reflect.Map:
 		p := convert.ConvertToInt(param)
 		return fieldValue.Len() <= p
@@ -192,12 +234,12 @@ func lessThanOrEqual(current interface{}, field interface{}, param string) bool 
 	}
 }
 
-func greaterThan(current interface{}, field interface{}, param string) bool {
+func greaterThan(current interface{}, field interface{}, param interface{}) bool {
 	var fieldValue = reflect.ValueOf(field)
 
 	switch fieldValue.Kind() {
 	case reflect.String:
-		return fieldValue.String() > param
+		return fieldValue.String() > param.(string)
 	case reflect.Slice, reflect.Array, reflect.Map:
 		p := convert.ConvertToInt(param)
 		return fieldValue.Len() > p
@@ -222,12 +264,12 @@ func greaterThan(current interface{}, field interface{}, param string) bool {
 	}
 }
 
-func greaterThanOrEqual(current interface{}, field interface{}, param string) bool {
+func greaterThanOrEqual(current interface{}, field interface{}, param interface{}) bool {
 	var fieldValue = reflect.ValueOf(field)
 
 	switch fieldValue.Kind() {
 	case reflect.String:
-		return fieldValue.String() >= param
+		return fieldValue.String() >= param.(string)
 	case reflect.Slice, reflect.Array, reflect.Map:
 		p := convert.ConvertToInt(param)
 		return fieldValue.Len() >= p
@@ -252,7 +294,7 @@ func greaterThanOrEqual(current interface{}, field interface{}, param string) bo
 	}
 }
 
-func equalToField(current interface{}, field interface{}, param string) bool {
+func equalToField(current interface{}, field interface{}, param interface{}) bool {
 	if current == nil {
 		return false
 	}
@@ -268,7 +310,7 @@ func equalToField(current interface{}, field interface{}, param string) bool {
 		if structValue.Type() == reflect.TypeOf(time.Time{}) {
 			toFieldValue = structValue
 		} else {
-			var tempField = structValue.FieldByName(param)
+			var tempField = structValue.FieldByName(param.(string))
 			if tempField.Kind() == reflect.Invalid {
 				return false
 			}
@@ -308,11 +350,11 @@ func equalToField(current interface{}, field interface{}, param string) bool {
 	}
 }
 
-func unequalToField(current interface{}, field interface{}, param string) bool {
+func unequalToField(current interface{}, field interface{}, param interface{}) bool {
 	return !equalToField(current, field, param)
 }
 
-func lessThanField(current interface{}, field interface{}, param string) bool {
+func lessThanField(current interface{}, field interface{}, param interface{}) bool {
 	if current == nil {
 		return false
 	}
@@ -328,7 +370,7 @@ func lessThanField(current interface{}, field interface{}, param string) bool {
 		if structValue.Type() == reflect.TypeOf(time.Time{}) {
 			toFieldValue = structValue
 		} else {
-			var tempField = structValue.FieldByName(param)
+			var tempField = structValue.FieldByName(param.(string))
 			if tempField.Kind() == reflect.Invalid {
 				return false
 			}
@@ -368,7 +410,7 @@ func lessThanField(current interface{}, field interface{}, param string) bool {
 	}
 }
 
-func lessThanOrEqualToField(current interface{}, field interface{}, param string) bool {
+func lessThanOrEqualToField(current interface{}, field interface{}, param interface{}) bool {
 	if current == nil {
 		return false
 	}
@@ -384,7 +426,7 @@ func lessThanOrEqualToField(current interface{}, field interface{}, param string
 		if structValue.Type() == reflect.TypeOf(time.Time{}) {
 			toFieldValue = structValue
 		} else {
-			var tempField = structValue.FieldByName(param)
+			var tempField = structValue.FieldByName(param.(string))
 			if tempField.Kind() == reflect.Invalid {
 				return false
 			}
@@ -424,7 +466,7 @@ func lessThanOrEqualToField(current interface{}, field interface{}, param string
 	}
 }
 
-func greaterThanField(current interface{}, field interface{}, param string) bool {
+func greaterThanField(current interface{}, field interface{}, param interface{}) bool {
 	if current == nil {
 		return false
 	}
@@ -440,7 +482,7 @@ func greaterThanField(current interface{}, field interface{}, param string) bool
 		if structValue.Type() == reflect.TypeOf(time.Time{}) {
 			toFieldValue = structValue
 		} else {
-			var tempField = structValue.FieldByName(param)
+			var tempField = structValue.FieldByName(param.(string))
 			if tempField.Kind() == reflect.Invalid {
 				return false
 			}
@@ -480,7 +522,7 @@ func greaterThanField(current interface{}, field interface{}, param string) bool
 	}
 }
 
-func greaterThanOrEqualToField(current interface{}, field interface{}, param string) bool {
+func greaterThanOrEqualToField(current interface{}, field interface{}, param interface{}) bool {
 	if current == nil {
 		return false
 	}
@@ -496,7 +538,7 @@ func greaterThanOrEqualToField(current interface{}, field interface{}, param str
 		if structValue.Type() == reflect.TypeOf(time.Time{}) {
 			toFieldValue = structValue
 		} else {
-			var tempField = structValue.FieldByName(param)
+			var tempField = structValue.FieldByName(param.(string))
 			if tempField.Kind() == reflect.Invalid {
 				return false
 			}
@@ -540,11 +582,11 @@ func matchesRegex(regex *regexp.Regexp, field interface{}) bool {
 	return regex.MatchString(field.(string))
 }
 
-func regex(current interface{}, field interface{}, param string) bool {
+func regex(current interface{}, field interface{}, param interface{}) bool {
 	var regex *regexp.Regexp
 	var ok = false
-	if regex, ok = customerRegexList[param]; !ok {
-		regex = regexp.MustCompile(param)
+	if regex, ok = customerRegexList[param.(string)]; !ok {
+		regex = regexp.MustCompile(param.(string))
 	}
 
 	if regex != nil {
