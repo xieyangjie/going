@@ -3,6 +3,7 @@ package logs
 import (
 	"log"
 	"os"
+	"runtime"
 )
 
 //30 black		黑色
@@ -34,8 +35,8 @@ func newColor(c string) color {
 var colors = []color{
 	newColor("37"),
 	newColor("36"),
-	newColor("35"),
 	newColor("34"),
+	newColor("35"),
 	newColor("31"),
 }
 
@@ -44,15 +45,31 @@ type Console struct {
 	level int
 }
 
-func NewConsole() *Console {
+func NewConsole(level int) *Console {
 	var console = &Console{}
+	console.level = level
 	console.logger = log.New(os.Stdout, "", log.Ldate|log.Ltime)
 	return console
 }
 
+func (this *Console)SetLevel(level int) {
+	this.level = level
+}
+
+func(this *Console)GetLevel() int {
+	return this.level
+}
+
 func (this *Console)WriteMessage(level int, file string, line int, prefix string, msg string) {
-	if level > this.level || level > len(colors) {
+	if level < this.level || level > LOG_LEVEL_FATAL {
 		return
 	}
-	this.logger.Printf("%s[%d] %s %s", file, line, colors[level](prefix), msg)
+
+	var goos = runtime.GOOS
+	if goos == "windows" {
+		this.logger.Printf("%s[%d] %s %s", file, line, prefix, msg)
+		return
+	}
+
+	this.logger.Printf("%s %s[%d] %s", colors[level](prefix), file, line, msg)
 }

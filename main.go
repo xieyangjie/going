@@ -6,12 +6,10 @@ import (
 
 
 func main() {
-
-	var log = logs.NewLog()
-
-	log.SetOutput("1", logs.NewConsole())
-
-	log.Debug("ssss ")
+	logs.Debug("Debug message")
+	logs.Info("Info message")
+	logs.Warn("Warn message")
+	logs.Panic("Panic message")
+	logs.Fatal("Fatal message")
 }
-
 

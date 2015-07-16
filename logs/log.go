@@ -1,4 +1,5 @@
 package logs
+
 import (
 	"fmt"
 	"runtime"
@@ -6,11 +7,11 @@ import (
 )
 
 const (
-	LevelDebug 	= iota //= "Debug"
-	LevelInfo 		//= "Info"
-	LevelWarn 		//= "Warn"
-	LevelPanic		//= "Panic"
-	LevelFatal		//= "Fatal"
+	LOG_LEVEL_DEBUG = iota	//= "Debug"
+	LOG_LEVEL_INFO        	//= "Info"
+	LOG_LEVEL_WARN         	//= "Warn"
+	LOG_LEVEL_PANIC        	//= "Panic"
+	LOG_LEVEL_FATAL        	//= "Fatal"
 )
 
 var levelShortNames = []string{
@@ -21,44 +22,60 @@ var levelShortNames = []string{
 	"[F]",
 }
 
+var sharedLogger *Logger
+
 type ILog interface {
+	SetLevel(level int)
+	GetLevel() int
 	WriteMessage(level int, file string, line int, prefix string, msg string)
 }
 
-
-type Log struct {
+type Logger struct {
 	level int
 	handlers map[string]ILog
 }
 
-func NewLog() *Log {
-	var log = &Log{}
+func NewLogger() *Logger {
+	var log = &Logger{}
 	log.handlers = make(map[string]ILog)
 	return log
 }
 
-func (this *Log) SetLogLevel(level int) {
+func SharedLogger() *Logger {
+	if sharedLogger == nil {
+		sharedLogger = NewLogger()
+		sharedLogger.AddOutput("console", NewConsole(LOG_LEVEL_DEBUG))
+	}
+	return sharedLogger
+}
+
+func (this *Logger) SetLogLevel(level int) {
 	this.level = level
 }
 
-func (this *Log) GetLogLevel() int {
+func (this *Logger) GetLogLevel() int {
 	return this.level
 }
 
-func (this *Log) SetOutput(key string, out ILog) {
+func (this *Logger) AddOutput(key string, out ILog) {
 	this.handlers[key] = out
 }
 
-func (this *Log) GetOutput(key string) ILog {
+func (this *Logger) GetOutput(key string) ILog {
 	return this.handlers[key]
 }
 
-func (this *Log) RemoveOutput(key string) {
+func (this *Logger) RemoveOutput(key string) {
 	delete(this.handlers, key)
 }
 
-func (this *Log)writeMessage(level int, format string, v ...interface{}) {
-	var _, file, line, ok = runtime.Caller(2)
+func (this *Logger)writeMessage(level int, format string, v ...interface{}) {
+	var skip = 2
+	if this == sharedLogger {
+		skip = 3
+	}
+
+	var _, file, line, ok = runtime.Caller(skip)
 	if !ok {
 		file = "???"
 		line = -1
@@ -74,48 +91,50 @@ func (this *Log)writeMessage(level int, format string, v ...interface{}) {
 	}
 }
 
-func (this *Log)Debug(format string, v ...interface{}) {
-	this.writeMessage(LevelDebug, format, v...)
+func (this *Logger)Debug(format string, v ...interface{}) {
+	this.writeMessage(LOG_LEVEL_DEBUG, format, v...)
 }
 
-func (this *Log)Print(format string, v ...interface{}) {
+func (this *Logger)Print(format string, v ...interface{}) {
 	this.Debug(format, v...)
 }
 
-//func Info(format string, v ...interface{}) {
-//	var levelShortNames
-//}
-
-func Print(v ...interface{}) {
-//	Std.Output("", Linfo, 2, fmt.Sprint(v...))
+func (this *Logger)Info(format string, v ...interface{}) {
+	this.writeMessage(LOG_LEVEL_INFO, format, v...)
 }
 
-func Debugf(format string, v ...interface{}) {
+func (this *Logger)Warn(format string, v ...interface{}) {
+	this.writeMessage(LOG_LEVEL_WARN, format, v...)
 }
 
-func Debug(v ...interface{}) {
+func (this *Logger)Panic(format string, v ...interface{}) {
+	this.writeMessage(LOG_LEVEL_PANIC, format, v...)
 }
 
-func Infof(format string, v ...interface{}) {
+func (this *Logger)Fatal(format string, v ...interface{}) {
+	this.writeMessage(LOG_LEVEL_FATAL, format, v...)
 }
 
-func Info(v ...interface{}) {
+func Debug(format string, v ...interface{}) {
+	SharedLogger().Debug(format, v...)
 }
 
-func Warnf(format string, v ...interface{}) {
+func Print(format string, v ...interface{}) {
+	SharedLogger().Print(format, v...)
 }
 
-func Warn(v ...interface{}) {
+func Info(format string, v ...interface{}) {
+	SharedLogger().Info(format, v...)
 }
 
-func Panicf(format string, v ...interface{}) {
+func Warn(format string, v ...interface{}) {
+	SharedLogger().Warn(format, v...)
 }
 
-func Panic(v ...interface{}) {
+func Panic(format string, v ...interface{}) {
+	SharedLogger().Panic(format, v...)
 }
 
-func Fatalf(format string, v ...interface{}) {
-}
-
-func Fatal(v ...interface{}) {
+func Fatal(format string, v ...interface{}) {
+	SharedLogger().Fatal(format, v...)
 }
