@@ -8,29 +8,37 @@ import (
 	"regexp"
 )
 
-var validatorFuncList = map[string]ValidatorFunc {
-	"required":	required,
-	"len": 		length,
-	"eq": 		equal,
-	"ne": 		unequal,
-	"in":		inList,
-	"nin":		notInList,
-	"lt": 		lessThan,
-	"lte": 		lessThanOrEqual,
-	"gt": 		greaterThan,
-	"gte": 		greaterThanOrEqual,
-	"eqf":		equalToField,
-	"nef":		unequalToField,
-	"ltf":		lessThanField,
-	"ltef":		lessThanOrEqualToField,
-	"gtf":		greaterThanField,
-	"gtef":		greaterThanOrEqualToField,
-	"regex":	regex,
-}
+var validatorFuncList = map[string]ValidatorFunc{}
 
 var customerFuncList = map[string]ValidatorFunc{}
 
 var customerRegexList = map[string]*regexp.Regexp{}
+
+////////////////////////////////////////////////////////////////////////////////
+func init() {
+	registerFunction("required", required)
+	registerFunction("len", length)
+	registerFunction("eq", equal)
+	registerFunction("ne", unequal)
+	registerFunction("in", inList)
+	registerFunction("nin", notInList)
+	registerFunction("lt", lessThan)
+	registerFunction("lte", lessThanOrEqual)
+	registerFunction("gt", greaterThan)
+	registerFunction("gte", greaterThanOrEqual)
+	registerFunction("eqf", equalToField)
+	registerFunction("nef", unequalToField)
+	registerFunction("ltf", lessThanField)
+	registerFunction("ltef", lessThanOrEqualToField)
+	registerFunction("gtf", greaterThanField)
+	registerFunction("gtef", greaterThanOrEqualToField)
+	registerFunction("regex", regex)
+}
+
+////////////////////////////////////////////////////////////////////////////////
+func registerFunction(key string, fun ValidatorFunc) {
+	validatorFuncList[key] = fun
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 func AddFunction(key string, fun ValidatorFunc) bool {

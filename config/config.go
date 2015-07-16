@@ -97,6 +97,14 @@ func (this *Config) SetValue(key string, value interface{}) {
 	this.data[key] = value
 }
 
+func (this *Config) RemoveKey(key string) {
+	this.Lock()
+	defer this.Unlock()
+	if this.KeyExist(key) {
+		delete(this.data, key)
+	}
+}
+
 func (this *Config) GetValue(key string, defaultValue interface{}) interface{} {
 	if len(key) == 0 {
 		return nil

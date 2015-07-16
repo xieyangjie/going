@@ -4,7 +4,6 @@ import (
 	"reflect"
 	"time"
 	"strings"
-//	"regexp"
 	"strconv"
 	"fmt"
 	"encoding/json"
@@ -12,13 +11,7 @@ import (
 
 const (
 	K_VALIDATOR_TAG_NAME 			= "validator"
-//	K_VALIDATOR_TAG_SEPARATOR 		= "&"
 	K_VALIDATOR_TAG_NO_VALIDATION 	= "-"
-//	K_VALIDATOR_TAG_PARAM_SEPARATOR	= ","
-//	K_VALIDATOR_TAG_VALUE_SEPARATOR	= ":"
-
-//	K_VALIDATOR_NAME_PATTERN		= `([a-zA-Z]*?)\(`
-//	K_VALIDATOR_PARAM_PATTERN		= `\((.*?)\)`
 )
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -184,70 +177,6 @@ func (this *Validator) validateField(current interface{}, field interface{}, nam
 		this.errorList[name] = errList
 	}
 }
-
-//func (this *Validator) validateField(current interface{}, field interface{}, name string, tagValue string) {
-//
-//	var tagList = strings.Split(tagValue, K_VALIDATOR_TAG_SEPARATOR)
-//	var validatorList = this.customerValidator[name]
-//
-//	var errList = make([]*ValidatorError, 0, len(tagList)+len(validatorList))
-//
-//	for _, tag := range tagList {
-//		var _, err = this.validateTag(current, field, name, strings.TrimSpace(tag))
-//		if err != nil {
-//			errList = append(errList, err)
-//		}
-//	}
-//
-//	for _, vt := range validatorList {
-//		var _, err = this.validate(current, field, vt)
-//		if err != nil {
-//			errList = append(errList, err)
-//		}
-//	}
-//
-//	if len(errList) > 0 {
-//		this.errorList[name] = errList
-//	}
-//}
-//
-//func (this *Validator) getValidatorNameString(tag string) string {
-//	var results = validatorNameRegex.FindStringSubmatch(tag)
-//	if len(results) > 1 {
-//		return strings.TrimSpace(results[1])
-//	}
-//	return ""
-//}
-//
-//func (this *Validator) getParamList(tag string) map[string]string {
-//	var paramStrList = validatorParamRegex.FindStringSubmatch(tag)
-//
-//	if len(paramStrList) > 1 {
-//		var items = strings.Split(paramStrList[1], K_VALIDATOR_TAG_PARAM_SEPARATOR)
-//		var result = make(map[string]string)
-//		for _, item := range items {
-//			var param = strings.Split(item, K_VALIDATOR_TAG_VALUE_SEPARATOR)
-//			if len(param) > 1 {
-//				result[strings.TrimSpace(param[0])] = strings.TrimSpace(param[1])
-//			}
-//		}
-//		return result
-//	}
-//	return nil
-//}
-//
-//func (this *Validator) validateTag(current interface{}, field interface{}, name string, tag string) (bool, *ValidatorError) {
-//	var validatorName = this.getValidatorNameString(tag)
-//	var paramList = this.getParamList(tag)
-//
-//	var param = paramList["value"]
-//	var code = paramList["code"]
-//	var message = paramList["message"]
-//
-//	var vt = newValidatorTag(name, validatorName, param, code, message)
-//
-//	return this.validate(current, field, vt)
-//}
 
 func (this *Validator) validate(current interface{}, field interface{}, tag *validatorTag) (bool, *ValidatorError) {
 	valFunc, ok := validatorFuncList[tag.Name]
