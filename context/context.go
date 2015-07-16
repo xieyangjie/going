@@ -6,12 +6,15 @@ import (
 	"strings"
 	"encoding/json"
 	"errors"
+	"github.com/smartwalle/going/convert"
+	"sync"
 )
 
 var sharedContext *Context
 
 type Context struct {
-	contextDir 		string
+	sync.RWMutex
+	contextDir		string
 	contextList 	[]string
 	currentContext	string
 	data 			map[string]map[string]interface{}
@@ -134,6 +137,9 @@ func (this *Context) KeyExist(contextName string, key string) bool {
 // @key key
 // @defaultValue 默认值
 func (this *Context) GetValueWithContext(contextName string, key string, defaultValue interface{}) (interface{}, error) {
+	this.RLock()
+	defer this.RUnlock()
+
 	//data 为空
 	if this.data == nil || len(this.data) == 0 {
 		return defaultValue, errors.New("读取配置信息失败")
@@ -159,19 +165,19 @@ func (this *Context) GetValueWithContext(contextName string, key string, default
 
 // GetValue 获取指定字段的值
 // 如果字段不存在，则返回nil和错误信息；如果字段存在，则返回其值，error为空。
-func (this *Context) GetValue(key string) (interface{}, error) {
+func (this *Context) Get(key string) (interface{}, error) {
 	return this.GetValueWithContext(this.currentContext, key, nil)
 }
 
 // Get 获取指定字段的值
 // 如果字段不存在，则返回提供的默认值；如果字段存在，则返回其值。
-func (this *Context) Get(key string, defaultValue interface{}) interface{} {
+func (this *Context) GetValue(key string, defaultValue interface{}) interface{} {
 	var value, _ = this.GetValueWithContext(this.currentContext, key, defaultValue)
 	return value
 }
 
 func (this *Context) GetList(key string, defaultValue []interface{}) []interface{} {
-	var value = this.Get(key, defaultValue)
+	var value = this.GetValue(key, defaultValue)
 	if v, ok := value.([]interface{}); ok {
 		return v
 	}
@@ -179,7 +185,7 @@ func (this *Context) GetList(key string, defaultValue []interface{}) []interface
 }
 
 func (this *Context) GetMap(key string, defaultValue map[string]interface{}) map[string]interface{} {
-	var value = this.Get(key, defaultValue)
+	var value = this.GetValue(key, defaultValue)
 	if v, ok := value.(map[string]interface{}); ok {
 		return v
 	}
@@ -187,59 +193,38 @@ func (this *Context) GetMap(key string, defaultValue map[string]interface{}) map
 }
 
 func (this *Context) GetString(key string, defaultValue string) string {
-	var value = this.Get(key, defaultValue)
-	if v, ok := value.(string); ok {
-		return v
-	}
-	return defaultValue
+	var value = this.GetValue(key, defaultValue)
+	return convert.ConvertToString(value)
 }
 
 func (this *Context) GetInt(key string, defaultValue int) int {
-	var value = this.Get(key, defaultValue)
-	if v, ok := value.(int); ok {
-		return v
-	}
-	return defaultValue
+	var value = this.GetValue(key, defaultValue)
+	return convert.ConvertToInt(value)
 }
 
 func (this *Context) GetInt32(key string, defaultValue int32) int32 {
-	var value = this.Get(key, defaultValue)
-	if v, ok := value.(int32); ok {
-		return v
-	}
-	return defaultValue
+	var value = this.GetValue(key, defaultValue)
+	return convert.ConvertToInt32(value)
 }
 
 func (this *Context) GetInt64(key string, defaultValue int64) int64 {
-	var value = this.Get(key, defaultValue)
-	if v, ok := value.(int64); ok {
-		return v
-	}
-	return defaultValue
+	var value = this.GetValue(key, defaultValue)
+	return convert.ConvertToInt64(value)
 }
 
 func (this *Context) GetFloat(key string, defaultValue float32) float32 {
-	var value = this.Get(key, defaultValue)
-	if v, ok := value.(float32); ok {
-		return v
-	}
-	return defaultValue
+	var value = this.GetValue(key, defaultValue)
+	return convert.ConvertToFloat32(value)
 }
 
 func (this *Context) GetFloat64(key string, defaultValue float64) float64 {
-	var value = this.Get(key, defaultValue)
-	if v, ok := value.(float64); ok {
-		return v
-	}
-	return defaultValue
+	var value = this.GetValue(key, defaultValue)
+	return convert.ConvertToFloat64(value)
 }
 
 func (this *Context) GetBool(key string, defaultValue bool) bool {
-	var value = this.Get(key, defaultValue)
-	if v, ok := value.(bool); ok {
-		return v
-	}
-	return defaultValue
+	var value = this.GetValue(key, defaultValue)
+	return convert.ConvertToBool(value)
 }
 
 
@@ -248,11 +233,11 @@ func SetDefaultContext(contextName string) bool {
 }
 
 func GetValue(key string) (interface{}, error) {
-	return sharedContext.GetValue(key)
+	return sharedContext.Get(key)
 }
 
 func Get(key string, defaultValue interface{}) interface{} {
-	return sharedContext.Get(key, defaultValue)
+	return sharedContext.GetValue(key, defaultValue)
 }
 
 func GetList(key string, defaultValue []interface{}) []interface{} {
