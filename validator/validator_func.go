@@ -1,11 +1,12 @@
 package validator
+
 import (
-	"reflect"
 	"github.com/smartwalle/going/convert"
-	"unicode/utf8"
+	"reflect"
+	"regexp"
 	"strings"
 	"time"
-	"regexp"
+	"unicode/utf8"
 )
 
 var validatorFuncList = map[string]ValidatorFunc{}
@@ -42,7 +43,7 @@ func registerFunction(key string, fun ValidatorFunc) {
 
 ////////////////////////////////////////////////////////////////////////////////
 func AddFunction(key string, fun ValidatorFunc) bool {
-	if len(key) == 0 && fun == nil{
+	if len(key) == 0 && fun == nil {
 		customerFuncList[key] = fun
 		return true
 	}
@@ -115,7 +116,7 @@ func equal(current interface{}, field interface{}, param interface{}) bool {
 	case reflect.String:
 		return strings.EqualFold(fieldValue.String(), param.(string))
 	case reflect.Slice, reflect.Array, reflect.Map:
-		p :=convert.ConvertToInt(param)
+		p := convert.ConvertToInt(param)
 		return fieldValue.Len() == p
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
 		p := convert.ConvertToInt64(param)

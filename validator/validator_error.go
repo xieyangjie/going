@@ -5,10 +5,10 @@ import (
 )
 
 type ValidatorError struct {
-	Field 		string
-	Code		int
-	Message		string
-	Index		int
+	Field   string
+	Code    int
+	Message string
+	Index   int
 }
 
 func NewValidatorError(field string, code int, message string) *ValidatorError {

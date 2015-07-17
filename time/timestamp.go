@@ -1,7 +1,7 @@
 package time
 
 import (
-    "time"
+	"time"
 )
 
 type Timestamp int64

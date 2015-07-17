@@ -19,12 +19,16 @@ import (
 	"time"
 )
 
+const (
+	MaxLineLength = 76
+)
+
 ////////////////////////////////////////////////////////////////////////////////
 type MailConfig struct {
-	Username	string
-	Password 	string
-	Host 		string
-	Port 		string
+	Username string
+	Password string
+	Host     string
+	Port     string
 }
 
 func (this *MailConfig) Address() string {
@@ -32,14 +36,8 @@ func (this *MailConfig) Address() string {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
-const (
-	MaxLineLength = 76
-)
-
-////////////////////////////////////////////////////////////////////////////////
 type Email struct {
-	from 		string
+	from        string
 	To          []string
 	Bcc         []string
 	Cc          []string
@@ -243,6 +241,7 @@ func (this *Email) Send(config *MailConfig) error {
 	return this.send(config.Address(), smtp.PlainAuth("", config.Username, config.Password, config.Host))
 }
 
+////////////////////////////////////////////////////////////////////////////////
 // Attachment is a struct representing an email attachment.
 // Based on the mime/multipart.FileHeader struct, Attachment contains the name, MIMEHeader, and content of the attachment in question
 type Attachment struct {

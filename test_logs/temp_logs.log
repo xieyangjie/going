@@ -1,0 +1,584 @@
+2015/07/17 15:48:51 [D] [main.go:15] hahah 123 ddd
+2015/07/17 15:48:51 [I] [main.go:16] hahah 123 ddd
+2015/07/17 15:48:51 [W] [main.go:17] hahah 123 ddd
+2015/07/17 15:48:51 [P] [main.go:18] hahah 123 ddd
+2015/07/17 15:48:51 [F] [main.go:19] hahah 123 ddd
+2015/07/17 16:11:42 [D] [main.go:28] hahah 123 ddd
+2015/07/17 16:11:45 [I] [main.go:29] hahah 123 ddd
+2015/07/17 16:11:45 [W] [main.go:30] hahah 123 ddd
+2015/07/17 16:11:45 [P] [main.go:31] hahah 123 ddd
+2015/07/17 16:11:45 [F] [main.go:32] hahah 123 ddd
+2015/07/17 16:11:54 [D] [main.go:28] hahah 123 ddd
+2015/07/17 16:11:54 [I] [main.go:29] hahah 123 ddd
+2015/07/17 16:11:54 [W] [main.go:30] hahah 123 ddd
+2015/07/17 16:11:54 [P] [main.go:31] hahah 123 ddd
+2015/07/17 16:11:54 [F] [main.go:32] hahah 123 ddd
+2015/07/17 16:12:31 [D] [main.go:28] hahah 123 ddd
+2015/07/17 16:12:31 [I] [main.go:29] hahah 123 ddd
+2015/07/17 16:12:31 [W] [main.go:30] hahah 123 ddd
+2015/07/17 16:12:31 [P] [main.go:31] hahah 123 ddd
+2015/07/17 16:12:31 [F] [main.go:32] hahah 123 ddd
+2015/07/17 16:13:51 [D] [main.go:28] hahah 123 ddd
+2015/07/17 16:13:53 [I] [main.go:29] hahah 123 ddd
+2015/07/17 16:13:53 [W] [main.go:30] hahah 123 ddd
+2015/07/17 16:13:53 [P] [main.go:31] hahah 123 ddd
+2015/07/17 16:13:53 [F] [main.go:32] hahah 123 ddd
+2015/07/17 16:14:16 [D] [main.go:28] hahah 123 ddd
+2015/07/17 16:14:19 [I] [main.go:29] hahah 123 ddd
+2015/07/17 16:14:20 [W] [main.go:30] hahah 123 ddd
+2015/07/17 16:14:21 [P] [main.go:31] hahah 123 ddd
+2015/07/17 16:14:21 [F] [main.go:32] hahah 123 ddd
+2015/07/17 16:15:09 2015-07-17 16:15:09.560283524 +0800 CST [D] [main.go:28] hahah 123 ddd
+2015/07/17 16:15:10 2015-07-17 16:15:10.382175554 +0800 CST [I] [main.go:29] hahah 123 ddd
+2015/07/17 16:15:11 2015-07-17 16:15:11.410047965 +0800 CST [W] [main.go:30] hahah 123 ddd
+2015/07/17 16:15:13 2015-07-17 16:15:13.619401102 +0800 CST [P] [main.go:31] hahah 123 ddd
+2015/07/17 16:15:13 2015-07-17 16:15:13.619454545 +0800 CST [F] [main.go:32] hahah 123 ddd
+2015/07/17 16:15:47 [D] [main.go:28] hahah 123 ddd
+2015/07/17 16:15:47 [I] [main.go:29] hahah 123 ddd
+2015/07/17 16:15:47 [W] [main.go:30] hahah 123 ddd
+2015/07/17 16:15:48 [P] [main.go:31] hahah 123 ddd
+2015/07/17 16:15:49 [F] [main.go:32] hahah 123 ddd
+2015/07/17 16:16:31 [D] [main.go:31] hahah 123 ddd
+2015/07/17 16:16:31 [I] [main.go:32] hahah 123 ddd
+2015/07/17 16:16:33 [W] [main.go:33] hahah 123 ddd
+2015/07/17 16:16:33 [P] [main.go:34] hahah 123 ddd
+goroutine 1 [running]:
+github.com/smartwalle/going/logs.(*Logger).writeMessage(0xc20801e7a0, 0x3, 0xc20800bb40, 0xd, 0x0, 0x0, 0x0)
+	/Users/apple/go/src/github.com/smartwalle/going/logs/log.go:122 +0x20d
+github.com/smartwalle/going/logs.(*Logger).Panicln(0xc20801e7a0, 0xc2083c9e58, 0x3, 0x3)
+	/Users/apple/go/src/github.com/smartwalle/going/logs/log.go:174 +0x97
+github.com/smartwalle/going/logs.Panicln(0xc2083c9e58, 0x3, 0x3)
+	/Users/apple/go/src/github.com/smartwalle/going/logs/log.go:251 +0x4a
+main.test()
+	/Users/apple/go/src/github.com/smartwalle/going/main.go:34 +0x5d6
+main.main()
+	/Users/apple/go/src/github.com/smartwalle/going/main.go:26 +0x381
+
+goroutine 17 [syscall, locked to thread]:
+runtime.goexit()
+	/usr/local/go/src/runtime/asm_amd64.s:2232 +0x1
+
+2015/07/17 16:16:35 [F] [main.go:35] hahah 123 ddd
+goroutine 1 [running]:
+github.com/smartwalle/going/logs.(*Logger).writeMessage(0xc20801e7a0, 0x4, 0xc208267c70, 0xd, 0x0, 0x0, 0x0)
+	/Users/apple/go/src/github.com/smartwalle/going/logs/log.go:122 +0x20d
+github.com/smartwalle/going/logs.(*Logger).Fatalln(0xc20801e7a0, 0xc2082c3e58, 0x3, 0x3)
+	/Users/apple/go/src/github.com/smartwalle/going/logs/log.go:183 +0x97
+github.com/smartwalle/going/logs.Fatalln(0xc2082c3e58, 0x3, 0x3)
+	/Users/apple/go/src/github.com/smartwalle/going/logs/log.go:259 +0x4a
+main.test()
+	/Users/apple/go/src/github.com/smartwalle/going/main.go:35 +0x743
+main.main()
+	/Users/apple/go/src/github.com/smartwalle/going/main.go:26 +0x381
+
+goroutine 17 [syscall, locked to thread]:
+runtime.goexit()
+	/usr/local/go/src/runtime/asm_amd64.s:2232 +0x1
+
+2015/07/17 16:17:51 [D] [main.go:31] hahah 123 ddd
+2015/07/17 16:17:51 [I] [main.go:32] hahah 123 ddd
+2015/07/17 16:17:51 [W] [main.go:33] hahah 123 ddd
+2015/07/17 16:17:51 [P] [main.go:34] hahah 123 ddd
+goroutine 1 [running]:
+github.com/smartwalle/going/logs.(*Logger).writeMessage(0xc20801e6c0, 0x3, 0xc20800a9f0, 0xd, 0x0, 0x0, 0x0)
+	/Users/apple/go/src/github.com/smartwalle/going/logs/log.go:122 +0x20d
+github.com/smartwalle/going/logs.(*Logger).Panicln(0xc20801e6c0, 0xc208069e58, 0x3, 0x3)
+	/Users/apple/go/src/github.com/smartwalle/going/logs/log.go:174 +0x97
+github.com/smartwalle/going/logs.Panicln(0xc208069e58, 0x3, 0x3)
+	/Users/apple/go/src/github.com/smartwalle/going/logs/log.go:251 +0x4a
+main.test()
+	/Users/apple/go/src/github.com/smartwalle/going/main.go:34 +0x5d6
+main.main()
+	/Users/apple/go/src/github.com/smartwalle/going/main.go:26 +0x381
+
+goroutine 2 [runnable]:
+runtime.forcegchelper()
+	/usr/local/go/src/runtime/proc.go:90
+runtime.goexit()
+	/usr/local/go/src/runtime/asm_amd64.s:2232 +0x1
+
+goroutine 3 [runnable]:
+runtime.bgsweep()
+	/usr/local/go/src/runtime/mgc0.go:82
+runtime.goexit()
+	/usr/local/go/src/runtime/asm_amd64.s:2232 +0x1
+
+goroutine 4 [runnable]:
+runtime.runfinq()
+	/usr/local/go/src/runtime/malloc.go:712
+runtime.goexit()
+	/usr/local/go/src/runtime/asm_amd64.s:2232 +0x1
+
+goroutine 5 [runnable]:
+github.com/smartwalle/going/email.(*Email).Send(0xc2080580b0, 0xc2080400c0, 0x1, 0x1)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:234
+created by github.com/smartwalle/going/logs.(*MailWriter).WriteMessage
+	/Users/apple/go/src/github.com/smartwalle/going/logs/mail.go:62 +0x3d2
+
+goroutine 6 [runnable]:
+github.com/smartwalle/going/email.(*Email).Send(0xc208058160, 0xc2080400c0, 0x1, 0x1)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:234
+created by github.com/smartwalle/going/logs.(*MailWriter).WriteMessage
+	/Users/apple/go/src/github.com/smartwalle/going/logs/mail.go:62 +0x3d2
+
+goroutine 7 [runnable]:
+github.com/smartwalle/going/email.(*Email).Send(0xc208058210, 0xc2080400c0, 0x1, 0x1)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:234
+created by github.com/smartwalle/going/logs.(*MailWriter).WriteMessage
+	/Users/apple/go/src/github.com/smartwalle/going/logs/mail.go:62 +0x3d2
+
+2015/07/17 16:17:51 [F] [main.go:35] hahah 123 ddd
+goroutine 1 [running]:
+github.com/smartwalle/going/logs.(*Logger).writeMessage(0xc20801e6c0, 0x4, 0xc20800af80, 0xd, 0x0, 0x0, 0x0)
+	/Users/apple/go/src/github.com/smartwalle/going/logs/log.go:122 +0x20d
+github.com/smartwalle/going/logs.(*Logger).Fatalln(0xc20801e6c0, 0xc208069e58, 0x3, 0x3)
+	/Users/apple/go/src/github.com/smartwalle/going/logs/log.go:183 +0x97
+github.com/smartwalle/going/logs.Fatalln(0xc208069e58, 0x3, 0x3)
+	/Users/apple/go/src/github.com/smartwalle/going/logs/log.go:259 +0x4a
+main.test()
+	/Users/apple/go/src/github.com/smartwalle/going/main.go:35 +0x743
+main.main()
+	/Users/apple/go/src/github.com/smartwalle/going/main.go:26 +0x381
+
+goroutine 5 [syscall, locked to thread]:
+net._C2func_getaddrinfo(0x700020, 0x0, 0xc2081852e8, 0xc208185238, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/:27 +0x55
+net.cgoLookupIPCNAME(0xc20800a630, 0xc, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xe00000000000000)
+	/usr/local/go/src/net/cgo_unix.go:96 +0x1c5
+net.cgoLookupIP(0xc20800a630, 0xc, 0x0, 0x0, 0x0, 0x0, 0x0, 0x5174e0)
+	/usr/local/go/src/net/cgo_unix.go:148 +0x65
+net.lookupIP(0xc20800a630, 0xc, 0x0, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/lookup_unix.go:64 +0x5f
+net.func·025(0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/lookup.go:41 +0x55
+net.(*singleflight).doCall(0x371cd0, 0xc208050180, 0xc20800a630, 0xc, 0xc2081855b8)
+	/usr/local/go/src/net/singleflight.go:91 +0x2f
+net.(*singleflight).Do(0x371cd0, 0xc20800a630, 0xc, 0xc2081855b8, 0x0, 0x0, 0x0, 0x0, 0xef88)
+	/usr/local/go/src/net/singleflight.go:61 +0x280
+net.lookupIPMerge(0xc20800a630, 0xc, 0x0, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/lookup.go:42 +0xae
+net.lookupIPDeadline(0xc20800a630, 0xc, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/lookup.go:64 +0x12d
+net.resolveInternetAddr(0x254d10, 0x3, 0xc20800a630, 0xf, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/local/go/src/net/ipsock.go:285 +0x49b
+net.resolveAddr(0x250650, 0x4, 0x254d10, 0x3, 0xc20800a630, 0xf, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/local/go/src/net/dial.go:110 +0x378
+net.(*Dialer).Dial(0xc208040480, 0x254d10, 0x3, 0xc20800a630, 0xf, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/dial.go:158 +0xf6
+net.Dial(0x254d10, 0x3, 0xc20800a630, 0xf, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/dial.go:143 +0x8a
+net/smtp.Dial(0xc20800a630, 0xf, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/smtp/smtp.go:46 +0x63
+net/smtp.SendMail(0xc20800a630, 0xf, 0x524d50, 0xc208040080, 0xc20801e800, 0x12, 0xc20800a650, 0x1, 0x1, 0xc20800f000, ...)
+	/usr/local/go/src/net/smtp/smtp.go:274 +0x58
+github.com/smartwalle/going/email.(*Email).send(0xc2080580b0, 0xc20800a630, 0xf, 0x524d50, 0xc208040080, 0x0, 0x0)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:231 +0x68b
+github.com/smartwalle/going/email.(*Email).Send(0xc2080580b0, 0xc2080400c0, 0x0, 0x0)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:241 +0x43f
+created by github.com/smartwalle/going/logs.(*MailWriter).WriteMessage
+	/Users/apple/go/src/github.com/smartwalle/going/logs/mail.go:62 +0x3d2
+
+goroutine 6 [semacquire]:
+sync.(*WaitGroup).Wait(0xc208050180)
+	/usr/local/go/src/sync/waitgroup.go:132 +0x169
+net.(*singleflight).Do(0x371cd0, 0xc20800a7d0, 0xc, 0xc2081875b8, 0x0, 0x0, 0x0, 0x0, 0xef88)
+	/usr/local/go/src/net/singleflight.go:53 +0x143
+net.lookupIPMerge(0xc20800a7d0, 0xc, 0x0, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/lookup.go:42 +0xae
+net.lookupIPDeadline(0xc20800a7d0, 0xc, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/lookup.go:64 +0x12d
+net.resolveInternetAddr(0x254d10, 0x3, 0xc20800a7d0, 0xf, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/local/go/src/net/ipsock.go:285 +0x49b
+net.resolveAddr(0x250650, 0x4, 0x254d10, 0x3, 0xc20800a7d0, 0xf, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/local/go/src/net/dial.go:110 +0x378
+net.(*Dialer).Dial(0xc208040640, 0x254d10, 0x3, 0xc20800a7d0, 0xf, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/dial.go:158 +0xf6
+net.Dial(0x254d10, 0x3, 0xc20800a7d0, 0xf, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/dial.go:143 +0x8a
+net/smtp.Dial(0xc20800a7d0, 0xf, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/smtp/smtp.go:46 +0x63
+net/smtp.SendMail(0xc20800a7d0, 0xf, 0x524d50, 0xc208040140, 0xc20801e980, 0x12, 0xc20800a7e0, 0x1, 0x1, 0xc208061000, ...)
+	/usr/local/go/src/net/smtp/smtp.go:274 +0x58
+github.com/smartwalle/going/email.(*Email).send(0xc208058160, 0xc20800a7d0, 0xf, 0x524d50, 0xc208040140, 0x0, 0x0)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:231 +0x68b
+github.com/smartwalle/going/email.(*Email).Send(0xc208058160, 0xc2080400c0, 0x0, 0x0)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:241 +0x43f
+created by github.com/smartwalle/going/logs.(*MailWriter).WriteMessage
+	/Users/apple/go/src/github.com/smartwalle/going/logs/mail.go:62 +0x3d2
+
+goroutine 7 [semacquire]:
+sync.(*WaitGroup).Wait(0xc208050180)
+	/usr/local/go/src/sync/waitgroup.go:132 +0x169
+net.(*singleflight).Do(0x371cd0, 0xc20800a940, 0xc, 0xc2081815b8, 0x0, 0x0, 0x0, 0x0, 0xef88)
+	/usr/local/go/src/net/singleflight.go:53 +0x143
+net.lookupIPMerge(0xc20800a940, 0xc, 0x0, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/lookup.go:42 +0xae
+net.lookupIPDeadline(0xc20800a940, 0xc, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/lookup.go:64 +0x12d
+net.resolveInternetAddr(0x254d10, 0x3, 0xc20800a940, 0xf, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/local/go/src/net/ipsock.go:285 +0x49b
+net.resolveAddr(0x250650, 0x4, 0x254d10, 0x3, 0xc20800a940, 0xf, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/local/go/src/net/dial.go:110 +0x378
+net.(*Dialer).Dial(0xc208040780, 0x254d10, 0x3, 0xc20800a940, 0xf, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/dial.go:158 +0xf6
+net.Dial(0x254d10, 0x3, 0xc20800a940, 0xf, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/dial.go:143 +0x8a
+net/smtp.Dial(0xc20800a940, 0xf, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/smtp/smtp.go:46 +0x63
+net/smtp.SendMail(0xc20800a940, 0xf, 0x524d50, 0xc2080402c0, 0xc20801eb00, 0x12, 0xc20800a950, 0x1, 0x1, 0xc20805c000, ...)
+	/usr/local/go/src/net/smtp/smtp.go:274 +0x58
+github.com/smartwalle/going/email.(*Email).send(0xc208058210, 0xc20800a940, 0xf, 0x524d50, 0xc2080402c0, 0x0, 0x0)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:231 +0x68b
+github.com/smartwalle/going/email.(*Email).Send(0xc208058210, 0xc2080400c0, 0x0, 0x0)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:241 +0x43f
+created by github.com/smartwalle/going/logs.(*MailWriter).WriteMessage
+	/Users/apple/go/src/github.com/smartwalle/going/logs/mail.go:62 +0x3d2
+
+goroutine 17 [syscall, locked to thread]:
+runtime.goexit()
+	/usr/local/go/src/runtime/asm_amd64.s:2232 +0x1
+
+goroutine 8 [runnable]:
+github.com/smartwalle/going/email.(*Email).Send(0xc2080584d0, 0xc2080400c0, 0x1, 0x1)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:234
+created by github.com/smartwalle/going/logs.(*MailWriter).WriteMessage
+	/Users/apple/go/src/github.com/smartwalle/going/logs/mail.go:62 +0x3d2
+
+2015/07/17 16:18:28 [D] [main.go:34] hahah 123 ddd
+2015/07/17 16:18:28 [I] [main.go:35] hahah 123 ddd
+2015/07/17 16:18:28 [W] [main.go:36] hahah 123 ddd
+2015/07/17 16:18:28 [P] [main.go:37] hahah 123 ddd
+goroutine 1 [running]:
+github.com/smartwalle/going/logs.(*Logger).writeMessage(0xc20801e7a0, 0x3, 0xc20800aa50, 0xd, 0x0, 0x0, 0x0)
+	/Users/apple/go/src/github.com/smartwalle/going/logs/log.go:122 +0x20d
+github.com/smartwalle/going/logs.(*Logger).Panicln(0xc20801e7a0, 0xc20806de58, 0x3, 0x3)
+	/Users/apple/go/src/github.com/smartwalle/going/logs/log.go:174 +0x97
+github.com/smartwalle/going/logs.Panicln(0xc20806de58, 0x3, 0x3)
+	/Users/apple/go/src/github.com/smartwalle/going/logs/log.go:251 +0x4a
+main.test()
+	/Users/apple/go/src/github.com/smartwalle/going/main.go:37 +0x5d6
+main.main()
+	/Users/apple/go/src/github.com/smartwalle/going/main.go:27 +0x381
+
+goroutine 2 [runnable]:
+runtime.forcegchelper()
+	/usr/local/go/src/runtime/proc.go:90
+runtime.goexit()
+	/usr/local/go/src/runtime/asm_amd64.s:2232 +0x1
+
+goroutine 3 [runnable]:
+runtime.bgsweep()
+	/usr/local/go/src/runtime/mgc0.go:82
+runtime.goexit()
+	/usr/local/go/src/runtime/asm_amd64.s:2232 +0x1
+
+goroutine 4 [runnable]:
+runtime.runfinq()
+	/usr/local/go/src/runtime/malloc.go:712
+runtime.goexit()
+	/usr/local/go/src/runtime/asm_amd64.s:2232 +0x1
+
+goroutine 5 [runnable]:
+github.com/smartwalle/going/email.(*Email).Send(0xc2080640b0, 0xc2080381c0, 0x1, 0x1)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:234
+created by github.com/smartwalle/going/logs.(*MailWriter).WriteMessage
+	/Users/apple/go/src/github.com/smartwalle/going/logs/mail.go:62 +0x3d2
+
+goroutine 6 [runnable]:
+github.com/smartwalle/going/email.(*Email).Send(0xc208064160, 0xc2080381c0, 0x1, 0x1)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:234
+created by github.com/smartwalle/going/logs.(*MailWriter).WriteMessage
+	/Users/apple/go/src/github.com/smartwalle/going/logs/mail.go:62 +0x3d2
+
+goroutine 7 [runnable]:
+github.com/smartwalle/going/email.(*Email).Send(0xc208064210, 0xc2080381c0, 0x1, 0x1)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:234
+created by github.com/smartwalle/going/logs.(*MailWriter).WriteMessage
+	/Users/apple/go/src/github.com/smartwalle/going/logs/mail.go:62 +0x3d2
+
+2015/07/17 16:18:28 [F] [main.go:38] hahah 123 ddd
+goroutine 1 [running]:
+github.com/smartwalle/going/logs.(*Logger).writeMessage(0xc20801e7a0, 0x4, 0xc20800af70, 0xd, 0x0, 0x0, 0x0)
+	/Users/apple/go/src/github.com/smartwalle/going/logs/log.go:122 +0x20d
+github.com/smartwalle/going/logs.(*Logger).Fatalln(0xc20801e7a0, 0xc20806de58, 0x3, 0x3)
+	/Users/apple/go/src/github.com/smartwalle/going/logs/log.go:183 +0x97
+github.com/smartwalle/going/logs.Fatalln(0xc20806de58, 0x3, 0x3)
+	/Users/apple/go/src/github.com/smartwalle/going/logs/log.go:259 +0x4a
+main.test()
+	/Users/apple/go/src/github.com/smartwalle/going/main.go:38 +0x743
+main.main()
+	/Users/apple/go/src/github.com/smartwalle/going/main.go:27 +0x381
+
+goroutine 5 [syscall, locked to thread]:
+net._C2func_getaddrinfo(0x1000020, 0x0, 0xc20818b2e8, 0xc20818b238, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/:27 +0x55
+net.cgoLookupIPCNAME(0xc20800a610, 0xc, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xe00000000000000)
+	/usr/local/go/src/net/cgo_unix.go:96 +0x1c5
+net.cgoLookupIP(0xc20800a610, 0xc, 0x0, 0x0, 0x0, 0x0, 0x0, 0x5174e0)
+	/usr/local/go/src/net/cgo_unix.go:148 +0x65
+net.lookupIP(0xc20800a610, 0xc, 0x0, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/lookup_unix.go:64 +0x5f
+net.func·025(0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/lookup.go:41 +0x55
+net.(*singleflight).doCall(0x371cd0, 0xc208040180, 0xc20800a610, 0xc, 0xc20818b5b8)
+	/usr/local/go/src/net/singleflight.go:91 +0x2f
+net.(*singleflight).Do(0x371cd0, 0xc20800a610, 0xc, 0xc20818b5b8, 0x0, 0x0, 0x0, 0x0, 0xefa8)
+	/usr/local/go/src/net/singleflight.go:61 +0x280
+net.lookupIPMerge(0xc20800a610, 0xc, 0x0, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/lookup.go:42 +0xae
+net.lookupIPDeadline(0xc20800a610, 0xc, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/lookup.go:64 +0x12d
+net.resolveInternetAddr(0x254d30, 0x3, 0xc20800a610, 0xf, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/local/go/src/net/ipsock.go:285 +0x49b
+net.resolveAddr(0x250670, 0x4, 0x254d30, 0x3, 0xc20800a610, 0xf, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/local/go/src/net/dial.go:110 +0x378
+net.(*Dialer).Dial(0xc208038480, 0x254d30, 0x3, 0xc20800a610, 0xf, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/dial.go:158 +0xf6
+net.Dial(0x254d30, 0x3, 0xc20800a610, 0xf, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/dial.go:143 +0x8a
+net/smtp.Dial(0xc20800a610, 0xf, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/smtp/smtp.go:46 +0x63
+net/smtp.SendMail(0xc20800a610, 0xf, 0x524d50, 0xc208038040, 0xc20801e7e0, 0x12, 0xc20800a630, 0x1, 0x1, 0xc20800f000, ...)
+	/usr/local/go/src/net/smtp/smtp.go:274 +0x58
+github.com/smartwalle/going/email.(*Email).send(0xc2080640b0, 0xc20800a610, 0xf, 0x524d50, 0xc208038040, 0x0, 0x0)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:231 +0x68b
+github.com/smartwalle/going/email.(*Email).Send(0xc2080640b0, 0xc2080381c0, 0x0, 0x0)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:241 +0x43f
+created by github.com/smartwalle/going/logs.(*MailWriter).WriteMessage
+	/Users/apple/go/src/github.com/smartwalle/going/logs/mail.go:62 +0x3d2
+
+goroutine 6 [semacquire]:
+sync.(*WaitGroup).Wait(0xc208040180)
+	/usr/local/go/src/sync/waitgroup.go:132 +0x169
+net.(*singleflight).Do(0x371cd0, 0xc20800a7c0, 0xc, 0xc20818d5b8, 0x0, 0x0, 0x0, 0x0, 0xefa8)
+	/usr/local/go/src/net/singleflight.go:53 +0x143
+net.lookupIPMerge(0xc20800a7c0, 0xc, 0x0, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/lookup.go:42 +0xae
+net.lookupIPDeadline(0xc20800a7c0, 0xc, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/lookup.go:64 +0x12d
+net.resolveInternetAddr(0x254d30, 0x3, 0xc20800a7c0, 0xf, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/local/go/src/net/ipsock.go:285 +0x49b
+net.resolveAddr(0x250670, 0x4, 0x254d30, 0x3, 0xc20800a7c0, 0xf, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/local/go/src/net/dial.go:110 +0x378
+net.(*Dialer).Dial(0xc208038640, 0x254d30, 0x3, 0xc20800a7c0, 0xf, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/dial.go:158 +0xf6
+net.Dial(0x254d30, 0x3, 0xc20800a7c0, 0xf, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/dial.go:143 +0x8a
+net/smtp.Dial(0xc20800a7c0, 0xf, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/smtp/smtp.go:46 +0x63
+net/smtp.SendMail(0xc20800a7c0, 0xf, 0x524d50, 0xc2080380c0, 0xc20801e980, 0x12, 0xc20800a7d0, 0x1, 0x1, 0xc208044000, ...)
+	/usr/local/go/src/net/smtp/smtp.go:274 +0x58
+github.com/smartwalle/going/email.(*Email).send(0xc208064160, 0xc20800a7c0, 0xf, 0x524d50, 0xc2080380c0, 0x0, 0x0)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:231 +0x68b
+github.com/smartwalle/going/email.(*Email).Send(0xc208064160, 0xc2080381c0, 0x0, 0x0)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:241 +0x43f
+created by github.com/smartwalle/going/logs.(*MailWriter).WriteMessage
+	/Users/apple/go/src/github.com/smartwalle/going/logs/mail.go:62 +0x3d2
+
+goroutine 7 [semacquire]:
+sync.(*WaitGroup).Wait(0xc208040180)
+	/usr/local/go/src/sync/waitgroup.go:132 +0x169
+net.(*singleflight).Do(0x371cd0, 0xc20800a930, 0xc, 0xc2081875b8, 0x0, 0x0, 0x0, 0x0, 0xefa8)
+	/usr/local/go/src/net/singleflight.go:53 +0x143
+net.lookupIPMerge(0xc20800a930, 0xc, 0x0, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/lookup.go:42 +0xae
+net.lookupIPDeadline(0xc20800a930, 0xc, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/lookup.go:64 +0x12d
+net.resolveInternetAddr(0x254d30, 0x3, 0xc20800a930, 0xf, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/local/go/src/net/ipsock.go:285 +0x49b
+net.resolveAddr(0x250670, 0x4, 0x254d30, 0x3, 0xc20800a930, 0xf, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/local/go/src/net/dial.go:110 +0x378
+net.(*Dialer).Dial(0xc208038780, 0x254d30, 0x3, 0xc20800a930, 0xf, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/dial.go:158 +0xf6
+net.Dial(0x254d30, 0x3, 0xc20800a930, 0xf, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/dial.go:143 +0x8a
+net/smtp.Dial(0xc20800a930, 0xf, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/smtp/smtp.go:46 +0x63
+net/smtp.SendMail(0xc20800a930, 0xf, 0x524d50, 0xc208038180, 0xc20801eb00, 0x12, 0xc20800a940, 0x1, 0x1, 0xc208045000, ...)
+	/usr/local/go/src/net/smtp/smtp.go:274 +0x58
+github.com/smartwalle/going/email.(*Email).send(0xc208064210, 0xc20800a930, 0xf, 0x524d50, 0xc208038180, 0x0, 0x0)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:231 +0x68b
+github.com/smartwalle/going/email.(*Email).Send(0xc208064210, 0xc2080381c0, 0x0, 0x0)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:241 +0x43f
+created by github.com/smartwalle/going/logs.(*MailWriter).WriteMessage
+	/Users/apple/go/src/github.com/smartwalle/going/logs/mail.go:62 +0x3d2
+
+goroutine 17 [syscall, locked to thread]:
+runtime.goexit()
+	/usr/local/go/src/runtime/asm_amd64.s:2232 +0x1
+
+goroutine 8 [runnable]:
+github.com/smartwalle/going/email.(*Email).Send(0xc2080644d0, 0xc2080381c0, 0x1, 0x1)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:234
+created by github.com/smartwalle/going/logs.(*MailWriter).WriteMessage
+	/Users/apple/go/src/github.com/smartwalle/going/logs/mail.go:62 +0x3d2
+
+2015/07/17 16:20:13 [D] [main.go:34] 这是Debug消息
+2015/07/17 16:20:13 [I] [main.go:35] 这是Info消息
+2015/07/17 16:20:13 [W] [main.go:36] 这是Warn消息
+2015/07/17 16:20:13 [P] [main.go:37] 这是Panic消息
+goroutine 1 [running]:
+github.com/smartwalle/going/logs.(*Logger).writeMessage(0xc20801e6c0, 0x3, 0xc20801e8e0, 0x11, 0x0, 0x0, 0x0)
+	/Users/apple/go/src/github.com/smartwalle/going/logs/log.go:122 +0x20d
+github.com/smartwalle/going/logs.(*Logger).Panicln(0xc20801e6c0, 0xc20806be60, 0x1, 0x1)
+	/Users/apple/go/src/github.com/smartwalle/going/logs/log.go:174 +0x97
+github.com/smartwalle/going/logs.Panicln(0xc20806be60, 0x1, 0x1)
+	/Users/apple/go/src/github.com/smartwalle/going/logs/log.go:251 +0x4a
+main.test()
+	/Users/apple/go/src/github.com/smartwalle/going/main.go:37 +0x31a
+main.main()
+	/Users/apple/go/src/github.com/smartwalle/going/main.go:27 +0x382
+
+goroutine 2 [runnable]:
+runtime.forcegchelper()
+	/usr/local/go/src/runtime/proc.go:90
+runtime.goexit()
+	/usr/local/go/src/runtime/asm_amd64.s:2232 +0x1
+
+goroutine 3 [runnable]:
+runtime.bgsweep()
+	/usr/local/go/src/runtime/mgc0.go:82
+runtime.goexit()
+	/usr/local/go/src/runtime/asm_amd64.s:2232 +0x1
+
+goroutine 4 [runnable]:
+runtime.runfinq()
+	/usr/local/go/src/runtime/malloc.go:712
+runtime.goexit()
+	/usr/local/go/src/runtime/asm_amd64.s:2232 +0x1
+
+goroutine 5 [runnable]:
+github.com/smartwalle/going/email.(*Email).Send(0xc2080540b0, 0xc2080380c0, 0x2, 0x2)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:234
+created by github.com/smartwalle/going/logs.(*MailWriter).WriteMessage
+	/Users/apple/go/src/github.com/smartwalle/going/logs/mail.go:62 +0x3d2
+
+goroutine 6 [runnable]:
+github.com/smartwalle/going/email.(*Email).Send(0xc208054160, 0xc2080380c0, 0x2, 0x2)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:234
+created by github.com/smartwalle/going/logs.(*MailWriter).WriteMessage
+	/Users/apple/go/src/github.com/smartwalle/going/logs/mail.go:62 +0x3d2
+
+goroutine 7 [runnable]:
+github.com/smartwalle/going/email.(*Email).Send(0xc208054210, 0xc2080380c0, 0x2, 0x2)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:234
+created by github.com/smartwalle/going/logs.(*MailWriter).WriteMessage
+	/Users/apple/go/src/github.com/smartwalle/going/logs/mail.go:62 +0x3d2
+
+2015/07/17 16:20:13 [F] [main.go:38] 这是Fatal消息
+goroutine 1 [running]:
+github.com/smartwalle/going/logs.(*Logger).writeMessage(0xc20801e6c0, 0x4, 0xc20801f080, 0x11, 0x0, 0x0, 0x0)
+	/Users/apple/go/src/github.com/smartwalle/going/logs/log.go:122 +0x20d
+github.com/smartwalle/going/logs.(*Logger).Fatalln(0xc20801e6c0, 0xc20806be60, 0x1, 0x1)
+	/Users/apple/go/src/github.com/smartwalle/going/logs/log.go:183 +0x97
+github.com/smartwalle/going/logs.Fatalln(0xc20806be60, 0x1, 0x1)
+	/Users/apple/go/src/github.com/smartwalle/going/logs/log.go:259 +0x4a
+main.test()
+	/Users/apple/go/src/github.com/smartwalle/going/main.go:38 +0x3da
+main.main()
+	/Users/apple/go/src/github.com/smartwalle/going/main.go:27 +0x382
+
+goroutine 5 [syscall, locked to thread]:
+net._C2func_getaddrinfo(0x700020, 0x0, 0xc2081812e8, 0xc208181238, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/:27 +0x55
+net.cgoLookupIPCNAME(0xc20800a610, 0xc, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xe00000000000000)
+	/usr/local/go/src/net/cgo_unix.go:96 +0x1c5
+net.cgoLookupIP(0xc20800a610, 0xc, 0x0, 0x0, 0x0, 0x0, 0x0, 0x5174e0)
+	/usr/local/go/src/net/cgo_unix.go:148 +0x65
+net.lookupIP(0xc20800a610, 0xc, 0x0, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/lookup_unix.go:64 +0x5f
+net.func·025(0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/lookup.go:41 +0x55
+net.(*singleflight).doCall(0x371cd0, 0xc208050180, 0xc20800a610, 0xc, 0xc2081815b8)
+	/usr/local/go/src/net/singleflight.go:91 +0x2f
+net.(*singleflight).Do(0x371cd0, 0xc20800a610, 0xc, 0xc2081815b8, 0x0, 0x0, 0x0, 0x0, 0xec48)
+	/usr/local/go/src/net/singleflight.go:61 +0x280
+net.lookupIPMerge(0xc20800a610, 0xc, 0x0, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/lookup.go:42 +0xae
+net.lookupIPDeadline(0xc20800a610, 0xc, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/lookup.go:64 +0x12d
+net.resolveInternetAddr(0x254710, 0x3, 0xc20800a610, 0xf, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/local/go/src/net/ipsock.go:285 +0x49b
+net.resolveAddr(0x250070, 0x4, 0x254710, 0x3, 0xc20800a610, 0xf, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/local/go/src/net/dial.go:110 +0x378
+net.(*Dialer).Dial(0xc208038440, 0x254710, 0x3, 0xc20800a610, 0xf, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/dial.go:158 +0xf6
+net.Dial(0x254710, 0x3, 0xc20800a610, 0xf, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/dial.go:143 +0x8a
+net/smtp.Dial(0xc20800a610, 0xf, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/smtp/smtp.go:46 +0x63
+net/smtp.SendMail(0xc20800a610, 0xf, 0x524d50, 0xc208038080, 0xc20801e8c0, 0x12, 0xc20801e6e0, 0x2, 0x2, 0xc20800f000, ...)
+	/usr/local/go/src/net/smtp/smtp.go:274 +0x58
+github.com/smartwalle/going/email.(*Email).send(0xc2080540b0, 0xc20800a610, 0xf, 0x524d50, 0xc208038080, 0x0, 0x0)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:231 +0x68b
+github.com/smartwalle/going/email.(*Email).Send(0xc2080540b0, 0xc2080380c0, 0x0, 0x0)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:241 +0x43f
+created by github.com/smartwalle/going/logs.(*MailWriter).WriteMessage
+	/Users/apple/go/src/github.com/smartwalle/going/logs/mail.go:62 +0x3d2
+
+goroutine 6 [semacquire]:
+sync.(*WaitGroup).Wait(0xc208050180)
+	/usr/local/go/src/sync/waitgroup.go:132 +0x169
+net.(*singleflight).Do(0x371cd0, 0xc20800a830, 0xc, 0xc2081835b8, 0x0, 0x0, 0x0, 0x0, 0xec48)
+	/usr/local/go/src/net/singleflight.go:53 +0x143
+net.lookupIPMerge(0xc20800a830, 0xc, 0x0, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/lookup.go:42 +0xae
+net.lookupIPDeadline(0xc20800a830, 0xc, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/lookup.go:64 +0x12d
+net.resolveInternetAddr(0x254710, 0x3, 0xc20800a830, 0xf, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/local/go/src/net/ipsock.go:285 +0x49b
+net.resolveAddr(0x250070, 0x4, 0x254710, 0x3, 0xc20800a830, 0xf, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/local/go/src/net/dial.go:110 +0x378
+net.(*Dialer).Dial(0xc208038600, 0x254710, 0x3, 0xc20800a830, 0xf, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/dial.go:158 +0xf6
+net.Dial(0x254710, 0x3, 0xc20800a830, 0xf, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/dial.go:143 +0x8a
+net/smtp.Dial(0xc20800a830, 0xf, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/smtp/smtp.go:46 +0x63
+net/smtp.SendMail(0xc20800a830, 0xf, 0x524d50, 0xc208038140, 0xc20801eb20, 0x12, 0xc20801e980, 0x2, 0x2, 0xc20805d000, ...)
+	/usr/local/go/src/net/smtp/smtp.go:274 +0x58
+github.com/smartwalle/going/email.(*Email).send(0xc208054160, 0xc20800a830, 0xf, 0x524d50, 0xc208038140, 0x0, 0x0)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:231 +0x68b
+github.com/smartwalle/going/email.(*Email).Send(0xc208054160, 0xc2080380c0, 0x0, 0x0)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:241 +0x43f
+created by github.com/smartwalle/going/logs.(*MailWriter).WriteMessage
+	/Users/apple/go/src/github.com/smartwalle/going/logs/mail.go:62 +0x3d2
+
+goroutine 7 [semacquire]:
+sync.(*WaitGroup).Wait(0xc208050180)
+	/usr/local/go/src/sync/waitgroup.go:132 +0x169
+net.(*singleflight).Do(0x371cd0, 0xc20800aa30, 0xc, 0xc20817d5b8, 0x0, 0x0, 0x0, 0x0, 0xec48)
+	/usr/local/go/src/net/singleflight.go:53 +0x143
+net.lookupIPMerge(0xc20800aa30, 0xc, 0x0, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/lookup.go:42 +0xae
+net.lookupIPDeadline(0xc20800aa30, 0xc, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/lookup.go:64 +0x12d
+net.resolveInternetAddr(0x254710, 0x3, 0xc20800aa30, 0xf, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/local/go/src/net/ipsock.go:285 +0x49b
+net.resolveAddr(0x250070, 0x4, 0x254710, 0x3, 0xc20800aa30, 0xf, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/local/go/src/net/dial.go:110 +0x378
+net.(*Dialer).Dial(0xc208038740, 0x254710, 0x3, 0xc20800aa30, 0xf, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/dial.go:158 +0xf6
+net.Dial(0x254710, 0x3, 0xc20800aa30, 0xf, 0x0, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/dial.go:143 +0x8a
+net/smtp.Dial(0xc20800aa30, 0xf, 0x0, 0x0, 0x0)
+	/usr/local/go/src/net/smtp/smtp.go:46 +0x63
+net/smtp.SendMail(0xc20800aa30, 0xf, 0x524d50, 0xc2080381c0, 0xc20801ed40, 0x12, 0xc20801eba0, 0x2, 0x2, 0xc208060000, ...)
+	/usr/local/go/src/net/smtp/smtp.go:274 +0x58
+github.com/smartwalle/going/email.(*Email).send(0xc208054210, 0xc20800aa30, 0xf, 0x524d50, 0xc2080381c0, 0x0, 0x0)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:231 +0x68b
+github.com/smartwalle/going/email.(*Email).Send(0xc208054210, 0xc2080380c0, 0x0, 0x0)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:241 +0x43f
+created by github.com/smartwalle/going/logs.(*MailWriter).WriteMessage
+	/Users/apple/go/src/github.com/smartwalle/going/logs/mail.go:62 +0x3d2
+
+goroutine 17 [syscall, locked to thread]:
+runtime.goexit()
+	/usr/local/go/src/runtime/asm_amd64.s:2232 +0x1
+
+goroutine 8 [runnable]:
+github.com/smartwalle/going/email.(*Email).Send(0xc2080544d0, 0xc2080380c0, 0x2, 0x2)
+	/Users/apple/go/src/github.com/smartwalle/going/email/email.go:234
+created by github.com/smartwalle/going/logs.(*MailWriter).WriteMessage
+	/Users/apple/go/src/github.com/smartwalle/going/logs/mail.go:62 +0x3d2
+

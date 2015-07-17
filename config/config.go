@@ -1,31 +1,23 @@
 package config
 
 import (
-	"os"
 	"encoding/json"
 	"errors"
 	"github.com/smartwalle/going/convert"
+	"os"
 	"sync"
 )
 
-var sharedConfig *Config
-
+////////////////////////////////////////////////////////////////////////////////
 type Config struct {
 	sync.RWMutex
-	configPath	string
-	data 		map[string]interface{}
+	configPath string
+	data       map[string]interface{}
 }
 
 func NewConfig() *Config {
 	var config = &Config{}
 	return config
-}
-
-func SharedConfig() *Config {
-	if sharedConfig == nil {
-		sharedConfig = &Config{}
-	}
-	return sharedConfig
 }
 
 func (this *Config) SetConfigFile(filePath string) error {
@@ -163,4 +155,14 @@ func (this *Config) GetFloat64(key string, defaultValue float64) float64 {
 func (this *Config) GetBool(key string, defaultValue bool) bool {
 	var value = this.GetValue(key, defaultValue)
 	return convert.ConvertToBool(value)
+}
+
+////////////////////////////////////////////////////////////////////////////////
+var sharedConfig *Config
+
+func SharedConfig() *Config {
+	if sharedConfig == nil {
+		sharedConfig = &Config{}
+	}
+	return sharedConfig
 }

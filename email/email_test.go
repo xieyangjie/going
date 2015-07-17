@@ -1,14 +1,15 @@
 package email
+
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 func Test_SendEmail(t *testing.T) {
 	var config = &MailConfig{}
-	config.Username = "邮箱账号"
-	config.Host = "smtp.163.com"
-	config.Password = "邮箱密码"
+	config.Username = "smartwalle@126.com"
+	config.Host = "smtp.126.com"
+	config.Password = "yy123456789"
 	config.Port = "25"
 
 	var email = NewHtmlEmail("title", "<a href='http://www.baidu.com'>baidu</a>")

@@ -1,8 +1,8 @@
 package tools
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 func Test_ContainsKeyInMap(t *testing.T) {

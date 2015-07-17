@@ -1,13 +1,13 @@
 package validator
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 type Human struct {
-	Name		string		`validator:"[['required', '', '1000', 'name字段不能为空'], ['regex', 'name', '1002', 'name字段只能为英文字母']]"`//`validator:"regex(value:name, code:1001, message:name只能为英文字母)"`
-	Age			int			`validator:"['lt', '100', '1004', '老妖精']"`
+	Name string `validator:"[['required', '', '1000', 'name字段不能为空'], ['regex', 'name', '1002', 'name字段只能为英文字母']]"` //`validator:"regex(value:name, code:1001, message:name只能为英文字母)"`
+	Age  int    `validator:"['lt', '100', '1004', '老妖精']"`
 }
 
 type Student struct {

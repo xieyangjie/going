@@ -9,23 +9,24 @@ import (
 )
 
 const (
-	K_HTTP_METHOD_GET 		= "GET"
-	K_HTTP_METHOD_POST 		= "POST"
-	K_HTTP_METHOD_HEAD 		= "HEAD"
-	K_HTTP_METHOD_PUT 		= "PUT"
-	K_HTTP_METHOD_DELETE	= "DELETE"
+	K_HTTP_METHOD_GET    = "GET"
+	K_HTTP_METHOD_POST   = "POST"
+	K_HTTP_METHOD_HEAD   = "HEAD"
+	K_HTTP_METHOD_PUT    = "PUT"
+	K_HTTP_METHOD_DELETE = "DELETE"
 )
 
+////////////////////////////////////////////////////////////////////////////////
 type Client struct {
 	//请求方法
-	method 		string
+	method string
 	//url
-	urlString 	string
+	urlString string
 
 	//参数
-	params	url.Values
+	params url.Values
 	//请求头
-	headers	map[string]string
+	headers map[string]string
 }
 
 func NewClient() *Client {
@@ -61,7 +62,7 @@ func (this *Client) createGetURL() string {
 	if this.params != nil {
 		paramStr = paramStr + this.params.Encode()
 	}
-	return this.urlString+paramStr
+	return this.urlString + paramStr
 }
 
 func (this *Client) createGetRequest() (*http.Request, error) {
@@ -103,7 +104,7 @@ func (this *Client) doRequest() (*http.Response, error) {
 }
 
 func (this *Client) DoRequest() ([]byte, error) {
-	responseHandler,err := this.doRequest()
+	responseHandler, err := this.doRequest()
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +128,7 @@ func (this *Client) DoJsonRequest() (map[string]interface{}, error) {
 	return result, err
 }
 
-
+////////////////////////////////////////////////////////////////////////////////
 func DoRequest(method string, urlString string, param map[string]string) ([]byte, error) {
 	var client = NewClient()
 	client.SetMethod(method)

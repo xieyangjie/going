@@ -1,46 +1,37 @@
 package context
 
 import (
-	"os"
-	"path"
-	"strings"
 	"encoding/json"
 	"errors"
 	"github.com/smartwalle/going/convert"
+	"os"
+	"path"
+	"strings"
 	"sync"
 )
-
-var sharedContext *Context
-
-type Context struct {
-	sync.RWMutex
-	contextDir		string
-	contextList 	[]string
-	currentContext	string
-	data 			map[string]map[string]interface{}
-}
 
 func init() {
 	SharedContext()
 }
 
+////////////////////////////////////////////////////////////////////////////////
+type Context struct {
+	sync.RWMutex
+	contextDir     string
+	contextList    []string
+	currentContext string
+	data           map[string]map[string]interface{}
+}
+
 // NewContext 创建新的 Context 实例
-func NewContext() (*Context) {
+func NewContext() *Context {
 	var context = &Context{}
 	return context
 }
 
-// SharedContext 获取共享的 Context 实例
-func SharedContext() (*Context) {
-	if sharedContext == nil {
-		sharedContext = &Context{}
-	}
-	return sharedContext
-}
-
 // LoadContext 从目录加载数据
 // @contextDir 配置文件所在目录
-func (this *Context) LoadContexts(contextDir string) (error) {
+func (this *Context) LoadContexts(contextDir string) error {
 	err := this.loadContextsWithDir(contextDir)
 	return err
 }
@@ -49,10 +40,10 @@ func (this *Context) loadContextsWithDir(contextDir string) error {
 	this.contextDir = contextDir
 
 	dir, err := os.Open(contextDir)
+	defer dir.Close()
 	if err != nil {
 		return err
 	}
-	defer dir.Close()
 
 	names, err := dir.Readdirnames(-1)
 	if err != nil {
@@ -109,7 +100,7 @@ func (this *Context) SetDefaultContext(contextName string) bool {
 	_, ok := this.data[contextName]
 	if ok {
 		this.currentContext = contextName
-	} else if len(this.contextList) > 0{
+	} else if len(this.contextList) > 0 {
 		this.currentContext = this.contextList[0]
 		ok = true
 	}
@@ -227,6 +218,16 @@ func (this *Context) GetBool(key string, defaultValue bool) bool {
 	return convert.ConvertToBool(value)
 }
 
+////////////////////////////////////////////////////////////////////////////////
+var sharedContext *Context
+
+// SharedContext 获取共享的 Context 实例
+func SharedContext() *Context {
+	if sharedContext == nil {
+		sharedContext = &Context{}
+	}
+	return sharedContext
+}
 
 func SetDefaultContext(contextName string) bool {
 	return sharedContext.SetDefaultContext(contextName)

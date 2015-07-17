@@ -1,25 +1,27 @@
 package validator
 
 import (
-	"reflect"
-	"time"
-	"strings"
-	"strconv"
-	"fmt"
 	"encoding/json"
+	"fmt"
+	"reflect"
+	"strconv"
+	"strings"
+	"time"
 )
 
 const (
-	K_VALIDATOR_TAG_NAME 			= "validator"
-	K_VALIDATOR_TAG_NO_VALIDATION 	= "-"
+	K_VALIDATOR_TAG_NAME          = "validator"
+	K_VALIDATOR_TAG_NO_VALIDATION = "-"
 )
+
+type ValidatorFunc func(current interface{}, field interface{}, param interface{}) bool
 
 ////////////////////////////////////////////////////////////////////////////////
 type validatorTag struct {
-	Field string
-	Name string
-	Value interface{}
-	Code int
+	Field   string
+	Name    string
+	Value   interface{}
+	Code    int
 	Message string
 }
 
@@ -34,17 +36,10 @@ func newValidatorTag(field string, name string, value interface{}, code string, 
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//var (
-//	validatorNameRegex = regexp.MustCompile(K_VALIDATOR_NAME_PATTERN)
-//	validatorParamRegex = regexp.MustCompile(K_VALIDATOR_PARAM_PATTERN)
-//)
-
-type ValidatorFunc func(current interface{}, field interface{}, param interface{}) bool
-
 type Validator struct {
-	fieldList 			map[string]string
-	errorList 			map[string][]*ValidatorError
-	validatorTagList 	map[string]map[string]*validatorTag
+	fieldList        map[string]string
+	errorList        map[string][]*ValidatorError
+	validatorTagList map[string]map[string]*validatorTag
 }
 
 func NewValidator() *Validator {
@@ -105,7 +100,7 @@ func (this *Validator) validateStruct(current interface{}, s interface{}) {
 	var structType = reflect.TypeOf(s)
 	var numField = structValue.NumField()
 
-	for i:=0; i<numField; i++ {
+	for i := 0; i < numField; i++ {
 		var fieldValue = structValue.Field(i)
 		var fieldType = structType.Field(i)
 
@@ -118,7 +113,7 @@ func (this *Validator) validateStruct(current interface{}, s interface{}) {
 			continue
 		}
 
-		if tag == "" && ((fieldValue.Kind() != reflect.Struct && fieldValue.Kind() != reflect.Interface ) || fieldValue.Type() == reflect.TypeOf(time.Time{})){
+		if tag == "" && ((fieldValue.Kind() != reflect.Struct && fieldValue.Kind() != reflect.Interface) || fieldValue.Type() == reflect.TypeOf(time.Time{})) {
 			this.validateField(current, fieldValue.Interface(), fieldType.Name, "")
 			continue
 		}
