@@ -58,8 +58,11 @@ func NewFileWriter(level int, path string) *FileWriter {
 
 func (this *FileWriter) init() {
 	//首先创建目录
-	os.MkdirAll(this.path, os.ModeDir|os.ModePerm)
-
+	if _, err := os.Stat(this.path); err != nil {
+		if os.IsNotExist(err) {
+			os.MkdirAll(this.path, os.ModeDir|os.ModePerm)
+		}
+	}
 	this.startLogger()
 }
 

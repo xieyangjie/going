@@ -184,7 +184,7 @@ func (this *Logger) Fatalln(args ...interface{}) {
 }
 
 func (this *Logger) println(args ...interface{}) string {
-	var msg = fmt.Sprint(args...)
+	var msg = fmt.Sprintln(args...)
 	return msg
 }
 

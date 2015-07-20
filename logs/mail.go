@@ -1,9 +1,9 @@
 package logs
 
 import (
-	"github.com/smartwalle/going/email"
 	"fmt"
 	"time"
+	"github.com/smartwalle/going/email"
 )
 
 type MailWriter struct {

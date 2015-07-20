@@ -3,9 +3,10 @@ package config
 import (
 	"encoding/json"
 	"errors"
-	"github.com/smartwalle/going/convert"
 	"os"
 	"sync"
+	"path"
+	"github.com/smartwalle/going/convert"
 )
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -54,6 +55,16 @@ func (this *Config) SaveConfig() error {
 
 	if this.configPath == "" {
 		return errors.New("保存路径不能为空")
+	}
+
+	//创建目录
+	var dir, _ = path.Split(this.configPath)
+	if dir != "" {
+		if _, err := os.Stat(dir); err != nil {
+			if os.IsNotExist(err) {
+				os.MkdirAll(dir, os.ModeDir|os.ModePerm)
+			}
+		}
 	}
 
 	file, err := os.Create(this.configPath)

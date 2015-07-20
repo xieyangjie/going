@@ -1,12 +1,12 @@
 package validator
 
 import (
-	"github.com/smartwalle/going/convert"
 	"reflect"
 	"regexp"
 	"strings"
 	"time"
 	"unicode/utf8"
+	"github.com/smartwalle/going/convert"
 )
 
 var validatorFuncList = map[string]ValidatorFunc{}
