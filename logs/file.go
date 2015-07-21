@@ -45,7 +45,7 @@ type FileWriter struct {
 
 func NewFileWriter(level int, path string) *FileWriter {
 	var file = &FileWriter{}
-	file.maxSize = 1000// * 1024 * 1024 //10m
+	file.maxSize = 10 * 1024 * 1024 //10m
 	file.level = level
 	file.path = path
 	file.lock = &sync.Mutex{}
