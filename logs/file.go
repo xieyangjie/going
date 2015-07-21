@@ -45,7 +45,7 @@ type FileWriter struct {
 
 func NewFileWriter(level int, path string) *FileWriter {
 	var file = &FileWriter{}
-	file.maxSize = 10 * 1024 * 1024 //10m
+	file.maxSize = 1000// * 1024 * 1024 //10m
 	file.level = level
 	file.path = path
 	file.lock = &sync.Mutex{}
@@ -68,10 +68,8 @@ func (this *FileWriter) init() {
 
 func (this *FileWriter) startLogger() {
 	var filename = path.Join(this.path, "temp_logs.log")
-	var file, _ = os.OpenFile(filename, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0666)
+	var file, _ = os.OpenFile(filename, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0660)
 	this.writer.setFile(file)
-
-	this.checkSize()
 }
 
 func (this *FileWriter) checkSize() {
@@ -92,7 +90,6 @@ func (this *FileWriter) renameFile() {
 	defer this.writer.Unlock()
 
 	this.writer.file.Close()
-
 	var filename = path.Join(this.path, "temp_logs.log")
 	var now = time.Now()
 	var newName = path.Join(this.path, fmt.Sprintf("%s_%.9d.log", now.Format("2006_01_02_15_04_05"), now.Nanosecond()))
