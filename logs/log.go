@@ -140,11 +140,11 @@ func (this *Logger) Debugln(args ...interface{}) {
 
 //print
 func (this *Logger) Printf(format string, args ...interface{}) {
-	this.Debugf(format, args...)
+	this.writeMessage(LOG_LEVEL_DEBUG, format, args...)
 }
 
 func (this *Logger) Println(args ...interface{}) {
-	this.Printf(this.println(args...))
+	this.writeMessage(LOG_LEVEL_DEBUG, this.println(args...))
 }
 
 //info
