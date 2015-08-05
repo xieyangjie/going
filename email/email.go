@@ -24,7 +24,7 @@ func (this *MailConfig) Address() string {
 ////////////////////////////////////////////////////////////////////////////////
 // Send an email using the given host and SMTP auth (optional), returns any error thrown by smtp.SendMail
 // This function merges the To, Cc, and Bcc fields and calls the smtp.SendMail function using the Email.Bytes() output as the message
-func send(addr string, a smtp.Auth, m *Message, tls bool) error {
+func send(addr string, a smtp.Auth, m *Message, insecureSkipVerify bool) error {
 	// Merge the To, Cc, and Bcc fields
 	to := make([]string, 0, len(m.To)+len(m.Cc)+len(m.Bcc))
 	to = append(append(append(to, m.To...), m.Cc...), m.Bcc...)
@@ -48,10 +48,10 @@ func send(addr string, a smtp.Auth, m *Message, tls bool) error {
 		return err
 	}
 
-	if tls {
-		return SendTLSMail(addr, a, from.Address, to, raw)
-	}
-	return smtp.SendMail(addr, a, from.Address, to, raw)
+//	if insecureSkipVerify {
+	return SendTLSMail(addr, a, from.Address, to, raw, insecureSkipVerify)
+//	}
+//	return smtp.SendMail(addr, a, from.Address, to, raw)
 }
 
 func SendMail(config *MailConfig, m *Message) error {
@@ -65,19 +65,25 @@ func SendMail(config *MailConfig, m *Message) error {
 	return send(config.Address(), smtp.PlainAuth("", config.Username, config.Password, config.Host), m, config.TLS)
 }
 
-func SendTLSMail(addr string, auth smtp.Auth, from string, to []string, msg []byte) error {
+func SendTLSMail(addr string, auth smtp.Auth, from string, to []string, msg []byte, insecureSkipVerify bool) error {
 
 	host, _, _ := net.SplitHostPort(addr)
 
-	tlsConfig := &tls.Config {
-		InsecureSkipVerify: true,
-		ServerName: host,
+	var conn net.Conn
+	var err error
+	if insecureSkipVerify {
+		tlsConfig := &tls.Config {
+			InsecureSkipVerify: insecureSkipVerify,
+			ServerName: host,
+		}
+		conn, err = tls.Dial("tcp", addr, tlsConfig)
+		if err != nil {
+			return err
+		}
+	} else {
+		conn, err = net.Dial("tcp", addr)
 	}
 
-	conn, err := tls.Dial("tcp", addr, tlsConfig)
-	if err != nil {
-		return err
-	}
 	defer conn.Close()
 
 	c, err := smtp.NewClient(conn, host)

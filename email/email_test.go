@@ -10,11 +10,11 @@ func Test_SendEmail(t *testing.T) {
 	config.Username = "*****"
 	config.Host = "*****"
 	config.Password = "*****"
-	config.Port = "25"
-	config.TLS = false
+	config.Port = "*****"
+	config.TLS = true
 
 	var e = NewHtmlMessage("title", "<a href='http://www.google.com'>Google</a>")
-	e.To = []string{"*****"}
+	e.To = []string{"917996695@qq.com"}
 
 	fmt.Println(SendMail(config, e))
 }
