@@ -7,13 +7,14 @@ import (
 
 func Test_SendEmail(t *testing.T) {
 	var config = &MailConfig{}
-	config.Username = "smartwalle@126.com"
-	config.Host = "smtp.126.com"
-	config.Password = "yy123456789"
+	config.Username = "*****"
+	config.Host = "*****"
+	config.Password = "*****"
 	config.Port = "25"
+	config.TLS = false
 
-	var email = NewHtmlEmail("title", "<a href='http://www.baidu.com'>baidu</a>")
-	email.To = []string{"917996695@qq.com"}
+	var e = NewHtmlMessage("title", "<a href='http://www.google.com'>Google</a>")
+	e.To = []string{"*****"}
 
-	fmt.Println(email.Send(config))
+	fmt.Println(SendMail(config, e))
 }

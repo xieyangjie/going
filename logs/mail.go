@@ -56,10 +56,10 @@ func(this *MailWriter) WriteMessage(level int, file string, line int, prefix str
 	}
 
 	var message = fmt.Sprintf("%s %s [%s:%d] %s", time.Now().String(), prefix, file, line, msg)
-	var mail = email.NewTextEmail(file, message)
+	var mail = email.NewTextMessage(file, message)
 	mail.To = this.to
 
-	go mail.Send(this.config)
+	go email.SendMail(this.config, message)
 }
 
 func(this *MailWriter) Close() {

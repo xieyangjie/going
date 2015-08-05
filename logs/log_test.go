@@ -20,9 +20,9 @@ func Test_File(t *testing.T) {
 
 func Test_Mail(t *testing.T) {
 	var config = &email.MailConfig{}
-	config.Username = "smartwalle@126.com"
-	config.Host = "smtp.126.com"
-	config.Password = "yy123456789"
+	config.Username = "*****"
+	config.Host = "*****"
+	config.Password = "*****"
 	config.Port = "25"
 
 	var mailWriter = NewMailWriter(LOG_LEVEL_DEBUG)
@@ -33,7 +33,7 @@ func Test_Mail(t *testing.T) {
 
 	writeMessage()
 
-	//等待邮件发出
+	//等待邮件发出，在正常的服务器环境中，不需要这样
 	time.Sleep(5 * time.Second)
 }
 

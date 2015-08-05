@@ -68,7 +68,7 @@ func (this *FileWriter) init() {
 
 func (this *FileWriter) startLogger() {
 	var filename = path.Join(this.path, "temp_logs.log")
-	var file, _ = os.OpenFile(filename, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0777)
+	var file, _ = os.OpenFile(filename, os.O_CREATE|os.O_APPEND|os.O_WRONLY|os.O_SYNC, 0777)
 	this.writer.setFile(file)
 }
 
