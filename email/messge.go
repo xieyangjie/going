@@ -22,7 +22,8 @@ const (
 
 ////////////////////////////////////////////////////////////////////////////////
 type Message struct {
-	from        string
+	From 		string
+	ReplyTo		string
 	To          []string
 	Bcc         []string
 	Cc          []string
@@ -53,7 +54,7 @@ func NewHtmlMessage(subject string, content string) *Message {
 // Attach is used to attach content from an io.Reader to the email.
 // Required parameters include an io.Reader, the desired filename for the attachment, and the Content-Type
 // The function will return the created Attachment for reference, as well as nil for the error, if successful.
-func (e *Message) Attach(r io.Reader, filename string, c string) (a *Attachment, err error) {
+func (m *Message) Attach(r io.Reader, filename string, c string) (a *Attachment, err error) {
 	var buffer bytes.Buffer
 	if _, err = io.Copy(&buffer, r); err != nil {
 		return
@@ -73,7 +74,7 @@ func (e *Message) Attach(r io.Reader, filename string, c string) (a *Attachment,
 	at.Header.Set("Content-Disposition", fmt.Sprintf("attachment;\r\n filename=\"%s\"", filename))
 	at.Header.Set("Content-ID", fmt.Sprintf("<%s>", filename))
 	at.Header.Set("Content-Transfer-Encoding", "base64")
-	e.Attachments = append(e.Attachments, at)
+	m.Attachments = append(m.Attachments, at)
 	return at, nil
 }
 
@@ -81,14 +82,14 @@ func (e *Message) Attach(r io.Reader, filename string, c string) (a *Attachment,
 // It attempts to open the file referenced by filename and, if successful, creates an Attachment.
 // This Attachment is then appended to the slice of Email.Attachments.
 // The function will then return the Attachment for reference, as well as nil for the error, if successful.
-func (e *Message) AttachFile(filename string) (a *Attachment, err error) {
+func (m *Message) AttachFile(filename string) (a *Attachment, err error) {
 	f, err := os.Open(filename)
 	if err != nil {
 		return
 	}
 	ct := mime.TypeByExtension(filepath.Ext(filename))
 	basename := filepath.Base(filename)
-	return e.Attach(f, basename, ct)
+	return m.Attach(f, basename, ct)
 }
 
 // msgHeaders merges the Email's various fields and custom headers together in a
@@ -97,28 +98,31 @@ func (e *Message) AttachFile(filename string) (a *Attachment, err error) {
 //
 // "e"'s fields To, Cc, From, Subject will be used unless they are present in
 // e.Headers. Unless set in e.Headers, "Date" will filled with the current time.
-func (e *Message) msgHeaders() textproto.MIMEHeader {
-	res := make(textproto.MIMEHeader, len(e.Headers)+4)
-	if e.Headers != nil {
-		for _, h := range []string{"To", "Cc", "From", "Subject", "Date"} {
-			if v, ok := e.Headers[h]; ok {
+func (m *Message) msgHeaders() textproto.MIMEHeader {
+	res := make(textproto.MIMEHeader, len(m.Headers)+4)
+	if m.Headers != nil {
+		for _, h := range []string{"To", "Cc", "From", "Reply-To", "Subject", "Date"} {
+			if v, ok := m.Headers[h]; ok {
 				res[h] = v
 			}
 		}
 	}
 	// Set headers if there are values.
-	if _, ok := res["To"]; !ok && len(e.To) > 0 {
-		res.Set("To", strings.Join(e.To, ", "))
+	if _, ok := res["To"]; !ok && len(m.To) > 0 {
+		res.Set("To", strings.Join(m.To, ", "))
 	}
-	if _, ok := res["Cc"]; !ok && len(e.Cc) > 0 {
-		res.Set("Cc", strings.Join(e.Cc, ", "))
+	if _, ok := res["Cc"]; !ok && len(m.Cc) > 0 {
+		res.Set("Cc", strings.Join(m.Cc, ", "))
 	}
-	if _, ok := res["Subject"]; !ok && e.Subject != "" {
-		res.Set("Subject", e.Subject)
+	if _, ok := res["Subject"]; !ok && m.Subject != "" {
+		res.Set("Subject", m.Subject)
 	}
 	// Date and From are required headers.
 	if _, ok := res["From"]; !ok {
-		res.Set("From", e.from)
+		res.Set("From", m.From)
+	}
+	if _, ok := res["Reply-To"]; !ok && m.ReplyTo != ""{
+		res.Set("Reply-To", m.ReplyTo)
 	}
 	if _, ok := res["Date"]; !ok {
 		res.Set("Date", time.Now().Format(time.RFC1123Z))
@@ -126,7 +130,7 @@ func (e *Message) msgHeaders() textproto.MIMEHeader {
 	if _, ok := res["Mime-Version"]; !ok {
 		res.Set("Mime-Version", "1.0")
 	}
-	for field, vals := range e.Headers {
+	for field, vals := range m.Headers {
 		if _, ok := res[field]; !ok {
 			res[field] = vals
 		}
@@ -135,11 +139,11 @@ func (e *Message) msgHeaders() textproto.MIMEHeader {
 }
 
 // Bytes converts the Email object to a []byte representation, including all needed MIMEHeaders, boundaries, etc.
-func (e *Message) Bytes() ([]byte, error) {
+func (m *Message) Bytes() ([]byte, error) {
 	// TODO: better guess buffer size
 	buff := bytes.NewBuffer(make([]byte, 0, 4096))
 
-	headers := e.msgHeaders()
+	headers := m.msgHeaders()
 	w := multipart.NewWriter(buff)
 	// TODO: determine the content type based on message/attachment mix.
 	headers.Set("Content-Type", "multipart/mixed;\r\n boundary="+w.Boundary())
@@ -150,21 +154,21 @@ func (e *Message) Bytes() ([]byte, error) {
 	fmt.Fprintf(buff, "--%s\r\n", w.Boundary())
 	header := textproto.MIMEHeader{}
 	// Check to see if there is a Text or HTML field
-	if len(e.Content) > 0 {
+	if len(m.Content) > 0 {
 		subWriter := multipart.NewWriter(buff)
 		// Create the multipart alternative part
 		header.Set("Content-Type", fmt.Sprintf("multipart/alternative;\r\n boundary=%s\r\n", subWriter.Boundary()))
 		// Write the header
 		headerToBytes(buff, header)
 		// Create the body sections
-		if len(e.Content) > 0 {
-			header.Set("Content-Type", fmt.Sprintf("%s; charset=UTF-8", e.ContentType))
+		if len(m.Content) > 0 {
+			header.Set("Content-Type", fmt.Sprintf("%s; charset=UTF-8", m.ContentType))
 			header.Set("Content-Transfer-Encoding", "quoted-printable")
 			if _, err := subWriter.CreatePart(header); err != nil {
 				return nil, err
 			}
 			// Write the text
-			if err := quotePrintEncode(buff, []byte(e.Content)); err != nil {
+			if err := quotePrintEncode(buff, []byte(m.Content)); err != nil {
 				return nil, err
 			}
 		}
@@ -174,7 +178,7 @@ func (e *Message) Bytes() ([]byte, error) {
 		}
 	}
 	// Create attachment part, if necessary
-	for _, a := range e.Attachments {
+	for _, a := range m.Attachments {
 		ap, err := w.CreatePart(a.Header)
 		if err != nil {
 			return nil, err

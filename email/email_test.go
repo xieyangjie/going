@@ -11,7 +11,7 @@ func Test_SendEmail(t *testing.T) {
 	config.Host = "*****"
 	config.Password = "*****"
 	config.Port = "*****"
-	config.TLS = true
+	config.Secure = true
 
 	var e = NewHtmlMessage("title", "<a href='http://www.google.com'>Google</a>")
 	e.To = []string{"917996695@qq.com"}

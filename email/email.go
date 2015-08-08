@@ -14,7 +14,17 @@ type MailConfig struct {
 	Password string
 	Host     string
 	Port     string
-	TLS		 bool
+	Secure   bool
+}
+
+func NewMailConfig(username string, password string, host string, port string, secure bool) *MailConfig {
+	var config = &MailConfig{}
+	config.Username = username
+	config.Password = password
+	config.Host = host
+	config.Port = port
+	config.Secure = secure
+	return config
 }
 
 func (this *MailConfig) Address() string {
@@ -22,9 +32,20 @@ func (this *MailConfig) Address() string {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+func SendMail(config *MailConfig, m *Message) error {
+	if config == nil {
+		return errors.New("config 不能为空")
+	}
+	if len(m.From) == 0 {
+		m.From = config.Username
+	}
+
+	return send(config.Address(), smtp.PlainAuth("", config.Username, config.Password, config.Host), m, config.Secure)
+}
+
 // Send an email using the given host and SMTP auth (optional), returns any error thrown by smtp.SendMail
 // This function merges the To, Cc, and Bcc fields and calls the smtp.SendMail function using the Email.Bytes() output as the message
-func send(addr string, a smtp.Auth, m *Message, insecureSkipVerify bool) error {
+func send(addr string, a smtp.Auth, m *Message, secure bool) error {
 	// Merge the To, Cc, and Bcc fields
 	to := make([]string, 0, len(m.To)+len(m.Cc)+len(m.Bcc))
 	to = append(append(append(to, m.To...), m.Cc...), m.Bcc...)
@@ -36,10 +57,10 @@ func send(addr string, a smtp.Auth, m *Message, insecureSkipVerify bool) error {
 		to[i] = addr.Address
 	}
 	// Check to make sure there is at least one recipient and one "From" address
-	if m.from == "" || len(to) == 0 {
+	if m.From == "" || len(to) == 0 {
 		return errors.New("Must specify at least one From address and one To address")
 	}
-	from, err := mail.ParseAddress(m.from)
+	from, err := mail.ParseAddress(m.From)
 	if err != nil {
 		return err
 	}
@@ -48,32 +69,21 @@ func send(addr string, a smtp.Auth, m *Message, insecureSkipVerify bool) error {
 		return err
 	}
 
-//	if insecureSkipVerify {
-	return SendTLSMail(addr, a, from.Address, to, raw, insecureSkipVerify)
+//	if secure {
+	return sendMail(addr, a, from.Address, to, raw, secure)
 //	}
 //	return smtp.SendMail(addr, a, from.Address, to, raw)
 }
 
-func SendMail(config *MailConfig, m *Message) error {
-	if config == nil {
-		return errors.New("config 不能为空")
-	}
-	if m.from != config.Username {
-		m.from = config.Username
-	}
-
-	return send(config.Address(), smtp.PlainAuth("", config.Username, config.Password, config.Host), m, config.TLS)
-}
-
-func SendTLSMail(addr string, auth smtp.Auth, from string, to []string, msg []byte, insecureSkipVerify bool) error {
+func sendMail(addr string, auth smtp.Auth, from string, to []string, msg []byte, secure bool) error {
 
 	host, _, _ := net.SplitHostPort(addr)
 
 	var conn net.Conn
 	var err error
-	if insecureSkipVerify {
+	if secure {
 		tlsConfig := &tls.Config {
-			InsecureSkipVerify: insecureSkipVerify,
+			InsecureSkipVerify: true,
 			ServerName: host,
 		}
 		conn, err = tls.Dial("tcp", addr, tlsConfig)
