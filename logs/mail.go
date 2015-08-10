@@ -59,7 +59,7 @@ func(this *MailWriter) WriteMessage(level int, file string, line int, prefix str
 	var mail = email.NewTextMessage(file, message)
 	mail.To = this.to
 
-	go email.SendMail(this.config, message)
+	go email.SendMail(this.config, mail)
 }
 
 func(this *MailWriter) Close() {
