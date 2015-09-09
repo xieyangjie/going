@@ -2,29 +2,35 @@ package time
 
 import (
 	"time"
+	"fmt"
 )
 
-type Timestamp int64
+type Timestamp float64
 
 func NewTimestamp() Timestamp {
-	return Timestamp(time.Now().Unix())
+	return TimestampWithTime(time.Now())
 }
 
 func TimestampWithTime(time time.Time) Timestamp {
-	return Timestamp(time.Unix())
+	var t = float64(time.Unix()) + (float64(time.Nanosecond()) / 1e9)
+	return Timestamp(t)
 }
 
-func (this *Timestamp) Time() time.Time {
-	return time.Unix(int64(*this), 0)
+func (this Timestamp) Time() time.Time {
+	return time.Unix(int64(this), int64(this * 1e9) % int64(this))
 }
 
-func (this *Timestamp) Add(year, month, day int, hour, minute, second int64) Timestamp {
+func (this Timestamp) Add(year, month, day int, hour, minute, second int64) Timestamp {
 	var d int64 = second + minute*60 + hour*60*60
 	t := this.Time()
 	t = t.AddDate(year, month, day).Add(time.Duration(d) * time.Second)
 	return TimestampWithTime(t)
 }
 
-func (this *Timestamp) AddDate(year, month, day int) Timestamp {
+func (this Timestamp) AddDate(year, month, day int) Timestamp {
 	return this.Add(year, month, day, 0, 0, 0)
+}
+
+func (this Timestamp) String() string {
+	return fmt.Sprintf("%f", this)
 }
