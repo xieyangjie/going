@@ -41,7 +41,7 @@ func NewTestUser() *TestUser {
 	return user
 }
 
-//类方法
+//实例方法
 func (this *TestUser) Method1() {
 	fmt.Println("test")
 }
