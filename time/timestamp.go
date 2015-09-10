@@ -34,3 +34,7 @@ func (this Timestamp) AddDate(year, month, day int) Timestamp {
 func (this Timestamp) String() string {
 	return fmt.Sprintf("%f", this)
 }
+
+func (this Timestamp) MarshalJSON() ([]byte, error) {
+	return []byte(this.String()), nil
+}
