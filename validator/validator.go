@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"reflect"
-	"strconv"
 	"strings"
 	"time"
+	"strconv"
 )
 
 const (
@@ -25,12 +25,12 @@ type validatorTag struct {
 	Message string
 }
 
-func newValidatorTag(field string, name string, value interface{}, code string, message string) *validatorTag {
+func newValidatorTag(field string, name string, value interface{}, code int, message string) *validatorTag {
 	var vt = validatorTag{}
 	vt.Field = field
-	vt.Name = name
+	vt.Name  = name
 	vt.Value = value
-	vt.Code, _ = strconv.Atoi(code)
+	vt.Code  = code
 	vt.Message = message
 	return &vt
 }
@@ -70,7 +70,7 @@ func (this *Validator) ErrorsWithField(name string) []*ValidatorError {
 	return this.errorList[name]
 }
 
-func (this *Validator) AddValidator(fieldName string, validatorName string, value interface{}, code string, message string) {
+func (this *Validator) AddValidator(fieldName string, validatorName string, value interface{}, code int, message string) {
 	var vt = newValidatorTag(fieldName, validatorName, value, code, message)
 	var vtm = this.validatorTagList[fieldName]
 	if vtm == nil {
@@ -108,6 +108,8 @@ func (this *Validator) validateStruct(current interface{}, s interface{}) {
 			fieldValue = fieldValue.Elem()
 		}
 
+		this.fieldList[fmt.Sprintln("%d", len(this.fieldList))] = fieldType.Name
+
 		var tag = fieldType.Tag.Get(K_VALIDATOR_TAG_NAME)
 		if tag == K_VALIDATOR_TAG_NO_VALIDATION {
 			continue
@@ -129,7 +131,6 @@ func (this *Validator) validateStruct(current interface{}, s interface{}) {
 				this.validateStruct(fieldValue.Interface(), fieldValue.Interface())
 			}
 		default:
-			this.fieldList[fmt.Sprintln("%d", len(this.fieldList))] = fieldType.Name
 			this.validateField(current, fieldValue.Interface(), fieldType.Name, tag)
 		}
 	}
@@ -146,13 +147,15 @@ func (this *Validator) validateField(current interface{}, field interface{}, nam
 			for _, tagObj := range tagObjList {
 				if item, ok := tagObj.([]interface{}); ok {
 					if len(item) == 4 {
-						this.AddValidator(name, item[0].(string), item[1], item[2].(string), item[3].(string))
+						var code, _ = strconv.Atoi(item[2].(string))
+						this.AddValidator(name, item[0].(string), item[1], code, item[3].(string))
 					}
 				}
 			}
 		} else {
 			if len(tagObjList) == 4 {
-				this.AddValidator(name, tagObjList[0].(string), tagObjList[1], tagObjList[2].(string), tagObjList[3].(string))
+				var code, _ = strconv.Atoi(tagObjList[2].(string))
+				this.AddValidator(name, tagObjList[0].(string), tagObjList[1], code, tagObjList[3].(string))
 			}
 		}
 	}
