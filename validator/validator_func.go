@@ -43,7 +43,7 @@ func registerFunction(key string, fun ValidatorFunc) {
 
 ////////////////////////////////////////////////////////////////////////////////
 func AddFunction(key string, fun ValidatorFunc) bool {
-	if len(key) == 0 && fun == nil {
+	if len(key) > 0 && fun != nil {
 		customerFuncList[key] = fun
 		return true
 	}

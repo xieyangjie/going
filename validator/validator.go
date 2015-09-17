@@ -108,12 +108,12 @@ func (this *Validator) validateStruct(current interface{}, s interface{}) {
 			fieldValue = fieldValue.Elem()
 		}
 
-		this.fieldList[fmt.Sprintln("%d", len(this.fieldList))] = fieldType.Name
-
 		var tag = fieldType.Tag.Get(K_VALIDATOR_TAG_NAME)
 		if tag == K_VALIDATOR_TAG_NO_VALIDATION {
 			continue
 		}
+
+		this.fieldList[fmt.Sprintln("%d", len(this.fieldList))] = fieldType.Name
 
 		if tag == "" && ((fieldValue.Kind() != reflect.Struct && fieldValue.Kind() != reflect.Interface) || fieldValue.Type() == reflect.TypeOf(time.Time{})) {
 			this.validateField(current, fieldValue.Interface(), fieldType.Name, "")
@@ -181,7 +181,6 @@ func (this *Validator) validate(current interface{}, field interface{}, tag *val
 	if !ok {
 		valFunc, _ = customerFuncList[tag.Name]
 	}
-
 	if valFunc != nil {
 		var result = valFunc(current, field, tag.Value)
 		var err *ValidatorError = nil
