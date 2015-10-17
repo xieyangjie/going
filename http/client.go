@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 )
 
 const (
@@ -22,6 +23,8 @@ type Client struct {
 	method string
 	//url
 	urlString string
+	//timeout
+	timeout time.Duration
 
 	//参数
 	params url.Values
@@ -41,6 +44,10 @@ func (this *Client) SetMethod(method string) {
 
 func (this *Client) SetURLString(urlString string) {
 	this.urlString = urlString
+}
+
+func (this *Client) SetTimeout(timeout time.Duration) {
+	this.timeout = timeout
 }
 
 func (this *Client) SetHeader(key string, value string) {
@@ -100,7 +107,10 @@ func (this *Client) doRequest() (*http.Response, error) {
 		request.Header.Set(key, value)
 	}
 
-	return http.DefaultClient.Do(request)
+	var c = &http.Client{}
+	c.Timeout = this.timeout
+
+	return c.Do(request)
 }
 
 func (this *Client) DoRequest() ([]byte, error) {
@@ -139,7 +149,15 @@ func DoRequest(method string, urlString string, param map[string]string) ([]byte
 	return client.DoRequest()
 }
 
-func DoJsonRequest(method string, urlString string, param map[string]string) (map[string]interface{}, error) {
+func DoGet(urlString string, param map[string]string) ([]byte, error) {
+	return DoRequest(K_HTTP_METHOD_GET, urlString, param)
+}
+
+func DoPost(urlString string, param map[string]string) ([]byte, error) {
+	return DoRequest(K_HTTP_METHOD_POST, urlString, param)
+}
+
+func DoJSONRequest(method string, urlString string, param map[string]string) (map[string]interface{}, error) {
 	var client = NewClient()
 	client.SetMethod(method)
 	client.SetURLString(urlString)
@@ -149,10 +167,10 @@ func DoJsonRequest(method string, urlString string, param map[string]string) (ma
 	return client.DoJsonRequest()
 }
 
-func DoGet(urlString string, param map[string]string) (map[string]interface{}, error) {
-	return DoJsonRequest(K_HTTP_METHOD_GET, urlString, param)
+func DoJSONGet(urlString string, param map[string]string) (map[string]interface{}, error) {
+	return DoJSONRequest(K_HTTP_METHOD_GET, urlString, param)
 }
 
-func DoPost(urlString string, param map[string]string) (map[string]interface{}, error) {
-	return DoJsonRequest(K_HTTP_METHOD_POST, urlString, param)
+func DoJSONPost(urlString string, param map[string]string) (map[string]interface{}, error) {
+	return DoJSONRequest(K_HTTP_METHOD_POST, urlString, param)
 }
