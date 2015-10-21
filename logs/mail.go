@@ -9,6 +9,8 @@ import (
 type MailWriter struct {
 	level   int
 	config	*email.MailConfig
+	subject string
+	from    string
 	to		[]string
 }
 
@@ -34,6 +36,22 @@ func (this *MailWriter) GetConfig() *email.MailConfig {
 	return this.config
 }
 
+func (this *MailWriter) SetSubject(subject string) {
+	this.subject = subject
+}
+
+func (this *MailWriter) GetSubject() string {
+	return this.subject
+}
+
+func (this *MailWriter) SetFrom(from string) {
+	this.from = from
+}
+
+func (this *MailWriter) GetFrom() string {
+	return this.from
+}
+
 func (this *MailWriter) SetToMailList(to []string) {
 	this.to = to
 }
@@ -56,8 +74,17 @@ func(this *MailWriter) WriteMessage(level int, file string, line int, prefix str
 	}
 
 	var message = fmt.Sprintf("%s %s [%s:%d] %s", time.Now().String(), prefix, file, line, msg)
-	var mail = email.NewTextMessage(file, message)
+
+	var subject = this.GetSubject()
+	if len(subject) == 0 {
+		subject = file
+	}
+
+	var mail = email.NewTextMessage(subject, message)
 	mail.To = this.to
+	if len(this.from) > 0 {
+		mail.From = this.from
+	}
 
 	go email.SendMail(this.config, mail)
 }
