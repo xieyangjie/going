@@ -127,7 +127,7 @@ func (this *Context) KeyExist(contextName string, key string) bool {
 // @contextName 配置名称
 // @key key
 // @defaultValue 默认值
-func (this *Context) GetValueWithContext(contextName string, key string, defaultValue interface{}) (interface{}, error) {
+func (this *Context) GetValueWithContext(contextName, key string, defaultValue interface{}) (interface{}, error) {
 	this.RLock()
 	defer this.RUnlock()
 
@@ -154,12 +154,6 @@ func (this *Context) GetValueWithContext(contextName string, key string, default
 	return this.data[contextName][key], nil
 }
 
-// GetValue 获取指定字段的值
-// 如果字段不存在，则返回nil和错误信息；如果字段存在，则返回其值，error为空。
-func (this *Context) Get(key string) (interface{}, error) {
-	return this.GetValueWithContext(this.currentContext, key, nil)
-}
-
 // Get 获取指定字段的值
 // 如果字段不存在，则返回提供的默认值；如果字段存在，则返回其值。
 func (this *Context) GetValue(key string, defaultValue interface{}) interface{} {
@@ -167,9 +161,38 @@ func (this *Context) GetValue(key string, defaultValue interface{}) interface{} 
 	return value
 }
 
+func (this *Context) GetWithContext(contextName, key string) (interface{}, error) {
+	var value, err = this.GetValueWithContext(contextName, key, nil)
+	return value, err
+}
+
+// GetValue 获取指定字段的值
+// 如果字段不存在，则返回nil和错误信息；如果字段存在，则返回其值，error为空。
+func (this *Context) Get(key string) (interface{}, error) {
+	return this.GetValueWithContext(this.currentContext, key, nil)
+}
+
+//获取 list
+func (this *Context) GetListWithContext(contextName, key string, defaultValue []interface{}) []interface{} {
+	var value, _ = this.GetValueWithContext(contextName, key, defaultValue)
+	if v, ok := value.([]interface{}); ok {
+		return v
+	}
+	return defaultValue
+}
+
 func (this *Context) GetList(key string, defaultValue []interface{}) []interface{} {
 	var value = this.GetValue(key, defaultValue)
 	if v, ok := value.([]interface{}); ok {
+		return v
+	}
+	return defaultValue
+}
+
+//获取 map
+func (this *Context) GetMapWithContext(contextName, key string, defaultValue map[string]interface{}) map[string]interface{} {
+	var value, _ = this.GetValueWithContext(contextName, key, defaultValue)
+	if v, ok := value.(map[string]interface{}); ok {
 		return v
 	}
 	return defaultValue
@@ -183,9 +206,21 @@ func (this *Context) GetMap(key string, defaultValue map[string]interface{}) map
 	return defaultValue
 }
 
+//获取 string
+func (this *Context) GetStringWithContext(contextName, key, defaultValue string) string {
+	var value, _ = this.GetValueWithContext(contextName, key, defaultValue)
+	return convert.ConvertToString(value)
+}
+
 func (this *Context) GetString(key string, defaultValue string) string {
 	var value = this.GetValue(key, defaultValue)
 	return convert.ConvertToString(value)
+}
+
+//获取数值
+func (this *Context) GetIntWithContext(contextName, key string, defaultValue int) int {
+	var value, _ = this.GetValueWithContext(contextName, key, defaultValue)
+	return convert.ConvertToInt(value)
 }
 
 func (this *Context) GetInt(key string, defaultValue int) int {
@@ -193,9 +228,19 @@ func (this *Context) GetInt(key string, defaultValue int) int {
 	return convert.ConvertToInt(value)
 }
 
+func (this *Context) GetInt32WithContext(contextName, key string, defaultValue int32) int32 {
+	var value, _ = this.GetValueWithContext(contextName, key, defaultValue)
+	return convert.ConvertToInt32(value)
+}
+
 func (this *Context) GetInt32(key string, defaultValue int32) int32 {
 	var value = this.GetValue(key, defaultValue)
 	return convert.ConvertToInt32(value)
+}
+
+func (this *Context) GetInt64WithContext(contextName, key string, defaultValue int64) int64 {
+	var value, _ = this.GetValueWithContext(contextName, key, defaultValue)
+	return convert.ConvertToInt64(value)
 }
 
 func (this *Context) GetInt64(key string, defaultValue int64) int64 {
@@ -203,14 +248,29 @@ func (this *Context) GetInt64(key string, defaultValue int64) int64 {
 	return convert.ConvertToInt64(value)
 }
 
+func (this *Context) GetFloatWithContext(contextName, key string, defaultValue float32) float32 {
+	var value, _ = this.GetValueWithContext(contextName, key, defaultValue)
+	return convert.ConvertToFloat32(value)
+}
+
 func (this *Context) GetFloat(key string, defaultValue float32) float32 {
 	var value = this.GetValue(key, defaultValue)
 	return convert.ConvertToFloat32(value)
 }
 
+func (this *Context) GetFloat64WithContext(contextName, key string, defaultValue float64) float64 {
+	var value, _ = this.GetValueWithContext(contextName, key, defaultValue)
+	return convert.ConvertToFloat64(value)
+}
+
 func (this *Context) GetFloat64(key string, defaultValue float64) float64 {
 	var value = this.GetValue(key, defaultValue)
 	return convert.ConvertToFloat64(value)
+}
+
+func (this *Context) GetBoolWithContext(contextName, key string, defaultValue bool) bool {
+	var value, _ = this.GetValueWithContext(contextName, key, defaultValue)
+	return convert.ConvertToBool(value)
 }
 
 func (this *Context) GetBool(key string, defaultValue bool) bool {
