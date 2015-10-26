@@ -87,20 +87,26 @@ func sendMail(addr string, auth smtp.Auth, from string, to []string, msg []byte,
 			ServerName: host,
 		}
 		conn, err = tls.Dial("tcp", addr, tlsConfig)
-		if err != nil {
-			return err
-		}
 	} else {
 		conn, err = net.Dial("tcp", addr)
 	}
 
-	defer conn.Close()
+	defer func() {
+		if conn != nil {
+			conn.Close()
+		}
+	}()
 
-	c, err := smtp.NewClient(conn, host)
 	if err != nil {
 		return err
 	}
+
+	c, err := smtp.NewClient(conn, host)
 	defer c.Close()
+
+	if err != nil {
+		return err
+	}
 
 	if auth != nil {
 		if ok, _ := c.Extension("AUTH"); ok {
