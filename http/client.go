@@ -7,6 +7,7 @@ import (
 	"net/url"
 	"strings"
 	"time"
+	"io"
 )
 
 const (
@@ -30,6 +31,8 @@ type Client struct {
 	params url.Values
 	//请求头
 	headers map[string]string
+
+	body string
 }
 
 func NewClient() *Client {
@@ -64,6 +67,10 @@ func (this *Client) SetParam(key string, value string) {
 	this.params.Set(key, value)
 }
 
+func (this *Client) SetBody(body string) {
+	this.body = body
+}
+
 func (this *Client) createGetURL() string {
 	var paramStr = "?"
 	if this.params != nil {
@@ -80,7 +87,15 @@ func (this *Client) createPostRequest() (*http.Request, error) {
 	if _, ok := this.headers["Content-Type"]; !ok {
 		this.headers["Content-Type"] = "application/x-www-form-urlencoded"
 	}
-	return http.NewRequest(this.method, this.urlString, strings.NewReader(this.params.Encode()))
+
+	var body io.Reader
+	if len(this.body) == 0 {
+		body = strings.NewReader(this.params.Encode())
+	} else {
+		body = strings.NewReader(this.body)
+	}
+
+	return http.NewRequest(this.method, this.urlString, body)
 }
 
 func (this *Client) doRequest() (*http.Response, error) {
