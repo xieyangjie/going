@@ -88,7 +88,8 @@ func sendMail(addr string, auth smtp.Auth, from string, to []string, msg []byte,
 		}
 		conn, err = tls.Dial("tcp", addr, tlsConfig)
 	} else {
-		conn, err = net.Dial("tcp", addr)
+//		conn, err = net.Dial("tcp", addr)
+		return smtp.SendMail(addr, auth, from, to, msg)
 	}
 
 	defer func() {
