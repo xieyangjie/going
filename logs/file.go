@@ -7,6 +7,8 @@ import (
 	"path"
 	"sync"
 	"time"
+	"path/filepath"
+	"strings"
 )
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -40,11 +42,13 @@ type FileWriter struct {
 	level   int
 	path    string
 	maxSize int64
+	maxDays int64
 	lock    *sync.Mutex
 }
 
 func NewFileWriter(level int, path string) *FileWriter {
 	var file = &FileWriter{}
+	file.maxDays = 7
 	file.maxSize = 10 * 1024 * 1024 //10m
 	file.level = level
 	file.path = path
@@ -81,6 +85,8 @@ func (this *FileWriter) checkSize() {
 		var size = fileInfo.Size()
 		if size >= this.maxSize {
 			this.renameFile()
+
+			go this.removeFile()
 		}
 	}
 }
@@ -96,6 +102,23 @@ func (this *FileWriter) renameFile() {
 	os.Rename(filename, newName)
 
 	this.startLogger()
+}
+
+func (this *FileWriter) removeFile() {
+	var dir = filepath.Dir(this.path)
+	filepath.Walk(dir, func(path string, info os.FileInfo, err error) (rErr error) {
+		defer func() {
+			if r := recover(); r != nil {
+			}
+		}()
+
+		if !info.IsDir() && info.ModTime().Unix() < (time.Now().Unix()-60*60*24*this.maxDays) {
+			if strings.HasSuffix(path, ".log") {
+				rErr = os.Remove(path)
+			}
+		}
+		return rErr
+	})
 }
 
 func (this *FileWriter) SetLevel(level int) {
@@ -114,13 +137,20 @@ func (this *FileWriter) GetMaxSize() int64 {
 	return this.maxSize
 }
 
+func (this *FileWriter) SetMaxDays(days int64) {
+	this.maxDays = days
+}
+
+func (this *FileWriter) GetMaxDays() int64 {
+	return this.maxDays
+}
+
 func (this *FileWriter) WriteMessage(level int, file string, line int, prefix string, msg string) {
 	if level < this.level {
 		return
 	}
 
 	this.logger.Printf("%s [%s:%d] %s", prefix, file, line, msg)
-
 	this.checkSize()
 }
 

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"path"
 	"runtime"
+	"sync"
 )
 
 const (
@@ -22,6 +23,8 @@ var levelShortNames = []string{
 	"[F]",
 }
 
+var messagePool *sync.Pool
+
 ////////////////////////////////////////////////////////////////////////////////
 type ILogWriter interface {
 	SetLevel(level int)
@@ -33,21 +36,49 @@ type ILogWriter interface {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+type logMessage struct {
+	level          int
+	file           string
+	line           int
+	levelShortName string
+	message        string
+}
+
+////////////////////////////////////////////////////////////////////////////////
 type Logger struct {
 	level        int
 	enableLogger bool
 	enableStack  bool
 	stackLevel   int
 	outputs      map[string]ILogWriter
+	messageChan  chan *logMessage
+	signalChan   chan string
+	waitGroup    sync.WaitGroup
 }
 
 func NewLogger() *Logger {
+	return NewLoggerWithChannel(256)
+}
+
+func NewLoggerWithChannel(channelLen int64) *Logger {
 	var log = &Logger{}
 	log.outputs = make(map[string]ILogWriter)
 	log.SetLogLevel(LOG_LEVEL_DEBUG)
 	log.SetEnableLogger(true)
 	log.SetEnableStack(false)
 	log.SetStackLevel(LOG_LEVEL_PANIC)
+	log.messageChan = make(chan *logMessage, channelLen)
+	log.signalChan  = make(chan string, 1)
+	log.waitGroup.Add(1)
+
+	if messagePool == nil {
+		messagePool = &sync.Pool{}
+		messagePool.New = func() interface{} {
+			return &logMessage{}
+		}
+	}
+
+	go log.startLogger()
 	return log
 }
 
@@ -95,13 +126,38 @@ func (this *Logger) RemoveOutput(key string) {
 	delete(this.outputs, key)
 }
 
+func (this *Logger) startLogger() {
+	var end = false
+	for {
+		select {
+		case msg := <- this.messageChan:
+			this._writeMessage(msg.level, msg.file, msg.line, msg.levelShortName, msg.message)
+			messagePool.Put(msg)
+		case sc := <- this.signalChan:
+			this.flush()
+			if sc == "close" {
+				for _, o := range this.outputs {
+					o.Close()
+				}
+				this.outputs = nil
+				end = true
+			}
+			this.waitGroup.Done()
+		}
+
+		if end {
+			break
+		}
+	}
+}
+
 func (this *Logger) writeMessage(level int, format string, v ...interface{}) {
 	if !this.enableLogger {
 		return
 	}
 
 	var skip = 2
-	if this == sharedLogger {
+	if this == DefaultLogger {
 		skip = 3
 	}
 
@@ -124,6 +180,16 @@ func (this *Logger) writeMessage(level int, format string, v ...interface{}) {
 		message += "\n"
 	}
 
+	var msg = messagePool.Get().(*logMessage)
+	msg.level = level
+	msg.file = file
+	msg.line = line
+	msg.levelShortName = levelShortName
+	msg.message = message
+	this.messageChan <- msg
+}
+
+func (this *Logger) _writeMessage(level int, file string, line int, levelShortName, message string) {
 	for _, output := range this.outputs {
 		output.WriteMessage(level, file, line, levelShortName, message)
 	}
@@ -189,26 +255,42 @@ func (this *Logger) println(args ...interface{}) string {
 }
 
 func (this *Logger) Close() {
-	for _, output := range this.outputs {
-		output.Close()
-	}
+	this.signalChan <- "close"
+	this.waitGroup.Wait()
+	close(this.messageChan)
+	close(this.signalChan)
 }
 
 func (this *Logger) Flush() {
-	for _, output := range this.outputs {
-		output.Flush()
+	this.signalChan <- "flush"
+	this.waitGroup.Wait()
+	this.waitGroup.Add(1)
+}
+
+func (this *Logger) flush() {
+	for {
+		if len(this.messageChan) > 0 {
+			var mc = <- this.messageChan
+			this._writeMessage(mc.level, mc.file, mc.line, mc.levelShortName, mc.message)
+			messagePool.Put(mc)
+			continue
+		}
+		break
+	}
+	for _, o := range this.outputs {
+		o.Flush()
 	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-var sharedLogger *Logger
+var DefaultLogger *Logger
 
 func SharedLogger() *Logger {
-	if sharedLogger == nil {
-		sharedLogger = NewLogger()
-		sharedLogger.AddOutput("console", NewConsoleWriter(LOG_LEVEL_DEBUG))
+	if DefaultLogger == nil {
+		DefaultLogger = NewLogger()
+		DefaultLogger.AddOutput("console", NewConsoleWriter(LOG_LEVEL_DEBUG))
 	}
-	return sharedLogger
+	return DefaultLogger
 }
 
 func Debugf(format string, args ...interface{}) {
