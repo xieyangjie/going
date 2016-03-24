@@ -48,7 +48,7 @@ type FileWriter struct {
 
 func NewFileWriter(level int, path string) *FileWriter {
 	var file = &FileWriter{}
-	file.maxDays = 7
+	file.maxDays = 30
 	file.maxSize = 10 * 1024 * 1024 //10m
 	file.level = level
 	file.path = path
