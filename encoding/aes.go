@@ -56,7 +56,7 @@ func AESCFBEncrypt(plaintext, key, iv []byte) ([]byte, error) {
 	var blockSize = block.BlockSize()
 	iv = iv[:blockSize]
 
-	var text = make([]byte, len(plaintext) + blockSize)
+	var text = make([]byte, len(plaintext))
 
 	var mode = cipher.NewCFBEncrypter(block, iv)
 	mode.XORKeyStream(text, plaintext)
