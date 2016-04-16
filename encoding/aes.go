@@ -1,16 +1,9 @@
 package encoding
 
 import (
-	"bytes"
 	"crypto/aes"
 	"crypto/cipher"
 )
-
-func PKCS5Padding(text []byte, blockSize int) []byte {
-	var diff = blockSize - len(text) % blockSize
-	var paddingText = bytes.Repeat([]byte{byte(diff)}, diff)
-	return append(text, paddingText...)
-}
 
 // AESCBCEncrypt 由key的长度决定是128, 192 还是 256
 func AESCBCEncrypt(plaintext, key, iv []byte) ([]byte, error) {
@@ -24,7 +17,7 @@ func AESCBCEncrypt(plaintext, key, iv []byte) ([]byte, error) {
 
 	var text = make([]byte, len(plaintext))
 	copy(text, plaintext)
-	text = PKCS5Padding(text, blockSize)
+	text = PKCS7Padding(text, blockSize)
 
 	var mode = cipher.NewCBCEncrypter(block, iv)
 	mode.CryptBlocks(text, text)
