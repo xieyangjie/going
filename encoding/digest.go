@@ -36,7 +36,7 @@ func SHA256(value []byte) []byte {
 	return s.Sum(nil)
 }
 
-func SHA256Strign(value string) string {
+func SHA256String(value string) string {
 	return hex.EncodeToString(SHA256([]byte(value)))
 }
 
