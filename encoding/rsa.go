@@ -8,23 +8,21 @@ import (
 )
 
 func packageData(originalData []byte, packageSize int) (r [][]byte) {
-	var length = len(originalData)
-	var diff = length % packageSize
-	var count = length / packageSize;
-	if diff > 0 {
-		count += 1
-	}
+	var src = make([]byte, len(originalData))
+	copy(src, originalData)
 
-	r = make([][]byte, 0, count)
-	var endIndex = packageSize;
-	for i:=0; i<count; i++ {
-		if (i == count - 1 && diff > 0) {
-			endIndex = i * packageSize + diff
-		} else {
-			endIndex = (i + 1) * packageSize
+	r = make([][]byte, 0)
+	if len(src) <= packageSize {
+		return append(r, src)
+	}
+	for len(src) > 0 {
+		var p = src[:packageSize]
+		r = append(r, p)
+		src = src[packageSize:]
+		if len(src) <= packageSize {
+			r = append(r, src)
+			break
 		}
-		var b = originalData[i * packageSize : endIndex]
-		r = append(r, b)
 	}
 	return r
 }
