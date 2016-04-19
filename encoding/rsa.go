@@ -44,7 +44,7 @@ func RSAEncrypt(plaintext, key []byte) ([]byte, error) {
 	}
 	var pub = pubInterface.(*rsa.PublicKey)
 
-	var datas = packageData(plaintext, 128 - 11)
+	var datas = packageData(plaintext, pub.N.BitLen() / 8 - 11)
 	var cipherDatas []byte = make([]byte, 0, 0)
 
 	for _, d := range datas {
@@ -72,7 +72,7 @@ func RSADecrypt(ciphertext, key []byte) ([]byte, error) {
 		return nil, err
 	}
 
-	var datas = packageData(ciphertext, 128)
+	var datas = packageData(ciphertext, pri.PublicKey.N.BitLen() / 8)
 	var plainDatas []byte = make([]byte, 0, 0)
 
 	for _, d := range datas {
