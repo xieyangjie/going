@@ -42,18 +42,18 @@ func RSAEncrypt(plaintext, key []byte) ([]byte, error) {
 	}
 	var pub = pubInterface.(*rsa.PublicKey)
 
-	var datas = packageData(plaintext, pub.N.BitLen() / 8 - 11)
-	var cipherDatas []byte = make([]byte, 0, 0)
+	var data = packageData(plaintext, pub.N.BitLen() / 8 - 11)
+	var cipherData []byte = make([]byte, 0, 0)
 
-	for _, d := range datas {
+	for _, d := range data {
 		var c, e = rsa.EncryptPKCS1v15(rand.Reader, pub, d)
 		if e != nil {
 			return nil, e
 		}
-		cipherDatas = append(cipherDatas, c...)
+		cipherData = append(cipherData, c...)
 	}
 
-	return cipherDatas, nil
+	return cipherData, nil
 }
 
 func RSADecrypt(ciphertext, key []byte) ([]byte, error) {
@@ -70,15 +70,15 @@ func RSADecrypt(ciphertext, key []byte) ([]byte, error) {
 		return nil, err
 	}
 
-	var datas = packageData(ciphertext, pri.PublicKey.N.BitLen() / 8)
-	var plainDatas []byte = make([]byte, 0, 0)
+	var data = packageData(ciphertext, pri.PublicKey.N.BitLen() / 8)
+	var plainData []byte = make([]byte, 0, 0)
 
-	for _, d := range datas {
+	for _, d := range data {
 		var p, e = rsa.DecryptPKCS1v15(rand.Reader, pri, d)
 		if e != nil {
 			return nil, e
 		}
-		plainDatas = append(plainDatas, p...)
+		plainData = append(plainData, p...)
 	}
-	return plainDatas, nil
+	return plainData, nil
 }
