@@ -64,16 +64,21 @@ func removeAll(source, target interface{}, removeAll bool) bool {
 		var indexList = indexs(sliceValue.Interface(), target, removeAll)
 		if len(indexList) > 0 {
 			var newSlice = reflect.MakeSlice(sliceValue.Type(), 0, 0)
+			var beginIndex = 0
 			var endIndex = 0
-			var count = len(indexList)
-			for index, value := range indexList {
-				if index == count - 1 {
-					endIndex = sliceValue.Len()
+			for index, _ := range indexList {
+
+				if index == 0 {
+					beginIndex = 0
 				} else {
-					endIndex = indexList[index + 1]
+					beginIndex = indexList[index-1]+1
 				}
-				newSlice = reflect.AppendSlice(newSlice, sliceValue.Slice(value+1, endIndex))
+
+				endIndex = indexList[index]
+				newSlice = reflect.AppendSlice(newSlice, sliceValue.Slice(beginIndex, endIndex))
 			}
+			newSlice = reflect.AppendSlice(newSlice, sliceValue.Slice(endIndex+1, sliceValue.Len()))
+
 			sliceValue.Set(newSlice)
 			return true
 		}
