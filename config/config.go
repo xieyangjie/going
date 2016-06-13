@@ -140,32 +140,32 @@ func (this *Config) GetMap(key string, defaultValue map[string]interface{}) map[
 
 func (this *Config) GetString(key string, defaultValue string) string {
 	var value = this.GetValue(key, defaultValue)
-	return convert.ConvertToString(value)
+	return convert.String(value)
 }
 
 func (this *Config) GetInt(key string, defaultValue int) int {
 	var value = this.GetValue(key, defaultValue)
-	return convert.ConvertToInt(value)
+	return convert.Int(value)
 }
 
 func (this *Config) GetInt64(key string, defaultValue int64) int64 {
 	var value = this.GetValue(key, defaultValue)
-	return convert.ConvertToInt64(value)
+	return convert.Int64(value)
 }
 
 func (this *Config) GetFloat(key string, defaultValue float32) float32 {
 	var value = this.GetValue(key, defaultValue)
-	return convert.ConvertToFloat32(value)
+	return convert.Float32(value)
 }
 
 func (this *Config) GetFloat64(key string, defaultValue float64) float64 {
 	var value = this.GetValue(key, defaultValue)
-	return convert.ConvertToFloat64(value)
+	return convert.Float64(value)
 }
 
 func (this *Config) GetBool(key string, defaultValue bool) bool {
 	var value = this.GetValue(key, defaultValue)
-	return convert.ConvertToBool(value)
+	return convert.Bool(value)
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -48,7 +48,7 @@ logs 目前主要有以下几个功能：
 ### time
 时间组件：目前就一个 Timestamp.
 
-### tools
+### tool
 常用小工具信息，目前内容还很少，会慢慢增加。
 
 ### validator

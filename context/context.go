@@ -209,73 +209,73 @@ func (this *Context) GetMap(key string, defaultValue map[string]interface{}) map
 //获取 string
 func (this *Context) GetStringWithContext(contextName, key, defaultValue string) string {
 	var value, _ = this.GetValueWithContext(contextName, key, defaultValue)
-	return convert.ConvertToString(value)
+	return convert.String(value)
 }
 
 func (this *Context) GetString(key string, defaultValue string) string {
 	var value = this.GetValue(key, defaultValue)
-	return convert.ConvertToString(value)
+	return convert.String(value)
 }
 
 //获取数值
 func (this *Context) GetIntWithContext(contextName, key string, defaultValue int) int {
 	var value, _ = this.GetValueWithContext(contextName, key, defaultValue)
-	return convert.ConvertToInt(value)
+	return convert.Int(value)
 }
 
 func (this *Context) GetInt(key string, defaultValue int) int {
 	var value = this.GetValue(key, defaultValue)
-	return convert.ConvertToInt(value)
+	return convert.Int(value)
 }
 
 func (this *Context) GetInt32WithContext(contextName, key string, defaultValue int32) int32 {
 	var value, _ = this.GetValueWithContext(contextName, key, defaultValue)
-	return convert.ConvertToInt32(value)
+	return convert.Int32(value)
 }
 
 func (this *Context) GetInt32(key string, defaultValue int32) int32 {
 	var value = this.GetValue(key, defaultValue)
-	return convert.ConvertToInt32(value)
+	return convert.Int32(value)
 }
 
 func (this *Context) GetInt64WithContext(contextName, key string, defaultValue int64) int64 {
 	var value, _ = this.GetValueWithContext(contextName, key, defaultValue)
-	return convert.ConvertToInt64(value)
+	return convert.Int64(value)
 }
 
 func (this *Context) GetInt64(key string, defaultValue int64) int64 {
 	var value = this.GetValue(key, defaultValue)
-	return convert.ConvertToInt64(value)
+	return convert.Int64(value)
 }
 
 func (this *Context) GetFloatWithContext(contextName, key string, defaultValue float32) float32 {
 	var value, _ = this.GetValueWithContext(contextName, key, defaultValue)
-	return convert.ConvertToFloat32(value)
+	return convert.Float32(value)
 }
 
 func (this *Context) GetFloat(key string, defaultValue float32) float32 {
 	var value = this.GetValue(key, defaultValue)
-	return convert.ConvertToFloat32(value)
+	return convert.Float32(value)
 }
 
 func (this *Context) GetFloat64WithContext(contextName, key string, defaultValue float64) float64 {
 	var value, _ = this.GetValueWithContext(contextName, key, defaultValue)
-	return convert.ConvertToFloat64(value)
+	return convert.Float64(value)
 }
 
 func (this *Context) GetFloat64(key string, defaultValue float64) float64 {
 	var value = this.GetValue(key, defaultValue)
-	return convert.ConvertToFloat64(value)
+	return convert.Float64(value)
 }
 
 func (this *Context) GetBoolWithContext(contextName, key string, defaultValue bool) bool {
 	var value, _ = this.GetValueWithContext(contextName, key, defaultValue)
-	return convert.ConvertToBool(value)
+	return convert.Bool(value)
 }
 
 func (this *Context) GetBool(key string, defaultValue bool) bool {
 	var value = this.GetValue(key, defaultValue)
-	return convert.ConvertToBool(value)
+	return convert.Bool(value)
 }
 
 ////////////////////////////////////////////////////////////////////////////////

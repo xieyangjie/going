@@ -90,19 +90,19 @@ func length(current interface{}, field interface{}, param interface{}) bool {
 
 	switch fieldValue.Kind() {
 	case reflect.String:
-		l := convert.ConvertToInt(param)
+		l := convert.Int(param)
 		return utf8.RuneCountInString(fieldValue.String()) == l
 	case reflect.Slice, reflect.Array, reflect.Map:
-		l := convert.ConvertToInt(param)
+		l := convert.Int(param)
 		return fieldValue.Len() == l
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
-		l := convert.ConvertToInt64(param)
+		l := convert.Int64(param)
 		return fieldValue.Int() == l
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
-		l := convert.ConvertToUint(param)
+		l := convert.Uint64(param)
 		return fieldValue.Uint() == l
 	case reflect.Float32, reflect.Float64:
-		l := convert.ConvertToFloat64(param)
+		l := convert.Float64(param)
 		return fieldValue.Float() == l
 	default:
 		return false
@@ -116,21 +116,21 @@ func equal(current interface{}, field interface{}, param interface{}) bool {
 	case reflect.String:
 		return strings.EqualFold(fieldValue.String(), param.(string))
 	case reflect.Slice, reflect.Array, reflect.Map:
-		p := convert.ConvertToInt(param)
+		p := convert.Int(param)
 		return fieldValue.Len() == p
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
-		p := convert.ConvertToInt64(param)
+		p := convert.Int64(param)
 		return fieldValue.Int() == p
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
-		p := convert.ConvertToUint(param)
+		p := convert.Uint64(param)
 		return fieldValue.Uint() == p
 	case reflect.Float32, reflect.Float64:
-		p := convert.ConvertToFloat64(param)
+		p := convert.Float64(param)
 		return fieldValue.Float() == p
 	case reflect.Struct:
 		if fieldValue.Type() == reflect.TypeOf(time.Time{}) {
 			var t1 = field.(time.Time).Unix()
-			var t2 = convert.ConvertToInt64(param)
+			var t2 = convert.Int64(param)
 			return t1 == t2
 		}
 		return false
@@ -150,21 +150,21 @@ func lessThan(current interface{}, field interface{}, param interface{}) bool {
 	case reflect.String:
 		return fieldValue.String() < param.(string)
 	case reflect.Slice, reflect.Array, reflect.Map:
-		p := convert.ConvertToInt(param)
+		p := convert.Int(param)
 		return fieldValue.Len() < p
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
-		p := convert.ConvertToInt64(param)
+		p := convert.Int64(param)
 		return fieldValue.Int() < p
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
-		p := convert.ConvertToUint(param)
+		p := convert.Uint64(param)
 		return fieldValue.Uint() < p
 	case reflect.Float32, reflect.Float64:
-		p := convert.ConvertToFloat64(param)
+		p := convert.Float64(param)
 		return fieldValue.Float() < p
 	case reflect.Struct:
 		if fieldValue.Type() == reflect.TypeOf(time.Time{}) {
 			var t1 = field.(time.Time).Unix()
-			var t2 = convert.ConvertToInt64(param)
+			var t2 = convert.Int64(param)
 			return t1 < t2
 		}
 		return false
@@ -190,15 +190,15 @@ func inList(current interface{}, field interface{}, param interface{}) bool {
 						return true
 					}
 				case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
-					if convert.ConvertToInt64(item) == fieldValue.Int() {
+					if convert.Int64(item) == fieldValue.Int() {
 						return true
 					}
 				case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
-					if convert.ConvertToUint(item) == fieldValue.Uint() {
+					if convert.Uint64(item) == fieldValue.Uint() {
 						return true
 					}
 				case reflect.Float32, reflect.Float64:
-					if convert.ConvertToFloat64(item) == fieldValue.Float() {
+					if convert.Float64(item) == fieldValue.Float() {
 						return true
 					}
 				}
@@ -220,21 +220,21 @@ func lessThanOrEqual(current interface{}, field interface{}, param interface{}) 
 	case reflect.String:
 		return fieldValue.String() <= param.(string)
 	case reflect.Slice, reflect.Array, reflect.Map:
-		p := convert.ConvertToInt(param)
+		p := convert.Int(param)
 		return fieldValue.Len() <= p
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
-		p := convert.ConvertToInt64(param)
+		p := convert.Int64(param)
 		return fieldValue.Int() <= p
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
-		p := convert.ConvertToUint(param)
+		p := convert.Uint64(param)
 		return fieldValue.Uint() <= p
 	case reflect.Float32, reflect.Float64:
-		p := convert.ConvertToFloat64(param)
+		p := convert.Float64(param)
 		return fieldValue.Float() <= p
 	case reflect.Struct:
 		if fieldValue.Type() == reflect.TypeOf(time.Time{}) {
 			var t1 = field.(time.Time).Unix()
-			var t2 = convert.ConvertToInt64(param)
+			var t2 = convert.Int64(param)
 			return t1 <= t2
 		}
 		return false
@@ -250,21 +250,21 @@ func greaterThan(current interface{}, field interface{}, param interface{}) bool
 	case reflect.String:
 		return fieldValue.String() > param.(string)
 	case reflect.Slice, reflect.Array, reflect.Map:
-		p := convert.ConvertToInt(param)
+		p := convert.Int(param)
 		return fieldValue.Len() > p
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
-		p := convert.ConvertToInt64(param)
+		p := convert.Int64(param)
 		return fieldValue.Int() > p
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
-		p := convert.ConvertToUint(param)
+		p := convert.Uint64(param)
 		return fieldValue.Uint() > p
 	case reflect.Float32, reflect.Float64:
-		p := convert.ConvertToFloat64(param)
+		p := convert.Float64(param)
 		return fieldValue.Float() > p
 	case reflect.Struct:
 		if fieldValue.Type() == reflect.TypeOf(time.Time{}) {
 			var t1 = field.(time.Time).Unix()
-			var t2 = convert.ConvertToInt64(param)
+			var t2 = convert.Int64(param)
 			return t1 > t2
 		}
 		return false
@@ -280,21 +280,21 @@ func greaterThanOrEqual(current interface{}, field interface{}, param interface{
 	case reflect.String:
 		return fieldValue.String() >= param.(string)
 	case reflect.Slice, reflect.Array, reflect.Map:
-		p := convert.ConvertToInt(param)
+		p := convert.Int(param)
 		return fieldValue.Len() >= p
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
-		p := convert.ConvertToInt64(param)
+		p := convert.Int64(param)
 		return fieldValue.Int() >= p
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
-		p := convert.ConvertToUint(param)
+		p := convert.Uint64(param)
 		return fieldValue.Uint() >= p
 	case reflect.Float32, reflect.Float64:
-		p := convert.ConvertToFloat64(param)
+		p := convert.Float64(param)
 		return fieldValue.Float() >= p
 	case reflect.Struct:
 		if fieldValue.Type() == reflect.TypeOf(time.Time{}) {
 			var t1 = field.(time.Time).Unix()
-			var t2 = convert.ConvertToInt64(param)
+			var t2 = convert.Int64(param)
 			return t1 >= t2
 		}
 		return false
