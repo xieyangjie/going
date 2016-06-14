@@ -58,29 +58,29 @@ func Int64(value interface{}) int64 {
 	return int64(Float64(value))
 }
 
-func Uint(value interface{}) uint64 {
-	if v, ok := value.(uint64); ok {
+func Uint(value interface{}) uint {
+	if v, ok := value.(uint); ok {
 		return v
 	}
 	return uint(Float64(value))
 }
 
-func Uint8(value interface{}) uint64 {
-	if v, ok := value.(uint64); ok {
+func Uint8(value interface{}) uint8 {
+	if v, ok := value.(uint8); ok {
 		return v
 	}
 	return uint8(Float64(value))
 }
 
-func Uint16(value interface{}) uint64 {
-	if v, ok := value.(uint64); ok {
+func Uint16(value interface{}) uint16 {
+	if v, ok := value.(uint16); ok {
 		return v
 	}
 	return uint16(Float64(value))
 }
 
-func Uint32(value interface{}) uint64 {
-	if v, ok := value.(uint64); ok {
+func Uint32(value interface{}) uint32 {
+	if v, ok := value.(uint32); ok {
 		return v
 	}
 	return uint32(Float64(value))
