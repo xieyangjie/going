@@ -1,0 +1,77 @@
+package sql
+
+import (
+	"database/sql"
+	"fmt"
+	_ "github.com/go-sql-driver/mysql"
+	"golang.org/x/net/context"
+)
+
+func NewSQL(driver, url string, maxOpen, maxIdle int) (p *Pool) {
+	db, err := sql.Open(driver, url)
+	if err != nil {
+		fmt.Println("连接 SQL 数据库失败:", err)
+		return nil
+	}
+
+	if err := db.Ping(); err != nil {
+		return nil
+	}
+
+	db.SetMaxIdleConns(maxIdle)
+	db.SetMaxOpenConns(maxOpen)
+
+	p = &Pool{}
+	p.s = &Session{db}
+	return p
+}
+
+////////////////////////////////////////////////////////////////////////////////
+type Pool struct {
+	s *Session
+}
+
+func (this *Pool) GetSession() *Session {
+	return this.s
+}
+
+func (this *Pool) Release(s *Session) {
+	// do nothing
+}
+
+type Session struct {
+	*sql.DB
+}
+
+func (this *Session) Query(query string, args ...interface{}) (rows *sql.Rows, err error) {
+	stmt, err := this.Prepare(query)
+	if err != nil {
+		return nil, err
+	}
+	rows, err = stmt.Query(args...)
+	return rows, err
+}
+
+func (this *Session) QueryRow(query string, args ...interface{}) (row *sql.Row, err error) {
+	stmt, err := this.Prepare(query)
+	if err != nil {
+		return nil, err
+	}
+	row = stmt.QueryRow(args...)
+	return row, err
+}
+
+////////////////////////////////////////////////////////////////////////////////
+const k_SQL_KEY = "sql_session"
+
+type Setter interface {
+	Set(key string, value interface{})
+}
+
+func FromContext(c context.Context) *Session {
+	return c.Value(k_SQL_KEY).(*Session)
+}
+
+func ToContext(s Setter, c *Session) {
+	s.Set(k_SQL_KEY, c)
+}
