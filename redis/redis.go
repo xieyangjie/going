@@ -6,6 +6,7 @@ import (
 	"time"
 	redigo "github.com/garyburd/redigo/redis"
 	"golang.org/x/net/context"
+	"encoding/json"
 )
 
 func NewRedis(url, password string, dbIndex, maxActive, maxIdle int) (p *Pool) {
@@ -113,6 +114,17 @@ func (this *Session) HGETALL(key string, obj interface{}) (err error) {
 func (this *Session) HLEN(key string) (int) {
 	var r, _ = Int(this.Do("HLEN", key))
 	return r
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 把一个对象编码成 JSON 字符串数据进行存储
+func (this *Session) EncodeToJSONEX(key string, obj interface{}, seconds int) (reply interface{}, err error) {
+	value, err := json.Marshal(obj)
+	if err != nil {
+		return nil, err
+	}
+	reply, err = this.SETEX(key, value, seconds)
+	return reply, err
 }
 
 ////////////////////////////////////////////////////////////////////////////////
