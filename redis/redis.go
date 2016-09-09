@@ -5,7 +5,6 @@ import (
 	"os"
 	"time"
 	redigo "github.com/garyburd/redigo/redis"
-	"golang.org/x/net/context"
 	"encoding/json"
 )
 
@@ -184,8 +183,12 @@ type Setter interface {
 	Set(key string, value interface{})
 }
 
-func FromContext(c context.Context) *Session {
-	return c.Value(k_REDIS_KEY).(*Session)
+type Getter interface {
+	MustGet(key string) interface{}
+}
+
+func FromContext(g Getter) *Session {
+	return g.MustGet(k_REDIS_KEY).(*Session)
 }
 
 func ToContext(s Setter, c *Session) {

@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"golang.org/x/net/context"
 )
 
 func NewSQL(driver, url string, maxOpen, maxIdle int) (p *Pool) {
@@ -68,8 +67,12 @@ type Setter interface {
 	Set(key string, value interface{})
 }
 
-func FromContext(c context.Context) *Session {
-	return c.Value(k_SQL_KEY).(*Session)
+type Getter interface {
+	MustGet(key string) interface{}
+}
+
+func FromContext(g Getter) *Session {
+	return g.MustGet(k_SQL_KEY).(*Session)
 }
 
 func ToContext(s Setter, c *Session) {

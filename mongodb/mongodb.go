@@ -3,7 +3,6 @@ package mongodb
 import (
 	"fmt"
 	"github.com/smartwalle/pool"
-	"golang.org/x/net/context"
 	"gopkg.in/mgo.v2"
 	"time"
 )
@@ -78,8 +77,12 @@ type Setter interface {
 	Set(key string, value interface{})
 }
 
-func FromContext(c context.Context) *Session {
-	return c.Value(k_MONGODB_KEY).(*Session)
+type Getter interface {
+	MustGet(key string) interface{}
+}
+
+func FromContext(g Getter) *Session {
+	return g.MustGet(k_MONGODB_KEY).(*Session)
 }
 
 func ToContext(s Setter, c *Session) {
