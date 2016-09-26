@@ -1,8 +1,30 @@
 package mongodb
 
 import (
+	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
+	"strings"
 )
+
+const (
+	//获取较新的数据
+	DB_GET_NEWEST = 1
+
+	//获取较旧的数据
+	DB_GET_PAST = 2
+
+	//默认分页数量
+	DB_PAGE_SIZE = 20
+)
+
+type IPaginationInfo interface {
+	GetPageId() string
+	GetPageFlag() int
+
+	GetPageSize() int
+	GetPageNumber() int
+	GetSortFields() []string
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // 添加数据
@@ -54,6 +76,45 @@ func (this *Session) FindOne(cName string, query bson.M, result interface{}) (er
 func (this *Session) FindAll(cName string, query bson.M, result interface{}) (err error) {
 	var c = this.C(cName)
 	err = c.Find(query).All(result)
+	return err
+}
+
+func (this *Session) FindAllWithPaginationInfo(cName string, query bson.M, pagination IPaginationInfo, results interface{}) (err error) {
+	var pageId = pagination.GetPageId()
+	var pageFlag = pagination.GetPageFlag()
+	var pageSize = pagination.GetPageSize()
+	var pageNumber = pagination.GetPageNumber()
+	var sortFields = pagination.GetSortFields()
+	if bson.IsObjectIdHex(pageId) && pageNumber <= 0 {
+		if pageFlag == DB_GET_NEWEST {
+			query["_id"] = bson.M{"$gt": bson.ObjectIdHex(pageId)}
+		} else if pageFlag == DB_GET_PAST {
+			query["_id"] = bson.M{"$lt": bson.ObjectIdHex(pageId)}
+		}
+	}
+
+	if pageSize == 0 {
+		pageSize = DB_PAGE_SIZE
+	}
+
+	var fieldsList = make([]string, 0, len(sortFields))
+	for _, value := range sortFields {
+		v := strings.TrimSpace(value)
+		if len(v) > 0 {
+			fieldsList = append(fieldsList, v)
+		}
+	}
+	var collection = this.C(cName)
+	var q = collection.Find(query).Sort(fieldsList...)
+	if pageNumber > 0 {
+		q = q.Skip((pageNumber - 1) * pageSize)
+	}
+
+	if pageSize > 0 {
+		q = q.Limit(pageSize)
+	}
+
+	err = q.All(results)
 	return err
 }
 
