@@ -16,7 +16,7 @@ const (
 	DB_PAGE_SIZE = 20
 )
 
-type IPaginationInfo interface {
+type IPagination interface {
 	GetPageId() string
 	GetPageFlag() int
 
@@ -78,7 +78,7 @@ func (this *Session) FindAll(cName string, query bson.M, result interface{}) (er
 	return err
 }
 
-func (this *Session) FindAllWithPaginationInfo(cName string, query bson.M, pagination IPaginationInfo, results interface{}) (err error) {
+func (this *Session) FindAllWithPagination(cName string, query bson.M, pagination IPagination, results interface{}) (err error) {
 	var pageId = pagination.GetPageId()
 	var pageFlag = pagination.GetPageFlag()
 	var pageSize = pagination.GetPageSize()
