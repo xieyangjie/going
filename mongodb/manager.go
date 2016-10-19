@@ -17,11 +17,11 @@ const (
 )
 
 type IPagination interface {
-	GetPageId() string
-	GetPageFlag() int
+	GetId() string
+	GetFlag() int
 
-	GetPageSize() int
-	GetPageNumber() int
+	GetLimit() int
+	GetOffset() int
 	GetSortFields() []string
 }
 
@@ -79,21 +79,21 @@ func (this *Session) FindAll(cName string, query bson.M, result interface{}) (er
 }
 
 func (this *Session) FindAllWithPagination(cName string, query bson.M, pagination IPagination, results interface{}) (err error) {
-	var pageId = pagination.GetPageId()
-	var pageFlag = pagination.GetPageFlag()
-	var pageSize = pagination.GetPageSize()
-	var pageNumber = pagination.GetPageNumber()
+	var id = pagination.GetId()
+	var flag = pagination.GetFlag()
+	var limit = pagination.GetLimit()
+	var offset = pagination.GetOffset()
 	var sortFields = pagination.GetSortFields()
-	if bson.IsObjectIdHex(pageId) && pageNumber <= 0 {
-		if pageFlag == DB_GET_NEWEST {
-			query["_id"] = bson.M{"$gt": bson.ObjectIdHex(pageId)}
-		} else if pageFlag == DB_GET_PAST {
-			query["_id"] = bson.M{"$lt": bson.ObjectIdHex(pageId)}
+	if bson.IsObjectIdHex(id) && offset <= 0 {
+		if flag == DB_GET_NEWEST {
+			query["_id"] = bson.M{"$gt": bson.ObjectIdHex(id)}
+		} else if flag == DB_GET_PAST {
+			query["_id"] = bson.M{"$lt": bson.ObjectIdHex(id)}
 		}
 	}
 
-	if pageSize == 0 {
-		pageSize = DB_PAGE_SIZE
+	if limit == 0 {
+		limit = DB_PAGE_SIZE
 	}
 
 	var fieldsList = make([]string, 0, len(sortFields))
@@ -105,12 +105,12 @@ func (this *Session) FindAllWithPagination(cName string, query bson.M, paginatio
 	}
 	var collection = this.C(cName)
 	var q = collection.Find(query).Sort(fieldsList...)
-	if pageNumber > 0 {
-		q = q.Skip((pageNumber - 1) * pageSize)
+	if offset > 0 {
+		q = q.Skip(offset)
 	}
 
-	if pageSize > 0 {
-		q = q.Limit(pageSize)
+	if limit > 0 {
+		q = q.Limit(limit)
 	}
 
 	err = q.All(results)
