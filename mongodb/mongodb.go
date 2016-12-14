@@ -73,20 +73,18 @@ func (this *Session) C(name string) *mgo.Collection {
 ////////////////////////////////////////////////////////////////////////////////
 const k_MONGODB_KEY = "mongo_session"
 
-type Setter interface {
+type Context interface {
 	Set(key string, value interface{})
-}
 
-type Getter interface {
 	MustGet(key string) interface{}
 }
 
-func FromContext(g Getter) *Session {
-	return g.MustGet(k_MONGODB_KEY).(*Session)
+func FromContext(ctx Context) *Session {
+	return ctx.MustGet(k_MONGODB_KEY).(*Session)
 }
 
-func ToContext(s Setter, c *Session) {
-	s.Set(k_MONGODB_KEY, c)
+func ToContext(ctx Context, s *Session) {
+	ctx.Set(k_MONGODB_KEY, s)
 }
 
 ////////////////////////////////////////////////////////////////////////////////

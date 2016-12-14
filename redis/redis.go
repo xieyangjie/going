@@ -179,18 +179,17 @@ type Conn interface {
 ////////////////////////////////////////////////////////////////////////////////
 const k_REDIS_KEY = "redis_conn"
 
-type Setter interface {
+type Context interface {
 	Set(key string, value interface{})
-}
 
-type Getter interface {
 	MustGet(key string) interface{}
 }
 
-func FromContext(g Getter) *Session {
-	return g.MustGet(k_REDIS_KEY).(*Session)
+func FromContext(ctx Context) *Session {
+	return ctx.MustGet(k_REDIS_KEY).(*Session)
 }
 
-func ToContext(s Setter, c *Session) {
-	s.Set(k_REDIS_KEY, c)
+func ToContext(ctx Context, s *Session) {
+	ctx.Set(k_REDIS_KEY, s)
 }
+
