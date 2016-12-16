@@ -84,7 +84,7 @@ func (this *Session) FindAllWithPagination(cName string, query bson.M, paginatio
 	var limit = pagination.GetLimit()
 	var offset = pagination.GetOffset()
 	var sortFields = pagination.GetSortFields()
-	if bson.IsObjectIdHex(id) && offset <= 0 {
+	if bson.IsObjectIdHex(id) /*&& offset <= 0*/ {
 		if flag == DB_GET_NEWEST {
 			query["_id"] = bson.M{"$gt": bson.ObjectIdHex(id)}
 		} else if flag == DB_GET_PAST {
@@ -92,7 +92,7 @@ func (this *Session) FindAllWithPagination(cName string, query bson.M, paginatio
 		}
 	}
 
-	if limit == 0 {
+	if limit <= 0 {
 		limit = DB_PAGE_SIZE
 	}
 
