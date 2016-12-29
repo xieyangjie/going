@@ -16,3 +16,10 @@ func PKCS7Padding(text []byte, blockSize int) []byte {
 	var paddingText = bytes.Repeat([]byte{byte(diff)}, diff)
 	return append(text, paddingText...)
 }
+
+
+func PKCS7UnPadding(text []byte) []byte {
+	var length = len(text)
+	var unpadding = int(text[length-1])
+	return text[:(length-unpadding)]
+}

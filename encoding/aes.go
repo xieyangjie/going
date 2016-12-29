@@ -37,6 +37,7 @@ func AESCBCDecrypt(ciphertext, key, iv []byte) ([]byte, error) {
 
 	var mode = cipher.NewCBCDecrypter(block, iv)
 	mode.CryptBlocks(text, ciphertext)
+	text = PKCS7UnPadding(text)
 	return text, nil
 }
 
