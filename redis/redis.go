@@ -94,6 +94,10 @@ func (this *Session) INCR(key string) (reply interface{}, err error) {
 	return this.Do("INCR", key)
 }
 
+func (this *Session) DECR(key string) (reply interface{}, err error) {
+	return this.Do("DECR", key)
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 func (this *Session) HMSET(key string, obj interface{}) (reply interface{}, err error) {
 	return this.Do("HMSET", redigo.Args{}.Add(key).AddFlat(obj)...)
