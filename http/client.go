@@ -33,6 +33,9 @@ type Client struct {
 	headers map[string]string
 
 	body string
+
+	username string
+	password string
 }
 
 func NewClient() *Client {
@@ -69,6 +72,11 @@ func (this *Client) SetParam(key string, value string) {
 
 func (this *Client) SetBody(body string) {
 	this.body = body
+}
+
+func (this *Client) SetBasicAuth(username, password string) {
+	this.username = username
+	this.password = password
 }
 
 func (this *Client) createGetURL() string {
@@ -118,6 +126,10 @@ func (this *Client) doRequest() (*http.Response, error) {
 		return nil, err
 	}
 
+	if len(this.username) > 0 {
+		request.SetBasicAuth(this.username, this.password)
+	}
+
 	for key, value := range this.headers {
 		request.Header.Set(key, value)
 	}
@@ -143,14 +155,18 @@ func (this *Client) DoRequest() ([]byte, error) {
 	return respBodyByte, err
 }
 
-func (this *Client) DoJsonRequest() (map[string]interface{}, error) {
-	var result map[string]interface{}
+func (this *Client) DoJsonRequest() (result map[string]interface{}, err error) {
+	err = this.JsonRequest(&result)
+	return result, err
+}
+
+func (this *Client) JsonRequest(result interface{}) (error) {
 	respBodyByte, err := this.DoRequest()
 	if err != nil {
-		return nil, err
+		return err
 	}
 	err = json.Unmarshal(respBodyByte, &result)
-	return result, err
+	return err
 }
 
 ////////////////////////////////////////////////////////////////////////////////
