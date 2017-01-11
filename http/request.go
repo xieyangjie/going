@@ -1,4 +1,4 @@
-package http2
+package http
 
 import (
 	"encoding/json"
@@ -10,9 +10,16 @@ import (
 )
 
 func NewRequest(method, url string, params url.Values) (*http.Request, error) {
+	var m = strings.ToUpper(method)
 	var body io.Reader
-	body = strings.NewReader(params.Encode())
-	return http.NewRequest(method, url, body)
+	if m == "GET" || m == "HEAD" {
+		if strings.Contains(url, "?") == false  && len(params) > 0 {
+			url = url + "?" + params.Encode()
+		}
+	} else {
+		body = strings.NewReader(params.Encode())
+	}
+	return http.NewRequest(m, url, body)
 }
 
 func DoRequest(c *http.Client, req *http.Request) (*http.Response, []byte, error) {
