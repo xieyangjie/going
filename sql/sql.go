@@ -14,6 +14,7 @@ func NewSQL(driver, url string, maxOpen, maxIdle int) (p *Pool) {
 	}
 
 	if err := db.Ping(); err != nil {
+		fmt.Println("连接 SQL 数据库失败:", err)
 		return nil
 	}
 
