@@ -14,9 +14,14 @@ func NewRequest(method, url string, params url.Values) (*http.Request, error) {
 	var m = strings.ToUpper(method)
 	var body io.Reader
 	if m == "GET" || m == "HEAD" {
-		if strings.Contains(url, "?") == false  && len(params) > 0 {
-			url = url + "?" + params.Encode()
+		if len(params) > 0 {
+			if strings.Contains(url, "?") {
+				url = url + "&" + params.Encode()
+			} else {
+				url = url + "?" + params.Encode()
+			}
 		}
+
 	} else {
 		body = strings.NewReader(params.Encode())
 	}
