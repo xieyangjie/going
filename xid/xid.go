@@ -10,6 +10,8 @@ import (
 	"os"
 	"sync/atomic"
 	"time"
+	"bytes"
+	"errors"
 )
 
 // 从 mgo.bson 复制
@@ -30,6 +32,26 @@ func (this XID) String() string {
 
 func (this XID) MarshalJSON() ([]byte, error) {
 	return []byte(fmt.Sprintf(`"%x"`, string(this))), nil
+}
+
+var nullBytes = []byte("null")
+
+func (this *XID) UnmarshalJSON(data []byte) error {
+
+	if len(data) == 2 && data[0] == '"' && data[1] == '"' || bytes.Equal(data, nullBytes) {
+		*this = ""
+		return nil
+	}
+	if len(data) != 26 || data[0] != '"' || data[25] != '"' {
+		return errors.New(fmt.Sprintf("invalid XID in JSON: %s", string(data)))
+	}
+	var buf [12]byte
+	_, err := hex.Decode(buf[:], data[1:25])
+	if err != nil {
+		return errors.New(fmt.Sprintf("invalid XID in JSON: %s (%s)", string(data), err))
+	}
+	*this = XID(string(buf[:]))
+	return nil
 }
 
 func (this XID) Valid() bool {
