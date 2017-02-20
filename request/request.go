@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
-	"fmt"
 )
 
 func NewRequest(method, url string, params url.Values) (*http.Request, error) {
@@ -60,7 +59,6 @@ func DoJSONRequest(c *http.Client, req *http.Request, result interface{}) (*http
 	if err != nil {
 		return rep, err
 	}
-	fmt.Println(string(repBody))
 	err = json.Unmarshal(repBody, &result)
 	return rep, err
 }
