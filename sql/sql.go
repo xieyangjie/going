@@ -3,7 +3,6 @@ package sql
 import (
 	"database/sql"
 	"fmt"
-	"github.com/smartwalle/dba"
 )
 
 func NewSQL(driver, url string, maxOpen, maxIdle int) (p *Pool) {
@@ -60,11 +59,6 @@ func (this *Session) QueryRow(query string, args ...interface{}) (row *sql.Row) 
 	//row = stmt.QueryRow(args...)
 	//return row, err
 	return this.DB.QueryRow(query, args...)
-}
-
-func (this *Session) Tx() *dba.Tx {
-	var tx = dba.NewTx(this.DB)
-	return tx
 }
 
 ////////////////////////////////////////////////////////////////////////////////
