@@ -120,6 +120,8 @@ func (this *Session) HLEN(key string) (int) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
 // 把一个对象编码成 JSON 字符串数据进行存储
 func (this *Session) EncodeToJSONEX(key string, obj interface{}, seconds int) (reply interface{}, err error) {
 	value, err := json.Marshal(obj)

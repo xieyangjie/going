@@ -44,21 +44,22 @@ type Session struct {
 }
 
 func (this *Session) Query(query string, args ...interface{}) (rows *sql.Rows, err error) {
-	stmt, err := this.Prepare(query)
-	if err != nil {
-		return nil, err
-	}
-	rows, err = stmt.Query(args...)
-	return rows, err
+	//stmt, err := this.Prepare(query)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//rows, err = stmt.Query(args...)
+	return this.DB.Query(query, args...)
 }
 
-func (this *Session) QueryRow(query string, args ...interface{}) (row *sql.Row, err error) {
-	stmt, err := this.Prepare(query)
-	if err != nil {
-		return nil, err
-	}
-	row = stmt.QueryRow(args...)
-	return row, err
+func (this *Session) QueryRow(query string, args ...interface{}) (row *sql.Row) {
+	//stmt, err := this.Prepare(query)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//row = stmt.QueryRow(args...)
+	//return row, err
+	return this.DB.QueryRow(query, args...)
 }
 
 func (this *Session) Tx() *dba.Tx {
