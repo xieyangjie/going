@@ -37,20 +37,29 @@ func (this XID) MarshalJSON() ([]byte, error) {
 var nullBytes = []byte("null")
 
 func (this *XID) UnmarshalJSON(data []byte) error {
-
 	if len(data) == 2 && data[0] == '"' && data[1] == '"' || bytes.Equal(data, nullBytes) {
 		*this = ""
 		return nil
 	}
-	if len(data) != 26 || data[0] != '"' || data[25] != '"' {
+	if (len(data) != 26 && len(data) != 14) || data[0] != '"' || (data[13] != '"' && data[25] != '"') {
 		return errors.New(fmt.Sprintf("invalid XID in JSON: %s", string(data)))
 	}
-	var buf [12]byte
-	_, err := hex.Decode(buf[:], data[1:25])
-	if err != nil {
-		return errors.New(fmt.Sprintf("invalid XID in JSON: %s (%s)", string(data), err))
+	if len(data) == 26 {
+		var buf [12]byte
+		_, err := hex.Decode(buf[:], data[1:25])
+		if err != nil {
+			return errors.New(fmt.Sprintf("invalid XID in JSON: %s (%s)", string(data), err))
+		}
+		*this = XID(string(buf[:]))
+	} else if len(data) == 14 {
+		var buf [6]byte
+		_, err := hex.Decode(buf[:], data[1:13])
+		if err != nil {
+			return errors.New(fmt.Sprintf("invalid XID in JSON: %s (%s)", string(data), err))
+		}
+		*this = XID(string(buf[:]))
 	}
-	*this = XID(string(buf[:]))
+
 	return nil
 }
 
@@ -85,14 +94,14 @@ func (this XID) byteSlice(start, end int) []byte {
 
 func XIDHex(v string) XID {
 	var d, err = hex.DecodeString(v)
-	if err != nil || len(d) != 12 {
+	if err != nil || (len(d) != 12 && len(d) != 6) {
 		panic(fmt.Sprintf("invalid input to XID Hex: %q", v))
 	}
 	return XID(d)
 }
 
 func IsXIDHex(s string) bool {
-	if len(s) != 24 {
+	if len(s) != 24 && len(s) != 12 {
 		return false
 	}
 	_, err := hex.DecodeString(s)
@@ -144,4 +153,22 @@ func readRandomUint32() uint32 {
 		panic(fmt.Errorf("cannot read random object id: %v", err))
 	}
 	return uint32((uint32(b[0]) << 0) | (uint32(b[1]) << 8) | (uint32(b[2]) << 16) | (uint32(b[3]) << 24))
+}
+
+func NewMID() XID {
+	return NewMIDWithTime(time.Now())
+}
+
+func NewMIDWithTime(t time.Time) XID {
+	var tUnix = uint32(t.Unix())
+	var b [6]byte
+	b[0] = byte(tUnix >> 16)
+	b[1] = byte(tUnix >> 8)
+	b[2] = byte(tUnix)
+
+	i := atomic.AddUint32(&objectIdCounter, 1)
+	b[3] = byte(i >> 16)
+	b[4] = byte(i >> 8)
+	b[5] = byte(i)
+	return XID(string(b[:]))
 }
