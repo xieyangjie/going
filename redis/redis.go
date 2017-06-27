@@ -48,7 +48,7 @@ type Pool struct {
 
 func (this *Pool) GetSession() *Session {
 	var c = this.p.Get()
-	return &Session{c}
+	return NewSession(c)
 }
 
 func (this *Pool) Release(s *Session) {
@@ -56,6 +56,13 @@ func (this *Pool) Release(s *Session) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+func NewSession(c Conn) *Session {
+	if c == nil {
+		return nil
+	}
+	return &Session{c: c}
+}
+
 type Session struct {
 	c Conn
 }
@@ -170,9 +177,6 @@ func MustBool(reply interface{}, err error) (bool) {
 }
 
 func MustString(reply interface{}, err error) (string) {
-	if err != nil {
-		fmt.Println(err)
-	}
 	var r, _ = String(reply, err)
 	return r
 }
