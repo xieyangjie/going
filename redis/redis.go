@@ -97,7 +97,7 @@ func (this *Session) SET(key string, value interface{}) (interface{}, error) {
 	return this.Do("SET", key, value)
 }
 
-func (this *Session) SETEX(key string, value interface{}, seconds int) (interface{}, error) {
+func (this *Session) SETEX(key string, seconds int, value interface{}) (interface{}, error) {
 	return this.Do("SETEX", key, seconds, value)
 }
 
@@ -177,7 +177,7 @@ func (this *Session) EncodeToJSONEX(key string, obj interface{}, seconds int) (r
 	if err != nil {
 		return nil, err
 	}
-	reply, err = this.SETEX(key, value, seconds)
+	reply, err = this.SETEX(key, seconds, value)
 	return reply, err
 }
 
