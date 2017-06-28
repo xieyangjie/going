@@ -71,104 +71,15 @@ func (this *Session) Conn() redigo.Conn {
 	return this.c
 }
 
+func (this *Session) Close() {
+	if this.c != nil {
+		this.c.Close()
+	}
+}
+
 func (this *Session) Do(commandName string, args ...interface{}) (interface{}, error) {
 	return this.c.Do(commandName, args...)
 }
-
-////////////////////////////////////////////////////////////////////////////////
-func (this *Session) EXISTS(key string) bool {
-	return MustBool(this.Do("EXISTS", key))
-}
-
-func (this *Session) EXPIRE(key string, seconds int) (interface{}, error) {
-	return this.Do("EXPIRE", key, seconds)
-}
-
-func (this *Session) DEL(key ...interface{}) (interface{}, error) {
-	return this.Do("DEL", key...)
-}
-
-////////////////////////////////////////////////////////////////////////////////
-func (this *Session) GET(key string) (interface{}, error) {
-	return this.Do("GET", key)
-}
-
-func (this *Session) SET(key string, value interface{}) (interface{}, error) {
-	return this.Do("SET", key, value)
-}
-
-func (this *Session) SETEX(key string, seconds int, value interface{}) (interface{}, error) {
-	return this.Do("SETEX", key, seconds, value)
-}
-
-////////////////////////////////////////////////////////////////////////////////
-func (this *Session) INCRBY(key string, increment int) (interface{}, error) {
-	return this.Do("INCRBY", key, increment)
-}
-
-func (this *Session) INCR(key string) (interface{}, error) {
-	return this.Do("INCR", key)
-}
-
-func (this *Session) DECR(key string) (interface{}, error) {
-	return this.Do("DECR", key)
-}
-
-////////////////////////////////////////////////////////////////////////////////
-func (this *Session) SADD(key string, member interface{}) (interface{}, error) {
-	return this.Do("SADD", key, member)
-}
-
-func (this *Session) SREM(key string, member interface{}) (interface{}, error) {
-	return this.Do("SREM", key, member)
-}
-
-func (this *Session) SMEMBERS(key string) (interface{}, error) {
-	return this.Do("SMEMBERS", key)
-}
-
-func (this *Session) SCARD(key string) int {
-	return MustInt(this.Do("SCARD", key))
-}
-
-////////////////////////////////////////////////////////////////////////////////
-func (this *Session) HEXISTS(key, field string) bool {
-	return MustBool(this.Do("HEXISTS", key, field))
-}
-
-func (this *Session) HSET(key, field string, value interface{}) (interface{}, error) {
-	return this.Do("HSET", key, field, value)
-}
-
-func (this *Session) HINCRBY(key, field string, increment int) (interface{}, error) {
-	return this.Do("HINCRBY", key, field, increment)
-}
-
-func (this *Session) HMSET(key string, obj interface{}) (interface{}, error) {
-	return this.Do("HMSET", redigo.Args{}.Add(key).AddFlat(obj)...)
-}
-
-func (this *Session) HGET(key string, field string) (reply interface{}, err error) {
-	return this.Do("HGET", key, field)
-}
-
-func (this *Session) HGETALL(key string, obj interface{}) (err error) {
-	var reply interface{}
-	reply, err = this.Do("HGETALL", key)
-	if err != nil {
-		return err
-	}
-
-	err = redigo.ScanStruct(reply.([]interface{}), obj)
-	return err
-}
-
-func (this *Session) HLEN(key string) int {
-	var r, _ = Int(this.Do("HLEN", key))
-	return r
-}
-
-////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
 // 把一个对象编码成 JSON 字符串数据进行存储
@@ -177,7 +88,7 @@ func (this *Session) EncodeToJSONEX(key string, obj interface{}, seconds int) (r
 	if err != nil {
 		return nil, err
 	}
-	reply, err = this.SETEX(key, seconds, value)
+	reply, err = this.SETEX(key, seconds, string(value))
 	return reply, err
 }
 
@@ -200,6 +111,10 @@ func (this *Session) Int(reply interface{}, err error) (int, error) {
 	return redigo.Int(reply, err)
 }
 
+func (this *Session) Int64(reply interface{}, err error) (int64, error) {
+	return redigo.Int64(reply, err)
+}
+
 func (this *Session) Bool(reply interface{}, err error) (bool, error) {
 	return redigo.Bool(reply, err)
 }
@@ -218,6 +133,11 @@ func (this *Session) Float64(reply interface{}, err error) (float64, error) {
 
 func (this *Session) MustInt(reply interface{}, err error) int {
 	var r, _ = Int(reply, err)
+	return r
+}
+
+func (this *Session) MustInt64(reply interface{}, err error) int64 {
+	var r, _ = Int64(reply, err)
 	return r
 }
 
@@ -246,6 +166,10 @@ func Int(reply interface{}, err error) (int, error) {
 	return redigo.Int(reply, err)
 }
 
+func Int64(reply interface{}, err error) (int64, error) {
+	return redigo.Int64(reply, err)
+}
+
 func Bool(reply interface{}, err error) (bool, error) {
 	return redigo.Bool(reply, err)
 }
@@ -264,6 +188,11 @@ func Float64(reply interface{}, err error) (float64, error) {
 
 func MustInt(reply interface{}, err error) int {
 	var r, _ = Int(reply, err)
+	return r
+}
+
+func MustInt64(reply interface{}, err error) int64 {
+	var r, _ = Int64(reply, err)
 	return r
 }
 
