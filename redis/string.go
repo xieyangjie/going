@@ -31,7 +31,7 @@ func (this *Session) GETRANGE(key string, start, end int) (interface{}, error) {
 }
 
 //GETSET 将给定 key 的值设为 value ，并返回 key 的旧值(old value)。
-func (this *Session) GETSET(key, value string) (interface{}, error) {
+func (this *Session) GETSET(key string, value interface{}) (interface{}, error) {
 	return this.Do("GETSET", key, value)
 }
 
@@ -60,30 +60,22 @@ func (this *Session) MGET(keys ...string) (interface{}, error) {
 }
 
 //MSET 同时设置一个或多个 key-value 对。
-func (this *Session) MSET(params ...string) (interface{}, error) {
-	var ks []interface{}
-	for _, k := range params {
-		ks = append(ks, k)
-	}
-	return this.Do("MSET", ks...)
+func (this *Session) MSET(params ...interface{}) (interface{}, error) {
+	return this.Do("MSET", params...)
 }
 
 //MSETNX 同时设置一个或多个 key-value 对，当且仅当所有给定 key 都不存在。 即使只有一个给定 key 已存在， MSETNX 也会拒绝执行所有给定 key 的设置操作。
-func (this *Session) MSETNX(params ...string) (interface{}, error) {
-	var ks []interface{}
-	for _, k := range params {
-		ks = append(ks, k)
-	}
-	return this.Do("MSETNX", ks...)
+func (this *Session) MSETNX(params ...interface{}) (interface{}, error) {
+	return this.Do("MSETNX", params...)
 }
 
 //PSETEX 这个命令和 SETEX 命令相似，但它以毫秒为单位设置 key 的生存时间，而不是像 SETEX 命令那样，以秒为单位。
-func (this *Session) PSETEX(key string, milliseconds int, value string) (interface{}, error) {
+func (this *Session) PSETEX(key string, milliseconds int, value interface{}) (interface{}, error) {
 	return this.Do("PSETEX", key, milliseconds, value)
 }
 
 //SET 将字符串值 value 关联到 key 。
-func (this *Session) SET(key string, value string) (interface{}, error) {
+func (this *Session) SET(key string, value interface{}) (interface{}, error) {
 	return this.Do("SET", key, value)
 }
 
@@ -93,12 +85,12 @@ func (this *Session) SETBIT(key string, offset int, value string) (interface{}, 
 }
 
 //SETEX 将值 value 关联到 key ，并将 key 的生存时间设为 seconds (以秒为单位)。
-func (this *Session) SETEX(key string, seconds int, value string) (interface{}, error) {
+func (this *Session) SETEX(key string, seconds int, value interface{}) (interface{}, error) {
 	return this.Do("SETEX", key, seconds, value)
 }
 
 //SETNX 将 key 的值设为 value ，当且仅当 key 不存在。
-func (this *Session) SETNX(key string, value string) (interface{}, error) {
+func (this *Session) SETNX(key string, value interface{}) (interface{}, error) {
 	return this.Do("SETNX", key, value)
 }
 
