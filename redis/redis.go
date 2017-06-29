@@ -108,31 +108,40 @@ func (this *Session) Pipeline(callback func(conn Conn)) (err error) {
 
 ////////////////////////////////////////////////////////////////////////////////
 func (this *Session) Int(reply interface{}, err error) (int, error) {
-	return redigo.Int(reply, err)
+	return Int(reply, err)
+}
+
+func (this *Session) Ints(reply interface{}, err error) ([]int, error) {
+	return Ints(reply, err)
 }
 
 func (this *Session) Int64(reply interface{}, err error) (int64, error) {
-	return redigo.Int64(reply, err)
+	return Int64(reply, err)
 }
 
 func (this *Session) Bool(reply interface{}, err error) (bool, error) {
-	return redigo.Bool(reply, err)
+	return Bool(reply, err)
 }
 
 func (this *Session) String(reply interface{}, err error) (string, error) {
-	return redigo.String(reply, err)
+	return String(reply, err)
 }
 
 func (this *Session) Strings(reply interface{}, err error) ([]string, error) {
-	return redigo.Strings(reply, err)
+	return Strings(reply, err)
 }
 
 func (this *Session) Float64(reply interface{}, err error) (float64, error) {
-	return redigo.Float64(reply, err)
+	return Float64(reply, err)
 }
 
 func (this *Session) MustInt(reply interface{}, err error) int {
 	var r, _ = Int(reply, err)
+	return r
+}
+
+func (this *Session) MustInts(reply interface{}, err error) []int {
+	var r, _ = Ints(reply, err)
 	return r
 }
 
@@ -166,6 +175,10 @@ func Int(reply interface{}, err error) (int, error) {
 	return redigo.Int(reply, err)
 }
 
+func Ints(reply interface{}, err error) ([]int, error) {
+	return redigo.Ints(reply, err)
+}
+
 func Int64(reply interface{}, err error) (int64, error) {
 	return redigo.Int64(reply, err)
 }
@@ -188,6 +201,11 @@ func Float64(reply interface{}, err error) (float64, error) {
 
 func MustInt(reply interface{}, err error) int {
 	var r, _ = Int(reply, err)
+	return r
+}
+
+func MustInts(reply interface{}, err error) []int {
+	var r, _ = Ints(reply, err)
 	return r
 }
 
