@@ -30,8 +30,17 @@ func (this *Session) KEYS(pattern string) (interface{}, error) {
 }
 
 //MIGRATE 将 key 原子性地从当前实例传送到目标实例的指定数据库上，一旦传送成功， key 保证会出现在目标实例上，而当前实例上的 key 会被删除。
-func (this *Session) MIGRATE(host, port, key string, destinationDB int, timeout int, options string) (interface{}, error) {
-	return this.Do("MIGRATE", host, port, key, destinationDB, timeout, options)
+func (this *Session) MIGRATE(host, port, key string, destinationDB int, timeout int, options ...string) (interface{}, error) {
+	var ps []interface{}
+	ps = append(ps, host)
+	ps = append(ps, port)
+	ps = append(ps, key)
+	ps = append(ps, destinationDB)
+	ps = append(ps, timeout)
+	for _, o := range options {
+		ps = append(ps, o)
+	}
+	return this.Do("MIGRATE", ps...)
 }
 
 //MOVE 将当前数据库的 key 移动到给定的数据库 db 当中。

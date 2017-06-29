@@ -1,9 +1,5 @@
 package redis
 
-import (
-	redigo "github.com/garyburd/redigo/redis"
-)
-
 //HDEL 删除哈希表 key 中的一个或多个指定域，不存在的域将被忽略。
 func (this *Session) HDEL(key string, fields ...string) (interface{}, error) {
 	var ks []interface{}
