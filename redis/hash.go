@@ -25,17 +25,6 @@ func (this *Session) HGETALL(key string) (interface{}, error) {
 	return this.Do("HGETALL", key)
 }
 
-//func (this *Session) HGETALL(key string, obj interface{}) (err error) {
-//	var reply interface{}
-//	reply, err = this.Do("HGETALL", key)
-//	if err != nil {
-//		return err
-//	}
-//
-//	err = redigo.ScanStruct(reply.([]interface{}), obj)
-//	return err
-//}
-
 //HINCRBY 为哈希表 key 中的域 field 的值加上增量 increment 。
 func (this *Session) HINCRBY(key, field string, increment int) (interface{}, error) {
 	return this.Do("HINCRBY", key, field, increment)
@@ -75,9 +64,9 @@ func (this *Session) HMSET(key string, params ...interface{}) (interface{}, erro
 	return this.Do("HMSET", ps...)
 }
 
-//func (this *Session) HMSET(key string, obj interface{}) (interface{}, error) {
-//	return this.Do("HMSET", redigo.Args{}.Add(key).AddFlat(obj)...)
-//}
+func (this *Session) HMSETStruct(key string, obj interface{}) (interface{}, error) {
+	return this.Do("HMSET", StructToArgs(key, obj)...)
+}
 
 //HSET 将哈希表 key 中的域 field 的值设为 value 。
 func (this *Session) HSET(key, field string, value interface{}) (interface{}, error) {

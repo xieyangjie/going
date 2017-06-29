@@ -160,7 +160,7 @@ func (this *Session) MustString(reply interface{}, err error) string {
 	return r
 }
 
-func (this *Session) MustStrings(reply interface{}, err error) ([]string) {
+func (this *Session) MustStrings(reply interface{}, err error) []string {
 	var r, _ = Strings(reply, err)
 	return r
 }
@@ -168,6 +168,15 @@ func (this *Session) MustStrings(reply interface{}, err error) ([]string) {
 func (this *Session) MustFloat64(reply interface{}, err error) float64 {
 	var r, _ = Float64(reply, err)
 	return r
+}
+
+func (this *Session) ScanStruct(source, destination interface{}) error {
+	var err = redigo.ScanStruct(source.([]interface{}), destination)
+	return err
+}
+
+func (this *Session) StructToArgs(key string, obj interface{}) (redigo.Args) {
+	return redigo.Args{}.Add(key).AddFlat(obj)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -224,7 +233,7 @@ func MustString(reply interface{}, err error) string {
 	return r
 }
 
-func MustStrings(reply interface{}, err error) ([]string) {
+func MustStrings(reply interface{}, err error) []string {
 	var r, _ = Strings(reply, err)
 	return r
 }
@@ -232,6 +241,15 @@ func MustStrings(reply interface{}, err error) ([]string) {
 func MustFloat64(reply interface{}, err error) float64 {
 	var r, _ = Float64(reply, err)
 	return r
+}
+
+func ScanStruct(source, destination interface{}) error {
+	var err = redigo.ScanStruct(source.([]interface{}), destination)
+	return err
+}
+
+func StructToArgs(key string, obj interface{}) (redigo.Args) {
+	return redigo.Args{}.Add(key).AddFlat(obj)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
