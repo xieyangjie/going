@@ -1,8 +1,13 @@
 package redis
 
 //SADD 将一个或多个 member 元素加入到集合 key 当中，已经存在于集合的 member 元素将被忽略。
-func (this *Session) SADD(key string, member interface{}) (interface{}, error) {
-	return this.Do("SADD", key, member)
+func (this *Session) SADD(key string, members ...interface{}) (interface{}, error) {
+	var ks []interface{}
+	ks = append(ks, key)
+	for _, m := range members {
+		ks = append(ks, m)
+	}
+	return this.Do("SADD", ks...)
 }
 
 //SCARD 返回集合 key 的基数(集合中元素的数量)。
@@ -80,6 +85,7 @@ func (this *Session) SREM(key string, members ...interface{}) (interface{}, erro
 	for _, m := range members {
 		ks = append(ks, m)
 	}
+
 	return this.Do("SREM", ks...)
 }
 
