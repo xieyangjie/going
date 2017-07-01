@@ -1,7 +1,6 @@
 package redis
 
 import (
-	"encoding/json"
 	"fmt"
 	redigo "github.com/garyburd/redigo/redis"
 	"os"
@@ -82,17 +81,6 @@ func (this *Session) Do(commandName string, args ...interface{}) (interface{}, e
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// 把一个对象编码成 JSON 字符串数据进行存储
-func (this *Session) EncodeToJSONEX(key string, obj interface{}, seconds int) (reply interface{}, err error) {
-	value, err := json.Marshal(obj)
-	if err != nil {
-		return nil, err
-	}
-	reply, err = this.SETEX(key, seconds, string(value))
-	return reply, err
-}
-
-////////////////////////////////////////////////////////////////////////////////
 func (this *Session) Transaction(callback func(conn Conn)) (reply interface{}, err error) {
 	var c = this.c
 	c.Send("MULTI")
@@ -107,6 +95,10 @@ func (this *Session) Pipeline(callback func(conn Conn)) (err error) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+func (this *Session) Bytes(reply interface{}, err error) ([]byte, error) {
+	return Bytes(reply, err)
+}
+
 func (this *Session) Int(reply interface{}, err error) (int, error) {
 	return Int(reply, err)
 }
@@ -133,6 +125,11 @@ func (this *Session) Strings(reply interface{}, err error) ([]string, error) {
 
 func (this *Session) Float64(reply interface{}, err error) (float64, error) {
 	return Float64(reply, err)
+}
+
+func (this *Session) MustBytes(reply interface{}, err error) []byte {
+	var r, _ = Bytes(reply, err)
+	return r
 }
 
 func (this *Session) MustInt(reply interface{}, err error) int {
@@ -180,6 +177,10 @@ func (this *Session) StructToArgs(key string, obj interface{}) (redigo.Args) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+func Bytes(reply interface{}, err error) ([]byte, error) {
+	return redigo.Bytes(reply, err)
+}
+
 func Int(reply interface{}, err error) (int, error) {
 	return redigo.Int(reply, err)
 }
@@ -206,6 +207,11 @@ func Strings(reply interface{}, err error) ([]string, error) {
 
 func Float64(reply interface{}, err error) (float64, error) {
 	return redigo.Float64(reply, err)
+}
+
+func MustBytes(reply interface{}, err error) []byte {
+	var r, _ = Bytes(reply, err)
+	return r
 }
 
 func MustInt(reply interface{}, err error) int {
