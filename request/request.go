@@ -1,73 +1,93 @@
 package request
 
 import (
-	"encoding/json"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
+	"io/ioutil"
 )
 
-func NewRequest(method, url string, params url.Values) (*http.Request, error) {
-	var m = strings.ToUpper(method)
-	var body io.Reader
-	if m == "GET" || m == "HEAD" {
-		if len(params) > 0 {
-			if strings.Contains(url, "?") {
-				url = url + "&" + params.Encode()
-			} else {
-				url = url + "?" + params.Encode()
-			}
-		}
-
-	} else {
-		body = strings.NewReader(params.Encode())
-	}
-	return http.NewRequest(m, url, body)
+type Request struct {
+	url         string
+	method      string
+	header      http.Header
+	params      url.Values
+	body        io.Reader
+	Client      *http.Client
 }
 
-func DoRequest(c *http.Client, req *http.Request) (*http.Response, []byte, error) {
-	if req.Header.Get("Content-Type") == "" {
-		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+func NewRequest(method, urlString string) *Request {
+	var r = &Request{}
+	r.method = strings.ToUpper(method)
+	r.url = urlString
+	r.params = url.Values{}
+	r.header = http.Header{}
+	r.Client = http.DefaultClient
+	return r
+}
+
+func (this *Request) SetContentType(contentType string) {
+	this.SetHeader("Content-Type", "application/x-www-form-urlencoded")
+}
+
+func (this *Request) AddHeader(key, value string) {
+	this.header.Add(key, value)
+}
+
+func (this *Request) SetHeader(key, value string) {
+	this.header.Set(key, value)
+}
+
+func (this *Request) SetBody(body io.Reader) {
+	this.body = body
+	this.params = nil
+}
+
+func (this *Request) AddParam(key, value string) {
+	this.params.Add(key, value)
+	this.body = nil
+}
+
+func (this *Request) SetParam(key, value string) {
+	this.params.Set(key, value)
+	this.body = nil
+}
+
+func (this *Request) Exec() (*Response) {
+	var req *http.Request
+	var err error
+	var body io.Reader
+	var rawQuery string
+
+	if this.method == http.MethodGet || this.method == http.MethodHead || this.method == http.MethodDelete {
+		if len(this.params) > 0 {
+			rawQuery = this.params.Encode()
+		}
+	} else {
+		if this.body != nil {
+			body = body
+		} else if this.params != nil {
+			body = strings.NewReader(this.params.Encode())
+		}
 	}
 
-	rep, err := c.Do(req)
+	req, err = http.NewRequest(this.method, this.url, body)
+	if len(rawQuery) > 0 {
+		req.URL.RawQuery = rawQuery
+	}
+
 	if err != nil {
-		return rep, nil, err
+		return &Response{nil, nil, err}
+	}
+	req.Header = this.header
+
+	rep, err := this.Client.Do(req)
+	if err != nil {
+		return &Response{nil, nil, err}
 	}
 	defer rep.Body.Close()
 
-	repBody, err := ioutil.ReadAll(rep.Body)
-	if err != nil {
-		return rep, nil, err
-	}
-	return rep, repBody, err
-}
-
-func Request(method, url string, params url.Values) ([]byte, error) {
-	req, err := NewRequest(method, url, params)
-	if err != nil {
-		return nil, err
-	}
-	_, repBody, err := DoRequest(http.DefaultClient, req)
-	return repBody, err
-}
-
-func DoJSONRequest(c *http.Client, req *http.Request, result interface{}) (*http.Response, error) {
-	rep, repBody, err := DoRequest(c, req)
-	if err != nil {
-		return rep, err
-	}
-	err = json.Unmarshal(repBody, &result)
-	return rep, err
-}
-
-func JSONRequest(method, url string, params url.Values) (result map[string]interface{}, err error) {
-	req, err := NewRequest(method, url, params)
-	if err != nil {
-		return nil, err
-	}
-	_, err = DoJSONRequest(http.DefaultClient, req, &result)
-	return result, err
+	data, err := ioutil.ReadAll(rep.Body)
+	return &Response{rep, data, err}
 }
