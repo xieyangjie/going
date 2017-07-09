@@ -7,26 +7,33 @@ import (
 
 type Response struct {
 	*http.Response
-	Data []byte
-	Error error
+	data  []byte
+	error error
+}
+
+func (this *Response) Error() error {
+	return this.error
 }
 
 func (this *Response) Bytes() ([]byte, error) {
-	return this.Data, this.Error
+	return this.data, this.error
 }
 
 func (this *Response) MustBytes() ([]byte) {
-	return this.Data
+	return this.data
 }
 
 func (this *Response) String() (string, error) {
-	return string(this.Data), this.Error
+	return string(this.data), this.error
 }
 
 func (this *Response) MustString() (string) {
-	return string(this.Data)
+	return string(this.data)
 }
 
 func (this *Response) UnmarshalJSON(v interface{}) (error) {
-	return json.Unmarshal(this.Data, v)
+	if this.error != nil {
+		return this.error
+	}
+	return json.Unmarshal(this.data, v)
 }

@@ -39,6 +39,10 @@ func (this *Request) SetHeader(key, value string) {
 	this.header.Set(key, value)
 }
 
+func (this *Request) SetHeaders(header http.Header) {
+	this.header = header
+}
+
 func (this *Request) SetBody(body io.Reader) {
 	this.body = body
 	this.params = nil
@@ -52,6 +56,10 @@ func (this *Request) AddParam(key, value string) {
 func (this *Request) SetParam(key, value string) {
 	this.params.Set(key, value)
 	this.body = nil
+}
+
+func (this *Request) SetParams(params url.Values) {
+	this.params = params
 }
 
 func (this *Request) Exec() (*Response) {
