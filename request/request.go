@@ -24,11 +24,12 @@ func NewRequest(method, urlString string) *Request {
 	r.params = url.Values{}
 	r.header = http.Header{}
 	r.Client = http.DefaultClient
+	r.SetContentType("application/x-www-form-urlencoded")
 	return r
 }
 
 func (this *Request) SetContentType(contentType string) {
-	this.SetHeader("Content-Type", "application/x-www-form-urlencoded")
+	this.SetHeader("Content-Type", contentType)
 }
 
 func (this *Request) AddHeader(key, value string) {
