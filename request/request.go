@@ -15,6 +15,7 @@ type Request struct {
 	params      url.Values
 	body        io.Reader
 	Client      *http.Client
+	cookies     []*http.Cookie
 }
 
 func NewRequest(method, urlString string) *Request {
@@ -63,6 +64,10 @@ func (this *Request) SetParams(params url.Values) {
 	this.params = params
 }
 
+func (this *Request) AddCookie(cookie *http.Cookie) {
+	this.cookies = append(this.cookies, cookie)
+}
+
 func (this *Request) Exec() (*Response) {
 	var req *http.Request
 	var err error
@@ -90,6 +95,10 @@ func (this *Request) Exec() (*Response) {
 		return &Response{nil, nil, err}
 	}
 	req.Header = this.header
+
+	for _, cookie := range this.cookies {
+		req.AddCookie(cookie)
+	}
 
 	rep, err := this.Client.Do(req)
 	if err != nil {
